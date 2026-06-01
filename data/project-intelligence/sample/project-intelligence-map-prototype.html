@@ -1,0 +1,387 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>ConstructionFront Project Intelligence Map Prototype</title>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIINfQbTJy0rNLbc0Ya9/Nu7WfSNeMhaRso=" crossorigin="" />
+  <style>
+    :root { --navy:#071426; --panel:#0b1a2d; --panel-2:#0f223a; --line:#223a59; --text:#eef4fb; --muted:#9fb0c5; --amber:#E8A020; --blue:#7fb3ff; --green:#74c69d; }
+    * { box-sizing:border-box; }
+    body { margin:0; background:var(--navy); color:var(--text); font-family:Inter, "Segoe UI", Arial, sans-serif; }
+    .app { min-height:100vh; display:grid; grid-template-columns:350px 1fr; }
+    .sidebar { background:var(--panel); border-right:1px solid var(--line); padding:18px; overflow:auto; }
+    .brand { color:var(--amber); font-size:12px; font-weight:800; letter-spacing:.05em; text-transform:uppercase; }
+    .title { margin:8px 0 6px; font-size:23px; font-weight:780; }
+    .meta { color:var(--muted); font-size:13px; line-height:1.45; }
+    .summary-pills { display:flex; flex-wrap:wrap; gap:7px; margin:14px 0 16px; }
+    .summary-pill { border:1px solid var(--line); background:rgba(19,42,71,.72); border-radius:999px; color:#dce8f7; font-size:12px; padding:6px 9px; }
+    .summary-pill b { color:var(--amber); margin-right:4px; }
+    .filters { display:grid; gap:12px; }
+    .filter-label { display:block; color:#c8d6e8; font-size:11px; font-weight:800; letter-spacing:.04em; margin:0 0 6px; text-transform:uppercase; }
+    input, select { width:100%; background:#061322; border:1px solid var(--line); color:var(--text); border-radius:7px; font-size:13px; padding:9px 10px; }
+    input:focus, select:focus, summary:focus { outline:2px solid rgba(232,160,32,.55); outline-offset:2px; }
+    .bd-panel { border:1px solid var(--line); background:#08182b; border-radius:8px; padding:11px; }
+    .checklist { display:flex; flex-wrap:wrap; gap:6px; max-height:138px; overflow:auto; padding-right:2px; }
+    .chip-check { position:relative; }
+    .chip-check input { position:absolute; opacity:0; pointer-events:none; }
+    .chip-check span { display:block; border:1px solid #254263; border-radius:999px; color:#c9d7e8; cursor:pointer; font-size:12px; line-height:1; padding:7px 9px; }
+    .chip-check input:checked + span { border-color:var(--amber); color:var(--amber); background:rgba(232,160,32,.10); }
+    .filter-actions { display:flex; justify-content:space-between; align-items:center; margin-top:8px; }
+    .ghost-button { background:transparent; border:0; color:var(--amber); cursor:pointer; font-size:12px; padding:0; }
+    details { border-top:1px solid var(--line); padding-top:12px; }
+    summary { color:#dce8f7; cursor:pointer; font-size:13px; font-weight:750; list-style:none; }
+    summary::-webkit-details-marker { display:none; }
+    .advanced-grid { display:grid; gap:9px; margin-top:10px; }
+    .map-wrap { display:grid; grid-template-rows:minmax(540px, 67vh) auto; min-width:0; }
+    #map { min-height:540px; background:#0a1829; }
+    .leaflet-container { overflow:hidden; position:relative; outline-offset:1px; }
+    .leaflet-pane, .leaflet-tile, .leaflet-marker-icon, .leaflet-marker-shadow, .leaflet-tile-container, .leaflet-pane > svg, .leaflet-pane > canvas, .leaflet-zoom-box, .leaflet-image-layer, .leaflet-layer { position:absolute; left:0; top:0; }
+    .leaflet-tile, .leaflet-marker-icon, .leaflet-marker-shadow { user-select:none; -webkit-user-drag:none; }
+    .leaflet-container .leaflet-marker-pane img, .leaflet-container .leaflet-shadow-pane img, .leaflet-container .leaflet-tile-pane img, .leaflet-container img.leaflet-image-layer, .leaflet-container .leaflet-tile { max-width:none !important; max-height:none !important; width:auto; padding:0; }
+    .leaflet-control { position:relative; z-index:800; pointer-events:auto; }
+    .leaflet-top, .leaflet-bottom { position:absolute; z-index:1000; pointer-events:none; }
+    .leaflet-top { top:0; } .leaflet-right { right:0; } .leaflet-bottom { bottom:0; } .leaflet-left { left:0; }
+    .leaflet-control-zoom { border:2px solid rgba(0,0,0,.2); background:#fff; border-radius:4px; }
+    .leaflet-control-zoom a { display:block; width:26px; height:26px; line-height:26px; text-align:center; text-decoration:none; color:#000; background:#fff; border-bottom:1px solid #ccc; }
+    .leaflet-control-zoom a:last-child { border-bottom:0; }
+    .leaflet-popup-content-wrapper, .leaflet-popup-tip { background:#0d1d33; color:var(--text); }
+    .marker-dot { width:16px; height:16px; border-radius:50%; background:var(--amber); border:2px solid #fff; box-shadow:0 0 0 3px rgba(232,160,32,.25); }
+    .marker-approx { background:var(--blue); }
+    .marker-programme { background:var(--green); border-radius:3px; transform:rotate(45deg); }
+    .details { border-top:1px solid var(--line); background:#081526; padding:16px 18px; display:grid; grid-template-columns:minmax(360px, 1.25fr) minmax(300px, .75fr); gap:16px; }
+    .panel { min-width:0; }
+    .panel h2 { margin:0 0 8px; font-size:21px; }
+    .panel p { color:#cbd8e6; line-height:1.45; margin:8px 0; }
+    .project-photo { width:100%; aspect-ratio:16/6; object-fit:cover; border-radius:8px; border:1px solid var(--line); margin:0 0 13px; background:#06101f; }
+    .pill, .tag { display:inline-flex; align-items:center; border:1px solid var(--line); border-radius:999px; color:#d8e6f6; font-size:12px; line-height:1; margin:0 5px 6px 0; padding:5px 8px; }
+    .pill.amber, .tag.amber { border-color:var(--amber); color:var(--amber); background:rgba(232,160,32,.08); }
+    .tag { color:#c6d6e9; background:#0b1b30; }
+    .section-title { color:var(--amber); font-size:12px; font-weight:850; letter-spacing:.04em; margin:16px 0 8px; text-transform:uppercase; }
+    .bd-relevance { border:1px solid rgba(232,160,32,.38); background:rgba(232,160,32,.065); border-radius:8px; padding:11px; }
+    .grid { display:grid; grid-template-columns:145px 1fr; gap:7px; font-size:13px; }
+    .grid div:nth-child(odd) { color:var(--muted); }
+    .timeline { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:8px; margin:8px 0 12px; }
+    .timebox { border:1px solid var(--line); border-radius:7px; background:#0b1b30; padding:9px; }
+    .timebox b { display:block; color:var(--text); font-size:13px; margin-bottom:4px; }
+    .timebox span { display:block; color:var(--amber); font-size:15px; font-weight:760; margin-bottom:5px; }
+    .timebox small { display:block; color:var(--muted); line-height:1.35; }
+    .project-list { display:grid; gap:8px; max-height:430px; overflow:auto; padding-right:3px; }
+    .row { border:1px solid var(--line); background:#081a2f; border-radius:7px; cursor:pointer; padding:10px; }
+    .row:hover { border-color:var(--amber); }
+    .row.active { outline:2px solid var(--amber); }
+    .row h3 { font-size:14px; line-height:1.25; margin:0 0 6px; }
+    .row p { color:var(--muted); font-size:12px; margin:0 0 7px; }
+    .row small { color:#d5e1ef; display:block; font-size:12px; margin:0 0 7px; }
+    a { color:var(--amber); }
+    @media (max-width:1050px) { .app { grid-template-columns:1fr; } .sidebar { border-right:0; border-bottom:1px solid var(--line); } .map-wrap { grid-template-rows:55vh auto; } #map { min-height:420px; } .details { grid-template-columns:1fr; } }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <aside class="sidebar">
+      <div class="brand">ConstructionFront Internal</div>
+      <div class="title">Project Intelligence Map</div>
+      <div class="meta">Internal BD sample using 10 projects. Opportunity tags and buyer-type filters are the primary discovery controls.</div>
+      <div class="summary-pills">
+        <span class="summary-pill"><b id="count">0</b>visible</span>
+        <span class="summary-pill"><b id="underConstructionCount">0</b>under construction</span>
+        <span class="summary-pill"><b id="activeOpportunityCount">0</b>BD opportunities</span>
+        <span class="summary-pill"><b id="bopCount">0</b>BoP</span>
+        <span class="summary-pill"><b id="civilBuyerCount">0</b>civil targets</span>
+      </div>
+      <div class="filters">
+        <div>
+          <label class="filter-label" for="search">Search</label>
+          <input id="search" placeholder="Project, owner, party, opportunity, country, sector" />
+        </div>
+        <div class="bd-panel">
+          <label class="filter-label">Potential Opportunity</label>
+          <div id="opportunityFilter" class="checklist"></div>
+          <div class="filter-actions"><span class="meta">Select one or more opportunity tags</span><button class="ghost-button" data-clear="opportunityFilter" type="button">Clear</button></div>
+        </div>
+        <div class="bd-panel">
+          <label class="filter-label">Target Buyer Type</label>
+          <div id="targetBuyerFilter" class="checklist"></div>
+          <div class="filter-actions"><span class="meta">Filter by relevant BD audience</span><button class="ghost-button" data-clear="targetBuyerFilter" type="button">Clear</button></div>
+        </div>
+        <details open>
+          <summary>Market filters</summary>
+          <div class="advanced-grid">
+            <select id="region"><option value="">All regions</option></select>
+            <select id="country"><option value="">All countries</option></select>
+            <select id="sector"><option value="">All sectors</option></select>
+            <select id="subsector"><option value="">All subsectors</option></select>
+            <select id="stage"><option value="">All stages</option></select>
+            <select id="bdTiming"><option value="">All opportunity timing</option></select>
+          </div>
+        </details>
+      </div>
+    </aside>
+    <main class="map-wrap">
+      <div id="map"></div>
+      <section class="details">
+        <div class="panel" id="card"><h2>Select a marker</h2><p>Click a marker or project row to inspect the business development intelligence fields.</p></div>
+        <div class="panel"><h2>Visible Projects</h2><div id="table" class="project-list"></div></div>
+      </section>
+    </main>
+  </div>
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+  <script>
+    const state = { projects: [], filtered: [], markers: new Map(), selected: null };
+    const filters = ["region", "country", "sector", "subsector", "stage", "bdTiming"];
+    const multiFilters = [
+      { id: "opportunityFilter", field: "opportunityCategories" },
+      { id: "targetBuyerFilter", field: "targetBuyerTypes" }
+    ];
+    const map = L.map("map", { zoomControl: true }).setView([35, -25], 2);
+    L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", { maxZoom: 18, attribution: "&copy; OpenStreetMap" }).addTo(map);
+
+    function escapeHtml(value) {
+      return String(value || "").replace(/[&<>"']/g, function(char) {
+        return ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[char];
+      });
+    }
+
+    function splitMulti(value) {
+      return String(value || "").split(";").map(function(item) { return item.trim(); }).filter(Boolean);
+    }
+
+    function selectedValues(id) {
+      return Array.from(document.querySelectorAll("#" + id + " input:checked")).map(function(input) { return input.value; });
+    }
+
+    function markerIcon(project) {
+      const programme = String(project.mapAnchorType || "").includes("Country") || String(project.mapAnchorType || "").includes("Programme");
+      const approx = String(project.mapEligibilityStatus || "").includes("Approximate");
+      const className = programme ? "marker-programme" : approx ? "marker-approx" : "";
+      return L.divIcon({ className: "", html: '<div class="marker-dot ' + className + '"></div>', iconSize: [18, 18], iconAnchor: [9, 9] });
+    }
+
+    function formatValue(project) {
+      if (!project.projectValueAmount) return project.projectValueNotes || "Value not disclosed";
+      return project.projectValueCurrency + " " + project.projectValueAmount + " " + String(project.projectValueScale).toLowerCase() + " (" + project.projectValueBasis + ")";
+    }
+
+    function clean(value) {
+      return value && value !== "Unknown" ? value : "";
+    }
+
+    function opportunityTiming(value) {
+      const labels = {
+        "Contractor Route": "Contractor / Supply Chain Opportunity",
+        "Supply Chain Opportunity": "Supply Chain Opportunity",
+        "Active Opportunity": "Active Business Opportunity",
+        "Early Watch": "Early Watch",
+        "Late Stage": "Late-Stage Opportunity",
+        "O&M Opportunity": "Operations & Maintenance Opportunity",
+        "Low Visibility": "Low Visibility"
+      };
+      return labels[value] || value || "Unknown";
+    }
+
+    function chips(values, limit) {
+      const visible = Number.isFinite(limit) ? values.slice(0, limit) : values;
+      const extra = Number.isFinite(limit) && values.length > limit ? ['+' + (values.length - limit)] : [];
+      return visible.concat(extra).map(function(value) { return '<span class="tag">' + escapeHtml(value) + '</span>'; }).join("");
+    }
+
+    function timelineValue(year, quarter, precision) {
+      if (!year || precision === "Unknown") return "Unknown";
+      const q = quarter && quarter !== "Unknown" ? " " + quarter : "";
+      const suffix = precision && precision !== "Unknown" ? " (" + precision + ")" : "";
+      return year + q + suffix;
+    }
+
+    function timelineBox(label, year, quarter, precision, notes) {
+      return '<div class="timebox"><b>' + label + '</b><span>' + timelineValue(year, quarter, precision) + '</span><small>' + escapeHtml(notes || "No source-supported timing captured.") + '</small></div>';
+    }
+
+    function optionText(id, value) {
+      if (id === "bdTiming") return opportunityTiming(value);
+      return value;
+    }
+
+    function optionize(id, values) {
+      const el = document.getElementById(id);
+      Array.from(new Set(values.filter(Boolean).sort())).forEach(function(value) {
+        const option = document.createElement("option");
+        option.value = value;
+        option.textContent = optionText(id, value);
+        el.appendChild(option);
+      });
+    }
+
+    function checkboxize(id, values) {
+      const el = document.getElementById(id);
+      el.innerHTML = "";
+      Array.from(new Set(values.filter(Boolean).sort())).forEach(function(value) {
+        const label = document.createElement("label");
+        label.className = "chip-check";
+        label.innerHTML = '<input type="checkbox" value="' + escapeHtml(value) + '"><span>' + escapeHtml(value) + '</span>';
+        label.querySelector("input").addEventListener("change", render);
+        el.appendChild(label);
+      });
+    }
+
+    function passes(project) {
+      const q = document.getElementById("search").value.trim().toLowerCase();
+      const hay = [
+        project.projectName,
+        project.ownerDeveloper,
+        project.clientAuthority,
+        project.partySearchText,
+        project.country,
+        project.sector,
+        project.subsector,
+        project.cityArea,
+        project.opportunityCategories,
+        project.targetBuyerTypes,
+        project.potentialOpportunities
+      ].join(" ").toLowerCase();
+      if (q && !hay.includes(q)) return false;
+      const singleFiltersPass = filters.every(function(id) {
+        const value = document.getElementById(id).value;
+        const key = id === "stage" ? "currentProjectStage" : id;
+        return !value || project[key] === value;
+      });
+      if (!singleFiltersPass) return false;
+      return multiFilters.every(function(filter) {
+        const selected = selectedValues(filter.id);
+        const projectValues = splitMulti(project[filter.field]);
+        return !selected.length || selected.some(function(value) { return projectValues.includes(value); });
+      });
+    }
+
+    function updateStats() {
+      document.getElementById("count").textContent = state.filtered.length;
+      document.getElementById("underConstructionCount").textContent = state.filtered.filter(function(project) { return project.currentProjectStage === "Under Construction"; }).length;
+      document.getElementById("activeOpportunityCount").textContent = state.filtered.filter(function(project) { return ["Active Opportunity", "Supply Chain Opportunity", "Contractor Route", "Late Stage", "O&M Opportunity"].includes(project.bdTiming); }).length;
+      document.getElementById("bopCount").textContent = state.filtered.filter(function(project) {
+        return splitMulti(project.opportunityCategories).some(function(value) { return value.includes("BoP") || value.includes("Balance of Plant"); });
+      }).length;
+      document.getElementById("civilBuyerCount").textContent = state.filtered.filter(function(project) {
+        return splitMulti(project.targetBuyerTypes).includes("Civil Contractor");
+      }).length;
+    }
+
+    function projectRow(project) {
+      const row = document.createElement("div");
+      row.className = "row" + (state.selected === project.projectSlug ? " active" : "");
+      row.innerHTML =
+        "<h3>" + escapeHtml(project.projectName) + "</h3>" +
+        "<p>" + escapeHtml(project.country) + " &middot; " + escapeHtml(project.sector) + " &middot; " + escapeHtml(project.currentProjectStage) + "</p>" +
+        "<small>Opportunity timing: " + escapeHtml(opportunityTiming(project.bdTiming)) + "</small>" +
+        chips(splitMulti(project.opportunityCategories), 3);
+      row.onclick = function() { selectProject(project.projectSlug); };
+      return row;
+    }
+
+    function render() {
+      state.markers.forEach(function(marker) { map.removeLayer(marker); });
+      state.markers.clear();
+      state.filtered = state.projects.filter(function(project) {
+        return ["Map Ready", "Map Ready - Approximate"].includes(project.mapEligibilityStatus);
+      }).filter(passes);
+      if (state.selected && !state.filtered.some(function(project) { return project.projectSlug === state.selected; })) {
+        state.selected = state.filtered[0]?.projectSlug || null;
+      }
+      if (!state.selected && state.filtered[0]) {
+        state.selected = state.filtered[0].projectSlug;
+      }
+      updateStats();
+      const table = document.getElementById("table");
+      table.innerHTML = "";
+      const bounds = [];
+      state.filtered.forEach(function(project) {
+        const lat = Number(project.latitude);
+        const lng = Number(project.longitude);
+        if (Number.isFinite(lat) && Number.isFinite(lng)) {
+          const marker = L.marker([lat, lng], { icon: markerIcon(project) }).addTo(map).bindPopup("<b>" + escapeHtml(project.projectName) + "</b><br>" + escapeHtml(project.sector) + " / " + escapeHtml(project.currentProjectStage));
+          marker.on("click", function() { selectProject(project.projectSlug); });
+          state.markers.set(project.projectSlug, marker);
+          bounds.push([lat, lng]);
+        }
+        table.appendChild(projectRow(project));
+      });
+      if (bounds.length) map.fitBounds(bounds, { padding: [40, 40], maxZoom: 5 });
+      renderSelectedCard();
+    }
+
+    function renderSelectedCard() {
+      const project = state.filtered.find(function(item) { return item.projectSlug === state.selected; });
+      if (!project) return;
+      const photo = project.projectImageUrl ? '<img class="project-photo" src="' + escapeHtml(project.projectImageUrl) + '" alt="' + escapeHtml(project.projectName) + ' image from ConstructionFront" loading="lazy" />' : "";
+      document.getElementById("card").innerHTML =
+        photo +
+        "<h2>" + escapeHtml(project.projectName) + "</h2>" +
+        '<span class="pill amber">' + escapeHtml(project.currentProjectStage) + "</span>" +
+        '<span class="pill">' + escapeHtml(project.mapAnchorType) + "</span>" +
+        '<div class="section-title">Business Development Relevance</div>' +
+        '<div class="bd-relevance">' +
+        '<div class="grid">' +
+        "<div>Opportunity timing</div><div>" + escapeHtml(opportunityTiming(project.bdTiming)) + "</div>" +
+        "<div>Opportunity categories</div><div>" + chips(splitMulti(project.opportunityCategories)) + "</div>" +
+        "<div>Target buyer types</div><div>" + chips(splitMulti(project.targetBuyerTypes)) + "</div>" +
+        "<div>Potential opportunities</div><div>" + escapeHtml(project.potentialOpportunities || "No supported opportunity narrative captured.") + "</div>" +
+        "</div></div>" +
+        "<p>" + escapeHtml(project.projectSummary) + "</p>" +
+        "<p><b>Latest:</b> " + escapeHtml(project.latestUpdateSummary) + "</p>" +
+        '<div class="section-title">Timeline</div>' +
+        '<div class="timeline">' +
+        timelineBox("Construction Start", project.constructionStartYear, project.constructionStartQuarter, project.constructionStartPrecision, project.constructionStartNotes) +
+        timelineBox("Construction Completion", project.constructionCompletionYear, project.constructionCompletionQuarter, project.constructionCompletionPrecision, project.constructionCompletionNotes) +
+        timelineBox("Operations / Service", project.operationsStartYear, project.operationsStartQuarter, project.operationsStartPrecision, project.operationsStartNotes) +
+        "</div>" +
+        '<div class="section-title">Project Intelligence</div>' +
+        '<div class="grid">' +
+        "<div>Sector</div><div>" + escapeHtml(project.sector + " / " + project.subsector) + "</div>" +
+        "<div>Location</div><div>" + escapeHtml([project.country, project.stateProvince, project.cityArea].filter(Boolean).join(" / ")) + "</div>" +
+        "<div>Value</div><div>" + escapeHtml(formatValue(project)) + "</div>" +
+        "<div>Capacity</div><div>" + escapeHtml([clean(project.capacityAmount), clean(project.capacityUnit)].filter(Boolean).join(" ")) + "</div>" +
+        "<div>Map note</div><div>" + escapeHtml(project.mapEligibilityNotes) + "</div>" +
+        '<div>Article</div><div><a href="' + escapeHtml(project.latestCfArticleUrl) + '" target="_blank" rel="noopener">ConstructionFront update</a></div>' +
+        "</div>";
+    }
+
+    function selectProject(slug) {
+      state.selected = slug;
+      const marker = state.markers.get(slug);
+      if (marker) marker.openPopup();
+      render();
+    }
+
+    async function init() {
+      state.projects = await fetch("projects_master_sample_10.json?v=bd-opportunity").then(function(response) { return response.json(); });
+      optionize("region", state.projects.map(function(project) { return project.region; }));
+      optionize("country", state.projects.map(function(project) { return project.country; }));
+      optionize("sector", state.projects.map(function(project) { return project.sector; }));
+      optionize("subsector", state.projects.map(function(project) { return project.subsector; }));
+      optionize("stage", state.projects.map(function(project) { return project.currentProjectStage; }));
+      optionize("bdTiming", state.projects.map(function(project) { return project.bdTiming; }));
+      checkboxize("opportunityFilter", state.projects.flatMap(function(project) { return splitMulti(project.opportunityCategories); }));
+      checkboxize("targetBuyerFilter", state.projects.flatMap(function(project) { return splitMulti(project.targetBuyerTypes); }));
+      document.getElementById("search").addEventListener("input", render);
+      filters.forEach(function(id) { document.getElementById(id).addEventListener("change", render); });
+      document.querySelectorAll("[data-clear]").forEach(function(button) {
+        button.addEventListener("click", function() {
+          document.querySelectorAll("#" + button.dataset.clear + " input").forEach(function(input) { input.checked = false; });
+          render();
+        });
+      });
+      map.invalidateSize();
+      render();
+      if (state.filtered[0]) selectProject(state.filtered[0].projectSlug);
+      window.setTimeout(function() {
+        map.invalidateSize();
+        render();
+        if (state.selected) selectProject(state.selected);
+      }, 300);
+    }
+
+    init().catch(function(error) {
+      document.getElementById("card").innerHTML = "<h2>Could not load sample JSON</h2><p>Serve this folder over a local web server so the browser can fetch projects_master_sample_10.json.</p><p>" + escapeHtml(error.message) + "</p>";
+    });
+  </script>
+</body>
+</html>

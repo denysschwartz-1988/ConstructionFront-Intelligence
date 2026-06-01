@@ -1,0 +1,30 @@
+changeDate,file,recordId,field,before,after,reason,changedBy
+2026-05-21,taxonomies.json,projectStage,projectStage,No Construction Completed stage,Added Construction Completed,User requested distinction between construction completion and operational status.,Codex sample workflow
+2026-05-21,taxonomies.json,milestoneType,milestoneType,Not present,Construction Completed; Substantial Completion; Mechanical Completion; Practical Completion; Testing / Commissioning; Commercial Operations; Opened to Traffic,User requested milestone taxonomy values for project update/event table.,Codex sample workflow
+2026-05-21,projects_master_sample_5.csv,el-patrimonio-solar-project,record,,sample master row created,Created sidecar 5-project working sample; does not overwrite database.,Codex sample workflow
+2026-05-21,projects_master_sample_5.csv,d35-motorway-ulibice-horice,record,,sample master row created,Created sidecar 5-project working sample; does not overwrite database.,Codex sample workflow
+2026-05-21,projects_master_sample_5.csv,beacon-point-ai-data-center-campus,record,,sample master row created,Created sidecar 5-project working sample; does not overwrite database.,Codex sample workflow
+2026-05-21,projects_master_sample_5.csv,commonwealth-lng,record,,sample master row created,Created sidecar 5-project working sample; does not overwrite database.,Codex sample workflow
+2026-05-21,projects_master_sample_5.csv,german-grid-expansion-amprion-financing,record,,sample master row created,Created sidecar 5-project working sample; does not overwrite database.,Codex sample workflow
+2026-05-21,project_updates_sample_5.csv,UPD-ELP-20260513,record,,sample update/event row created,Created linked project update/event row for 3-table model test.,Codex sample workflow
+2026-05-21,project_updates_sample_5.csv,UPD-D35-20260507,record,,sample update/event row created,Created linked project update/event row for 3-table model test.,Codex sample workflow
+2026-05-21,project_updates_sample_5.csv,UPD-BEACON-20260514,record,,sample update/event row created,Created linked project update/event row for 3-table model test.,Codex sample workflow
+2026-05-21,project_updates_sample_5.csv,UPD-CWLNG-20260420,record,,sample update/event row created,Created linked project update/event row for 3-table model test.,Codex sample workflow
+2026-05-21,project_updates_sample_5.csv,UPD-CWLNG-20260516,record,,sample update/event row created,Created linked project update/event row for 3-table model test.,Codex sample workflow
+2026-05-21,project_updates_sample_5.csv,UPD-GERGRID-20250908,record,,sample update/event row created,Created linked project update/event row for 3-table model test.,Codex sample workflow
+2026-05-21,project_parties_sample_5.csv,PTY-ELP-001,record,,sample party row created,Created linked party row with role classification for 3-table model test.,Codex sample workflow
+2026-05-21,project_parties_sample_5.csv,PTY-ELP-002,record,,sample party row created,Created linked party row with role classification for 3-table model test.,Codex sample workflow
+2026-05-21,project_parties_sample_5.csv,PTY-ELP-003,record,,sample party row created,Created linked party row with role classification for 3-table model test.,Codex sample workflow
+2026-05-21,project_parties_sample_5.csv,PTY-D35-001,record,,sample party row created,Created linked party row with role classification for 3-table model test.,Codex sample workflow
+2026-05-21,project_parties_sample_5.csv,PTY-D35-002,record,,sample party row created,Created linked party row with role classification for 3-table model test.,Codex sample workflow
+2026-05-21,project_parties_sample_5.csv,PTY-D35-003,record,,sample party row created,Created linked party row with role classification for 3-table model test.,Codex sample workflow
+2026-05-21,project_parties_sample_5.csv,PTY-BEACON-001,record,,sample party row created,Created linked party row with role classification for 3-table model test.,Codex sample workflow
+2026-05-21,project_parties_sample_5.csv,PTY-BEACON-002,record,,sample party row created,Created linked party row with role classification for 3-table model test.,Codex sample workflow
+2026-05-21,project_parties_sample_5.csv,PTY-CWLNG-001,record,,sample party row created,Created linked party row with role classification for 3-table model test.,Codex sample workflow
+2026-05-21,project_parties_sample_5.csv,PTY-CWLNG-002,record,,sample party row created,Created linked party row with role classification for 3-table model test.,Codex sample workflow
+2026-05-21,project_parties_sample_5.csv,PTY-CWLNG-003,record,,sample party row created,Created linked party row with role classification for 3-table model test.,Codex sample workflow
+2026-05-21,project_parties_sample_5.csv,PTY-CWLNG-004,record,,sample party row created,Created linked party row with role classification for 3-table model test.,Codex sample workflow
+2026-05-21,project_parties_sample_5.csv,PTY-CWLNG-005,record,,sample party row created,Created linked party row with role classification for 3-table model test.,Codex sample workflow
+2026-05-21,project_parties_sample_5.csv,PTY-GERGRID-001,record,,sample party row created,Created linked party row with role classification for 3-table model test.,Codex sample workflow
+2026-05-21,project_parties_sample_5.csv,PTY-GERGRID-002,record,,sample party row created,Created linked party row with role classification for 3-table model test.,Codex sample workflow
+2026-05-21,project_parties_sample_5.csv,PTY-GERGRID-003,record,,sample party row created,Created linked party row with role classification for 3-table model test.,Codex sample workflow

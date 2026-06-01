@@ -1,0 +1,123 @@
+{
+  "region": [
+    "North America",
+    "Europe",
+    "Australia & NZ",
+    "Other"
+  ],
+  "sector": [
+    "Energy",
+    "Transport",
+    "Water",
+    "Digital Infrastructure",
+    "Social Infrastructure",
+    "Industrial / Mining",
+    "Utilities",
+    "Other"
+  ],
+  "projectStage": [
+    "Early Development",
+    "Planning / Approvals",
+    "Pre-Construction / Design",
+    "FID Pending",
+    "FID Reached",
+    "Tendering / Procurement",
+    "Contract Awarded",
+    "Under Construction",
+    "Operational",
+    "On Hold / Delayed",
+    "Cancelled",
+    "Unknown"
+  ],
+  "preConstructionApproach": [
+    "Development",
+    "FEL",
+    "FEED",
+    "ECI",
+    "Reference Design",
+    "Detailed Design",
+    "Alliance Development Phase",
+    "Pre-Construction Services",
+    "Not Applicable",
+    "Unknown"
+  ],
+  "bdTiming": [
+    "Early Watch",
+    "Active Opportunity",
+    "Contractor Route",
+    "Late Stage",
+    "O&M Opportunity",
+    "Low Visibility"
+  ],
+  "constructionStartQuarter": [
+    "Q1",
+    "Q2",
+    "Q3",
+    "Q4",
+    "Unknown"
+  ],
+  "constructionStartPrecision": [
+    "Exact Date",
+    "Quarter",
+    "Year",
+    "Indicative",
+    "Unknown"
+  ],
+  "completionTargetQuarter": [
+    "Q1",
+    "Q2",
+    "Q3",
+    "Q4",
+    "Unknown"
+  ],
+  "completionTargetPrecision": [
+    "Exact Date",
+    "Quarter",
+    "Year",
+    "Indicative",
+    "Unknown"
+  ],
+  "opportunityCategories": [
+    "Civil Works",
+    "Earthworks",
+    "Electrical Works",
+    "Grid Connection",
+    "Substations",
+    "Transmission",
+    "Mechanical Works",
+    "Rail Systems",
+    "Roadworks",
+    "Structures",
+    "Utilities Relocation",
+    "Water / Wastewater",
+    "Design / Engineering",
+    "Project Controls",
+    "Planning / Environmental",
+    "Commercial Management",
+    "Claims / Dispute Support",
+    "Legal / Contract Advisory",
+    "Insurance / Risk Advisory",
+    "Financing / Investment",
+    "O&M",
+    "Asset Management",
+    "Technology / Software",
+    "Recruitment / Workforce",
+    "Unknown"
+  ],
+  "confidenceLevel": [
+    "Confirmed",
+    "Likely",
+    "Inferred",
+    "Unknown",
+    "Needs Review"
+  ],
+  "reviewStatus": [
+    "Needs Review",
+    "Needs Source Check",
+    "Needs Coordinates",
+    "Needs Contractor Verification",
+    "Needs Value Verification",
+    "Approved",
+    "Rejected"
+  ]
+}

@@ -1,0 +1,260 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>ConstructionFront Project Intelligence Map Prototype</title>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIINfQbTJy0rNLbc0Ya9/Nu7WfSNeMhaRso=" crossorigin="" />
+  <style>
+    :root { --navy:#071426; --panel:#0d1d33; --line:#213755; --text:#eef4fb; --muted:#9fb0c5; --amber:#E8A020; --soft:#132a47; --green:#74c69d; --blue:#7fb3ff; }
+    * { box-sizing: border-box; }
+    body { margin:0; background:var(--navy); color:var(--text); font-family: Inter, "Segoe UI", Arial, sans-serif; }
+    .app { min-height:100vh; display:grid; grid-template-columns:360px 1fr; }
+    .sidebar { background:var(--panel); border-right:1px solid var(--line); padding:18px; overflow:auto; }
+    .brand { font-size:13px; color:var(--amber); font-weight:700; letter-spacing:.04em; text-transform:uppercase; }
+    .title { font-size:24px; font-weight:750; margin:8px 0 6px; }
+    .meta { color:var(--muted); font-size:13px; line-height:1.45; }
+    .filters { display:grid; gap:10px; margin:18px 0; }
+    .filters input, .filters select { width:100%; background:#071426; border:1px solid var(--line); color:var(--text); border-radius:6px; padding:9px 10px; font-size:13px; }
+    .stats { display:grid; grid-template-columns:1fr 1fr; gap:8px; margin:14px 0; }
+    .stat { background:var(--soft); border:1px solid var(--line); border-radius:6px; padding:10px; }
+    .stat b { display:block; color:var(--amber); font-size:20px; }
+    .stat span { font-size:12px; color:var(--muted); }
+    .project-list { display:grid; gap:8px; }
+    .row { border:1px solid var(--line); background:#081a2f; border-radius:7px; padding:10px; cursor:pointer; }
+    .row:hover { border-color:var(--amber); }
+    .row.active { outline:2px solid var(--amber); }
+    .row h3 { font-size:14px; margin:0 0 6px; }
+    .row p { font-size:12px; color:var(--muted); margin:0; }
+    .map-wrap { display:grid; grid-template-rows:1fr auto; min-width:0; }
+    #map { height:66vh; min-height:520px; background:#0a1829; }
+    .leaflet-container { overflow:hidden; position:relative; outline-offset:1px; }
+    .leaflet-pane, .leaflet-tile, .leaflet-marker-icon, .leaflet-marker-shadow, .leaflet-tile-container, .leaflet-pane > svg, .leaflet-pane > canvas, .leaflet-zoom-box, .leaflet-image-layer, .leaflet-layer { position:absolute; left:0; top:0; }
+    .leaflet-tile, .leaflet-marker-icon, .leaflet-marker-shadow { user-select:none; -webkit-user-drag:none; }
+    .leaflet-safari .leaflet-tile { image-rendering:-webkit-optimize-contrast; }
+    .leaflet-zoom-animated { transform-origin:0 0; }
+    .leaflet-marker-icon, .leaflet-marker-shadow { display:block; }
+    .leaflet-container .leaflet-overlay-pane svg { max-width:none !important; max-height:none !important; }
+    .leaflet-container .leaflet-marker-pane img, .leaflet-container .leaflet-shadow-pane img, .leaflet-container .leaflet-tile-pane img, .leaflet-container img.leaflet-image-layer, .leaflet-container .leaflet-tile { max-width:none !important; max-height:none !important; width:auto; padding:0; }
+    .leaflet-container.leaflet-touch-zoom { touch-action:pan-x pan-y; }
+    .leaflet-control { position:relative; z-index:800; pointer-events:auto; }
+    .leaflet-top, .leaflet-bottom { position:absolute; z-index:1000; pointer-events:none; }
+    .leaflet-top { top:0; } .leaflet-right { right:0; } .leaflet-bottom { bottom:0; } .leaflet-left { left:0; }
+    .leaflet-control-zoom { border:2px solid rgba(0,0,0,.2); background:#fff; border-radius:4px; }
+    .leaflet-control-zoom a { display:block; width:26px; height:26px; line-height:26px; text-align:center; text-decoration:none; color:#000; background:#fff; border-bottom:1px solid #ccc; }
+    .leaflet-control-zoom a:last-child { border-bottom:0; }
+    .details { border-top:1px solid var(--line); background:#081526; padding:16px 20px; display:grid; grid-template-columns:1.1fr .9fr; gap:18px; }
+    .card h2 { margin:0 0 8px; font-size:22px; }
+    .pill { display:inline-block; border:1px solid var(--line); border-radius:999px; padding:4px 8px; font-size:12px; color:#d8e6f6; margin:0 5px 6px 0; }
+    .pill.amber { border-color:var(--amber); color:var(--amber); }
+    .card p { color:#cbd8e6; line-height:1.45; margin:8px 0; }
+    .grid { display:grid; grid-template-columns:150px 1fr; gap:7px; font-size:13px; }
+    .grid div:nth-child(odd) { color:var(--muted); }
+    .section-title { color:var(--amber); font-size:12px; font-weight:800; letter-spacing:.04em; text-transform:uppercase; margin:16px 0 8px; }
+    .timeline { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:8px; margin:8px 0 12px; }
+    .timebox { border:1px solid var(--line); border-radius:7px; background:#0b1b30; padding:9px; }
+    .timebox b { display:block; color:var(--text); font-size:13px; margin-bottom:4px; }
+    .timebox span { display:block; color:var(--amber); font-size:15px; font-weight:750; margin-bottom:5px; }
+    .timebox small { display:block; color:var(--muted); line-height:1.35; }
+    a { color:var(--amber); }
+    .leaflet-popup-content-wrapper, .leaflet-popup-tip { background:#0d1d33; color:var(--text); }
+    .marker-dot { width:16px; height:16px; border-radius:50%; background:var(--amber); border:2px solid #fff; box-shadow:0 0 0 3px rgba(232,160,32,.25); }
+    .marker-approx { background:var(--blue); }
+    .marker-programme { background:var(--green); border-radius:3px; transform:rotate(45deg); }
+    @media (max-width:980px) { .app { grid-template-columns:1fr; } .sidebar { border-right:0; border-bottom:1px solid var(--line); } .details { grid-template-columns:1fr; } #map { height:55vh; min-height:420px; } }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <aside class="sidebar">
+      <div class="brand">ConstructionFront Internal</div>
+      <div class="title">Project Intelligence Map</div>
+      <div class="meta">Prototype using the 10-project sample only. Approximate and programme anchors are labelled separately. Timeline and business opportunity fields are surfaced for review.</div>
+      <div class="stats">
+        <div class="stat"><b id="count">0</b><span>visible projects</span></div>
+        <div class="stat"><b id="approxCount">0</b><span>approx anchors</span></div>
+      </div>
+      <div class="filters">
+        <input id="search" placeholder="Search project, owner, party, country, sector" />
+        <select id="region"><option value="">All regions</option></select>
+        <select id="country"><option value="">All countries</option></select>
+        <select id="sector"><option value="">All sectors</option></select>
+        <select id="subsector"><option value="">All subsectors</option></select>
+        <select id="stage"><option value="">All stages</option></select>
+        <select id="bdTiming"><option value="">All opportunity timing</option></select>
+        <select id="mapStatus"><option value="">All map statuses</option></select>
+        <select id="recordType"><option value="">All record types</option></select>
+      </div>
+      <div id="list" class="project-list"></div>
+    </aside>
+    <main class="map-wrap">
+      <div id="map"></div>
+      <section class="details">
+        <div class="card" id="card"><h2>Select a marker</h2><p>Click a marker or list row to inspect project intelligence fields.</p></div>
+        <div class="card"><h2>Sample Table</h2><div id="table" class="project-list"></div></div>
+      </section>
+    </main>
+  </div>
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+  <script>
+    const state = { projects: [], filtered: [], markers: new Map(), selected: null };
+    const filters = ["region", "country", "sector", "subsector", "stage", "bdTiming", "mapStatus", "recordType"];
+    const map = L.map("map", { zoomControl: true }).setView([35, -25], 2);
+    L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", { maxZoom: 18, attribution: "&copy; OpenStreetMap" }).addTo(map);
+
+    function markerIcon(project) {
+      const programme = project.mapAnchorType.includes("Country") || project.mapAnchorType.includes("Programme");
+      const approx = project.mapEligibilityStatus.includes("Approximate");
+      const className = programme ? "marker-programme" : approx ? "marker-approx" : "";
+      return L.divIcon({ className: "", html: '<div class="marker-dot ' + className + '"></div>', iconSize: [18, 18], iconAnchor: [9, 9] });
+    }
+
+    function formatValue(project) {
+      if (!project.projectValueAmount) return project.projectValueNotes || "Value not disclosed";
+      return project.projectValueCurrency + " " + project.projectValueAmount + " " + String(project.projectValueScale).toLowerCase() + " (" + project.projectValueBasis + ")";
+    }
+
+    function clean(value) {
+      return value && value !== "Unknown" ? value : "";
+    }
+
+    function opportunityTiming(value) {
+      const labels = {
+        "Contractor Route": "Contractor / Supply Chain Opportunity",
+        "Active Opportunity": "Active Business Opportunity",
+        "Early Watch": "Early Watch",
+        "Late Stage": "Late-Stage Opportunity",
+        "O&M Opportunity": "Operations & Maintenance Opportunity",
+        "Low Visibility": "Low Visibility"
+      };
+      return labels[value] || value || "Unknown";
+    }
+
+    function timelineValue(year, quarter, precision) {
+      if (!year || precision === "Unknown") return "Unknown";
+      const q = quarter && quarter !== "Unknown" ? " " + quarter : "";
+      const suffix = precision && precision !== "Unknown" ? " (" + precision + ")" : "";
+      return year + q + suffix;
+    }
+
+    function timelineBox(label, year, quarter, precision, notes) {
+      return '<div class="timebox"><b>' + label + '</b><span>' + timelineValue(year, quarter, precision) + '</span><small>' + (notes || "No source-supported timing captured.") + '</small></div>';
+    }
+
+    function optionize(id, values) {
+      const el = document.getElementById(id);
+      Array.from(new Set(values.filter(Boolean).sort())).forEach(function(value) {
+        const option = document.createElement("option");
+        option.value = value;
+        option.textContent = value;
+        el.appendChild(option);
+      });
+    }
+
+    function passes(project) {
+      const q = document.getElementById("search").value.trim().toLowerCase();
+      const hay = [project.projectName, project.ownerDeveloper, project.clientAuthority, project.partySearchText, project.country, project.sector, project.subsector, project.cityArea].join(" ").toLowerCase();
+      if (q && !hay.includes(q)) return false;
+      return filters.every(function(id) {
+        const value = document.getElementById(id).value;
+        const key = id === "stage" ? "currentProjectStage" : id === "mapStatus" ? "mapEligibilityStatus" : id;
+        return !value || project[key] === value;
+      });
+    }
+
+    function render() {
+      state.markers.forEach(function(marker) { map.removeLayer(marker); });
+      state.markers.clear();
+      state.filtered = state.projects.filter(function(project) {
+        return ["Map Ready", "Map Ready - Approximate"].includes(project.mapEligibilityStatus);
+      }).filter(passes);
+      document.getElementById("count").textContent = state.filtered.length;
+      document.getElementById("approxCount").textContent = state.filtered.filter(function(project) { return project.mapEligibilityStatus.includes("Approximate"); }).length;
+      const list = document.getElementById("list");
+      const table = document.getElementById("table");
+      list.innerHTML = "";
+      table.innerHTML = "";
+      const bounds = [];
+      state.filtered.forEach(function(project) {
+        const lat = Number(project.latitude);
+        const lng = Number(project.longitude);
+        if (Number.isFinite(lat) && Number.isFinite(lng)) {
+          const marker = L.marker([lat, lng], { icon: markerIcon(project) }).addTo(map).bindPopup("<b>" + project.projectName + "</b><br>" + project.sector + " / " + project.currentProjectStage);
+          marker.on("click", function() { selectProject(project.projectSlug); });
+          state.markers.set(project.projectSlug, marker);
+          bounds.push([lat, lng]);
+        }
+        const row = document.createElement("div");
+        row.className = "row" + (state.selected === project.projectSlug ? " active" : "");
+        row.innerHTML = "<h3>" + project.projectName + "</h3><p>" + project.country + " • " + project.sector + " • " + project.currentProjectStage + "</p>";
+        row.onclick = function() { selectProject(project.projectSlug); };
+        list.appendChild(row);
+        const tableRow = row.cloneNode(true);
+        tableRow.onclick = function() { selectProject(project.projectSlug); };
+        table.appendChild(tableRow);
+      });
+      if (bounds.length) map.fitBounds(bounds, { padding: [40, 40], maxZoom: 5 });
+    }
+
+    function selectProject(slug) {
+      state.selected = slug;
+      const project = state.projects.find(function(item) { return item.projectSlug === slug; });
+      if (!project) return;
+      const marker = state.markers.get(slug);
+      if (marker) marker.openPopup();
+      document.getElementById("card").innerHTML =
+        "<h2>" + project.projectName + "</h2>" +
+        '<span class="pill amber">' + project.currentProjectStage + "</span>" +
+        '<span class="pill">' + project.mapAnchorType + "</span>" +
+        '<span class="pill">' + opportunityTiming(project.bdTiming) + "</span>" +
+        "<p>" + project.projectSummary + "</p>" +
+        "<p><b>Latest:</b> " + project.latestUpdateSummary + "</p>" +
+        '<div class="section-title">Timeline</div>' +
+        '<div class="timeline">' +
+        timelineBox("Construction Start", project.constructionStartYear, project.constructionStartQuarter, project.constructionStartPrecision, project.constructionStartNotes) +
+        timelineBox("Construction Completion", project.constructionCompletionYear, project.constructionCompletionQuarter, project.constructionCompletionPrecision, project.constructionCompletionNotes) +
+        timelineBox("Operations / Service", project.operationsStartYear, project.operationsStartQuarter, project.operationsStartPrecision, project.operationsStartNotes) +
+        "</div>" +
+        '<div class="section-title">Business Opportunities</div>' +
+        "<p>" + project.potentialOpportunities + "</p>" +
+        '<div class="grid">' +
+        "<div>Sector</div><div>" + project.sector + " / " + project.subsector + "</div>" +
+        "<div>Location</div><div>" + [project.country, project.stateProvince, project.cityArea].filter(Boolean).join(" / ") + "</div>" +
+        "<div>Value</div><div>" + formatValue(project) + "</div>" +
+        "<div>Capacity</div><div>" + clean(project.capacityAmount) + " " + clean(project.capacityUnit) + "</div>" +
+        "<div>Opportunity timing</div><div>" + opportunityTiming(project.bdTiming) + "</div>" +
+        "<div>Opportunity categories</div><div>" + project.opportunityCategories + "</div>" +
+        "<div>Map note</div><div>" + project.mapEligibilityNotes + "</div>" +
+        '<div>Article</div><div><a href="' + project.latestCfArticleUrl + '" target="_blank" rel="noopener">ConstructionFront update</a></div>' +
+        "</div>";
+      render();
+    }
+
+    async function init() {
+      state.projects = await fetch("projects_master_sample_10.json").then(function(response) { return response.json(); });
+      optionize("region", state.projects.map(function(project) { return project.region; }));
+      optionize("country", state.projects.map(function(project) { return project.country; }));
+      optionize("sector", state.projects.map(function(project) { return project.sector; }));
+      optionize("subsector", state.projects.map(function(project) { return project.subsector; }));
+      optionize("stage", state.projects.map(function(project) { return project.currentProjectStage; }));
+      optionize("bdTiming", state.projects.map(function(project) { return project.bdTiming; }));
+      optionize("mapStatus", state.projects.map(function(project) { return project.mapEligibilityStatus; }));
+      optionize("recordType", state.projects.map(function(project) { return project.recordType; }));
+      document.getElementById("search").addEventListener("input", render);
+      filters.forEach(function(id) { document.getElementById(id).addEventListener("change", render); });
+      map.invalidateSize();
+      render();
+      if (state.filtered[0]) selectProject(state.filtered[0].projectSlug);
+      window.setTimeout(function() {
+        map.invalidateSize();
+        render();
+        if (state.selected) selectProject(state.selected);
+      }, 300);
+    }
+
+    init().catch(function(error) {
+      document.getElementById("card").innerHTML = "<h2>Could not load sample JSON</h2><p>Serve this folder over a local web server so the browser can fetch projects_master_sample_10.json.</p><p>" + error.message + "</p>";
+    });
+  </script>
+</body>
+</html>

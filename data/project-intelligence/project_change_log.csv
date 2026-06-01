@@ -1,0 +1,112 @@
+changeDate,recordId,slug,field,before,after,reason,changedBy
+2026-05-21,CFP-0001,gabriela-hybrid-solar-battery-storage-project,region,Latin America,Other,Mapped non-core region into approved taxonomy.,normalize-project-records.ts
+2026-05-21,CFP-0001,gabriela-hybrid-solar-battery-storage-project,confidenceLevel,Title-derived - requires article review,Needs Review,Mapped title-derived confidence into Needs Review.,normalize-project-records.ts
+2026-05-21,CFP-0001,gabriela-hybrid-solar-battery-storage-project,mapReady,Yes,true,Normalized yes/no map readiness to boolean text.,normalize-project-records.ts
+2026-05-21,CFP-0002,german-grid-expansion,confidenceLevel,Title-derived - requires article review,Needs Review,Mapped title-derived confidence into Needs Review.,normalize-project-records.ts
+2026-05-21,CFP-0002,german-grid-expansion,mapReady,Yes,true,Normalized yes/no map readiness to boolean text.,normalize-project-records.ts
+2026-05-21,CFP-0003,sakarya-gas-field-phase-3-offshore-development,confidenceLevel,Title-derived - requires article review,Needs Review,Mapped title-derived confidence into Needs Review.,normalize-project-records.ts
+2026-05-21,CFP-0003,sakarya-gas-field-phase-3-offshore-development,mapReady,Yes,true,Normalized yes/no map readiness to boolean text.,normalize-project-records.ts
+2026-05-21,CFP-0004,1-250-gwh-of-renewable-electricity-in-italy,confidenceLevel,Title-derived - requires article review,Needs Review,Mapped title-derived confidence into Needs Review.,normalize-project-records.ts
+2026-05-21,CFP-0004,1-250-gwh-of-renewable-electricity-in-italy,mapReady,Needs review,false,Normalized yes/no map readiness to boolean text.,normalize-project-records.ts
+2026-05-21,CFP-0005,wagerup-bess,confidenceLevel,Title-derived - requires article review,Needs Review,Mapped title-derived confidence into Needs Review.,normalize-project-records.ts
+2026-05-21,CFP-0005,wagerup-bess,mapReady,Needs review,false,Normalized yes/no map readiness to boolean text.,normalize-project-records.ts
+2026-05-21,CFP-0006,hyundai-e-c-to-deliver-k-housing-in-new-zealand-via-early-contractor-involveme,confidenceLevel,Title-derived - requires article review,Needs Review,Mapped title-derived confidence into Needs Review.,normalize-project-records.ts
+2026-05-21,CFP-0006,hyundai-e-c-to-deliver-k-housing-in-new-zealand-via-early-contractor-involveme,mapReady,Yes,true,Normalized yes/no map readiness to boolean text.,normalize-project-records.ts
+2026-05-21,CFP-0007,omvs-140-mw-green-hydrogen-plant,confidenceLevel,Title-derived - requires article review,Needs Review,Mapped title-derived confidence into Needs Review.,normalize-project-records.ts
+2026-05-21,CFP-0007,omvs-140-mw-green-hydrogen-plant,mapReady,Yes,true,Normalized yes/no map readiness to boolean text.,normalize-project-records.ts
+2026-05-21,CFP-0008,richmond-valley-solar-bess-project,confidenceLevel,Title-derived - requires article review,Needs Review,Mapped title-derived confidence into Needs Review.,normalize-project-records.ts
+2026-05-21,CFP-0008,richmond-valley-solar-bess-project,mapReady,Yes,true,Normalized yes/no map readiness to boolean text.,normalize-project-records.ts
+2026-05-21,CFP-0009,montreal-port-expansion-in-water-works,confidenceLevel,Title-derived - requires article review,Needs Review,Mapped title-derived confidence into Needs Review.,normalize-project-records.ts
+2026-05-21,CFP-0009,montreal-port-expansion-in-water-works,mapReady,Yes,true,Normalized yes/no map readiness to boolean text.,normalize-project-records.ts
+2026-05-21,CFP-0010,shah-deniz-compression-project,confidenceLevel,Title-derived - requires article review,Needs Review,Mapped title-derived confidence into Needs Review.,normalize-project-records.ts
+2026-05-21,CFP-0010,shah-deniz-compression-project,mapReady,Yes,true,Normalized yes/no map readiness to boolean text.,normalize-project-records.ts
+2026-05-21,CFP-0011,yonge-north-subway-extension,confidenceLevel,Title-derived - requires article review,Needs Review,Mapped title-derived confidence into Needs Review.,normalize-project-records.ts
+2026-05-21,CFP-0011,yonge-north-subway-extension,mapReady,Yes,true,Normalized yes/no map readiness to boolean text.,normalize-project-records.ts
+2026-05-21,CFP-0012,uk-biogas-plant,confidenceLevel,Title-derived - requires article review,Needs Review,Mapped title-derived confidence into Needs Review.,normalize-project-records.ts
+2026-05-21,CFP-0012,uk-biogas-plant,mapReady,Yes,true,Normalized yes/no map readiness to boolean text.,normalize-project-records.ts
+2026-05-21,CFP-0013,vni-west-transmission-project,confidenceLevel,Title-derived - requires article review,Needs Review,Mapped title-derived confidence into Needs Review.,normalize-project-records.ts
+2026-05-21,CFP-0013,vni-west-transmission-project,mapReady,Needs review,false,Normalized yes/no map readiness to boolean text.,normalize-project-records.ts
+2026-05-21,CFP-0014,vincent-thomas-bridge-deck-replacement,confidenceLevel,Title-derived - requires article review,Needs Review,Mapped title-derived confidence into Needs Review.,normalize-project-records.ts
+2026-05-21,CFP-0014,vincent-thomas-bridge-deck-replacement,mapReady,Yes,true,Normalized yes/no map readiness to boolean text.,normalize-project-records.ts
+2026-05-21,CFP-0015,new-brisbane-stadium,confidenceLevel,Title-derived - requires article review,Needs Review,Mapped title-derived confidence into Needs Review.,normalize-project-records.ts
+2026-05-21,CFP-0015,new-brisbane-stadium,mapReady,Yes,true,Normalized yes/no map readiness to boolean text.,normalize-project-records.ts
+2026-05-21,CFP-0016,moving-i-4-forward-project-2,confidenceLevel,Title-derived - requires article review,Needs Review,Mapped title-derived confidence into Needs Review.,normalize-project-records.ts
+2026-05-21,CFP-0016,moving-i-4-forward-project-2,mapReady,Yes,true,Normalized yes/no map readiness to boolean text.,normalize-project-records.ts
+2026-05-21,CFP-0017,nuclear-project-in-texas,confidenceLevel,Title-derived - requires article review,Needs Review,Mapped title-derived confidence into Needs Review.,normalize-project-records.ts
+2026-05-21,CFP-0017,nuclear-project-in-texas,mapReady,Yes,true,Normalized yes/no map readiness to boolean text.,normalize-project-records.ts
+2026-05-21,CFP-0018,texas-critical-data-center-campus,confidenceLevel,Title-derived - requires article review,Needs Review,Mapped title-derived confidence into Needs Review.,normalize-project-records.ts
+2026-05-21,CFP-0018,texas-critical-data-center-campus,mapReady,Yes,true,Normalized yes/no map readiness to boolean text.,normalize-project-records.ts
+2026-05-21,CFP-0019,prague-metro-line-d,confidenceLevel,Title-derived - requires article review,Needs Review,Mapped title-derived confidence into Needs Review.,normalize-project-records.ts
+2026-05-21,CFP-0019,prague-metro-line-d,mapReady,Yes,true,Normalized yes/no map readiness to boolean text.,normalize-project-records.ts
+2026-05-21,CFP-0020,vernou-la-celle-sur-seine-bess,confidenceLevel,Title-derived - requires article review,Needs Review,Mapped title-derived confidence into Needs Review.,normalize-project-records.ts
+2026-05-21,CFP-0020,vernou-la-celle-sur-seine-bess,mapReady,Yes,true,Normalized yes/no map readiness to boolean text.,normalize-project-records.ts
+2026-05-21,CFP-0021,commonwealth-lng,confidenceLevel,Title-derived - requires article review,Needs Review,Mapped title-derived confidence into Needs Review.,normalize-project-records.ts
+2026-05-21,CFP-0021,commonwealth-lng,mapReady,Yes,true,Normalized yes/no map readiness to boolean text.,normalize-project-records.ts
+2026-05-21,CFP-0022,patache-bess-project,region,Latin America,Other,Mapped non-core region into approved taxonomy.,normalize-project-records.ts
+2026-05-21,CFP-0022,patache-bess-project,confidenceLevel,Title-derived - requires article review,Needs Review,Mapped title-derived confidence into Needs Review.,normalize-project-records.ts
+2026-05-21,CFP-0022,patache-bess-project,mapReady,Yes,true,Normalized yes/no map readiness to boolean text.,normalize-project-records.ts
+2026-05-21,CFP-0023,nese-project,confidenceLevel,Title-derived - requires article review,Needs Review,Mapped title-derived confidence into Needs Review.,normalize-project-records.ts
+2026-05-21,CFP-0023,nese-project,mapReady,Needs review,false,Normalized yes/no map readiness to boolean text.,normalize-project-records.ts
+2026-05-21,CFP-0024,alligator-creek-and-murch-solar-projects,confidenceLevel,Title-derived - requires article review,Needs Review,Mapped title-derived confidence into Needs Review.,normalize-project-records.ts
+2026-05-21,CFP-0024,alligator-creek-and-murch-solar-projects,mapReady,Needs review,false,Normalized yes/no map readiness to boolean text.,normalize-project-records.ts
+2026-05-21,CFP-0025,red-oak-data-centres,confidenceLevel,Title-derived - requires article review,Needs Review,Mapped title-derived confidence into Needs Review.,normalize-project-records.ts
+2026-05-21,CFP-0025,red-oak-data-centres,mapReady,Yes,true,Normalized yes/no map readiness to boolean text.,normalize-project-records.ts
+2026-05-21,CFP-0026,koolunga-bess,confidenceLevel,Title-derived - requires article review,Needs Review,Mapped title-derived confidence into Needs Review.,normalize-project-records.ts
+2026-05-21,CFP-0026,koolunga-bess,mapReady,Needs review,false,Normalized yes/no map readiness to boolean text.,normalize-project-records.ts
+2026-05-21,CFP-0027,kwinana-gas-power-generation-2-project,confidenceLevel,Title-derived - requires article review,Needs Review,Mapped title-derived confidence into Needs Review.,normalize-project-records.ts
+2026-05-21,CFP-0027,kwinana-gas-power-generation-2-project,mapReady,Needs review,false,Normalized yes/no map readiness to boolean text.,normalize-project-records.ts
+2026-05-21,CFP-0028,mirny-wind-and-bess-project,confidenceLevel,Title-derived - requires article review,Needs Review,Mapped title-derived confidence into Needs Review.,normalize-project-records.ts
+2026-05-21,CFP-0028,mirny-wind-and-bess-project,mapReady,Yes,true,Normalized yes/no map readiness to boolean text.,normalize-project-records.ts
+2026-05-21,CFP-0029,warsaw-lodz-line,confidenceLevel,Title-derived - requires article review,Needs Review,Mapped title-derived confidence into Needs Review.,normalize-project-records.ts
+2026-05-21,CFP-0029,warsaw-lodz-line,mapReady,Yes,true,Normalized yes/no map readiness to boolean text.,normalize-project-records.ts
+2026-05-21,CFP-0030,natrium-kemmerer-unit-1-nuclear-power-plant,confidenceLevel,Title-derived - requires article review,Needs Review,Mapped title-derived confidence into Needs Review.,normalize-project-records.ts
+2026-05-21,CFP-0030,natrium-kemmerer-unit-1-nuclear-power-plant,mapReady,Yes,true,Normalized yes/no map readiness to boolean text.,normalize-project-records.ts
+2026-05-21,CFP-0031,ppp-sanitation-concession-for-153-municipalities,region,Latin America,Other,Mapped non-core region into approved taxonomy.,normalize-project-records.ts
+2026-05-21,CFP-0031,ppp-sanitation-concession-for-153-municipalities,confidenceLevel,Title-derived - requires article review,Needs Review,Mapped title-derived confidence into Needs Review.,normalize-project-records.ts
+2026-05-21,CFP-0031,ppp-sanitation-concession-for-153-municipalities,mapReady,Needs review,false,Normalized yes/no map readiness to boolean text.,normalize-project-records.ts
+2026-05-21,CFP-0032,banha-and-nubaria-gas-power-plants,region,Middle East & Africa,Other,Mapped non-core region into approved taxonomy.,normalize-project-records.ts
+2026-05-21,CFP-0032,banha-and-nubaria-gas-power-plants,confidenceLevel,Title-derived - requires article review,Needs Review,Mapped title-derived confidence into Needs Review.,normalize-project-records.ts
+2026-05-21,CFP-0032,banha-and-nubaria-gas-power-plants,mapReady,Yes,true,Normalized yes/no map readiness to boolean text.,normalize-project-records.ts
+2026-05-21,CFP-0033,hamilton-lrt,confidenceLevel,Title-derived - requires article review,Needs Review,Mapped title-derived confidence into Needs Review.,normalize-project-records.ts
+2026-05-21,CFP-0033,hamilton-lrt,mapReady,Yes,true,Normalized yes/no map readiness to boolean text.,normalize-project-records.ts
+2026-05-21,CFP-0034,hudson-tunnel-river-section,confidenceLevel,Title-derived - requires article review,Needs Review,Mapped title-derived confidence into Needs Review.,normalize-project-records.ts
+2026-05-21,CFP-0034,hudson-tunnel-river-section,mapReady,Yes,true,Normalized yes/no map readiness to boolean text.,normalize-project-records.ts
+2026-05-21,CFP-0035,d35-motorway,confidenceLevel,Title-derived - requires article review,Needs Review,Mapped title-derived confidence into Needs Review.,normalize-project-records.ts
+2026-05-21,CFP-0035,d35-motorway,mapReady,Yes,true,Normalized yes/no map readiness to boolean text.,normalize-project-records.ts
+2026-05-21,CFP-0036,north-station-draw-one-project,confidenceLevel,Title-derived - requires article review,Needs Review,Mapped title-derived confidence into Needs Review.,normalize-project-records.ts
+2026-05-21,CFP-0036,north-station-draw-one-project,mapReady,Yes,true,Normalized yes/no map readiness to boolean text.,normalize-project-records.ts
+2026-05-21,CFP-0037,ol32-skavsta-rail-contract,confidenceLevel,Title-derived - requires article review,Needs Review,Mapped title-derived confidence into Needs Review.,normalize-project-records.ts
+2026-05-21,CFP-0037,ol32-skavsta-rail-contract,mapReady,Yes,true,Normalized yes/no map readiness to boolean text.,normalize-project-records.ts
+2026-05-21,CFP-0038,north-west-transmission-developments,confidenceLevel,Title-derived - requires article review,Needs Review,Mapped title-derived confidence into Needs Review.,normalize-project-records.ts
+2026-05-21,CFP-0038,north-west-transmission-developments,mapReady,Yes,true,Normalized yes/no map readiness to boolean text.,normalize-project-records.ts
+2026-05-21,CFP-0039,jinbi-solar-project,confidenceLevel,Title-derived - requires article review,Needs Review,Mapped title-derived confidence into Needs Review.,normalize-project-records.ts
+2026-05-21,CFP-0039,jinbi-solar-project,mapReady,Needs review,false,Normalized yes/no map readiness to boolean text.,normalize-project-records.ts
+2026-05-21,CFP-0040,el-patrimonio-solar-project,confidenceLevel,Title-derived - requires article review,Needs Review,Mapped title-derived confidence into Needs Review.,normalize-project-records.ts
+2026-05-21,CFP-0040,el-patrimonio-solar-project,mapReady,Yes,true,Normalized yes/no map readiness to boolean text.,normalize-project-records.ts
+2026-05-21,CFP-0041,sh-99-grand-parkway-segment-b-1-project,confidenceLevel,Title-derived - requires article review,Needs Review,Mapped title-derived confidence into Needs Review.,normalize-project-records.ts
+2026-05-21,CFP-0041,sh-99-grand-parkway-segment-b-1-project,mapReady,Yes,true,Normalized yes/no map readiness to boolean text.,normalize-project-records.ts
+2026-05-21,CFP-0042,beacon-point-ai-data-center-campus,confidenceLevel,Title-derived - requires article review,Needs Review,Mapped title-derived confidence into Needs Review.,normalize-project-records.ts
+2026-05-21,CFP-0042,beacon-point-ai-data-center-campus,mapReady,Yes,true,Normalized yes/no map readiness to boolean text.,normalize-project-records.ts
+2026-05-21,CFP-0043,hs2-depot-and-control-centre,confidenceLevel,Title-derived - requires article review,Needs Review,Mapped title-derived confidence into Needs Review.,normalize-project-records.ts
+2026-05-21,CFP-0043,hs2-depot-and-control-centre,mapReady,Yes,true,Normalized yes/no map readiness to boolean text.,normalize-project-records.ts
+2026-05-21,CFP-0044,commonwealth-lng,confidenceLevel,Title-derived - requires article review,Needs Review,Mapped title-derived confidence into Needs Review.,normalize-project-records.ts
+2026-05-21,CFP-0044,commonwealth-lng,mapReady,Yes,true,Normalized yes/no map readiness to boolean text.,normalize-project-records.ts
+2026-05-21,CFP-0045,eagle-springs-and-lupinus-solar-storage-projects,confidenceLevel,Title-derived - requires article review,Needs Review,Mapped title-derived confidence into Needs Review.,normalize-project-records.ts
+2026-05-21,CFP-0045,eagle-springs-and-lupinus-solar-storage-projects,mapReady,Yes,true,Normalized yes/no map readiness to boolean text.,normalize-project-records.ts
+2026-05-21,CFP-0046,zeevonk-offshore-wind-project,confidenceLevel,Title-derived - requires article review,Needs Review,Mapped title-derived confidence into Needs Review.,normalize-project-records.ts
+2026-05-21,CFP-0046,zeevonk-offshore-wind-project,mapReady,Yes,true,Normalized yes/no map readiness to boolean text.,normalize-project-records.ts
+2026-05-21,CFP-0047,850mw-renewable-ppa-portfolio,confidenceLevel,Title-derived - requires article review,Needs Review,Mapped title-derived confidence into Needs Review.,normalize-project-records.ts
+2026-05-21,CFP-0047,850mw-renewable-ppa-portfolio,mapReady,Needs review,false,Normalized yes/no map readiness to boolean text.,normalize-project-records.ts
+2026-05-21,CFP-0048,north-shore-wastewater-treatment-plant,confidenceLevel,Title-derived - requires article review,Needs Review,Mapped title-derived confidence into Needs Review.,normalize-project-records.ts
+2026-05-21,CFP-0048,north-shore-wastewater-treatment-plant,mapReady,Yes,true,Normalized yes/no map readiness to boolean text.,normalize-project-records.ts
+2026-05-21,CFP-0049,1-158mw-of-wind-projects-in-british-columbia,confidenceLevel,Title-derived - requires article review,Needs Review,Mapped title-derived confidence into Needs Review.,normalize-project-records.ts
+2026-05-21,CFP-0049,1-158mw-of-wind-projects-in-british-columbia,mapReady,Needs review,false,Normalized yes/no map readiness to boolean text.,normalize-project-records.ts
+2026-05-21,CFP-0050,virginia-beach-resiliency-project,confidenceLevel,Title-derived - requires article review,Needs Review,Mapped title-derived confidence into Needs Review.,normalize-project-records.ts
+2026-05-21,CFP-0050,virginia-beach-resiliency-project,mapReady,Yes,true,Normalized yes/no map readiness to boolean text.,normalize-project-records.ts
+2026-05-21,CFP-0051,sanitation-ppp-for-85-municipalities,region,Latin America,Other,Mapped non-core region into approved taxonomy.,normalize-project-records.ts
+2026-05-21,CFP-0051,sanitation-ppp-for-85-municipalities,confidenceLevel,Title-derived - requires article review,Needs Review,Mapped title-derived confidence into Needs Review.,normalize-project-records.ts
+2026-05-21,CFP-0051,sanitation-ppp-for-85-municipalities,mapReady,Needs review,false,Normalized yes/no map readiness to boolean text.,normalize-project-records.ts
+2026-05-21,CFP-0052,smoky-creek-and-guthries-gap-solar-battery-projects,confidenceLevel,Title-derived - requires article review,Needs Review,Mapped title-derived confidence into Needs Review.,normalize-project-records.ts
+2026-05-21,CFP-0052,smoky-creek-and-guthries-gap-solar-battery-projects,mapReady,Yes,true,Normalized yes/no map readiness to boolean text.,normalize-project-records.ts
+2026-05-21,CFP-0053,big-horn-i-wind-project-upgrade,confidenceLevel,Title-derived - requires article review,Needs Review,Mapped title-derived confidence into Needs Review.,normalize-project-records.ts
+2026-05-21,CFP-0053,big-horn-i-wind-project-upgrade,mapReady,Needs review,false,Normalized yes/no map readiness to boolean text.,normalize-project-records.ts

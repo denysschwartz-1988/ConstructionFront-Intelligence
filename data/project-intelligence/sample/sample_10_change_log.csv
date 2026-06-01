@@ -1,0 +1,57 @@
+changeDate,file,recordId,field,before,after,reason,changedBy
+2026-05-21,projects_master_sample_10.csv,el-patrimonio-solar-project,record,,10-project sample master row created,Expanded validated 5-project sample to 10-project internal MVP sample.,Codex sample expansion
+2026-05-21,projects_master_sample_10.csv,d35-motorway-ulibice-horice,record,,10-project sample master row created,Expanded validated 5-project sample to 10-project internal MVP sample.,Codex sample expansion
+2026-05-21,projects_master_sample_10.csv,beacon-point-ai-data-center-campus,record,,10-project sample master row created,Expanded validated 5-project sample to 10-project internal MVP sample.,Codex sample expansion
+2026-05-21,projects_master_sample_10.csv,commonwealth-lng,record,,10-project sample master row created,Expanded validated 5-project sample to 10-project internal MVP sample.,Codex sample expansion
+2026-05-21,projects_master_sample_10.csv,german-grid-expansion-amprion-financing,record,,10-project sample master row created,Expanded validated 5-project sample to 10-project internal MVP sample.,Codex sample expansion
+2026-05-21,projects_master_sample_10.csv,wagerup-bess,record,,10-project sample master row created,Expanded validated 5-project sample to 10-project internal MVP sample.,Codex sample expansion
+2026-05-21,projects_master_sample_10.csv,hamilton-lrt,record,,10-project sample master row created,Expanded validated 5-project sample to 10-project internal MVP sample.,Codex sample expansion
+2026-05-21,projects_master_sample_10.csv,north-shore-wastewater-treatment-plant,record,,10-project sample master row created,Expanded validated 5-project sample to 10-project internal MVP sample.,Codex sample expansion
+2026-05-21,projects_master_sample_10.csv,ol32-skavsta-rail-contract,record,,10-project sample master row created,Expanded validated 5-project sample to 10-project internal MVP sample.,Codex sample expansion
+2026-05-21,projects_master_sample_10.csv,big-horn-i-wind-project-upgrade,record,,10-project sample master row created,Expanded validated 5-project sample to 10-project internal MVP sample.,Codex sample expansion
+2026-05-21,project_updates_sample_10.csv,UPD-ELP-20260513,record,,10-project sample update row created,Created linked project update/event row with exact ConstructionFront URL.,Codex sample expansion
+2026-05-21,project_updates_sample_10.csv,UPD-D35-20260507,record,,10-project sample update row created,Created linked project update/event row with exact ConstructionFront URL.,Codex sample expansion
+2026-05-21,project_updates_sample_10.csv,UPD-BEACON-20260514,record,,10-project sample update row created,Created linked project update/event row with exact ConstructionFront URL.,Codex sample expansion
+2026-05-21,project_updates_sample_10.csv,UPD-CWLNG-20260420,record,,10-project sample update row created,Created linked project update/event row with exact ConstructionFront URL.,Codex sample expansion
+2026-05-21,project_updates_sample_10.csv,UPD-CWLNG-20260516,record,,10-project sample update row created,Created linked project update/event row with exact ConstructionFront URL.,Codex sample expansion
+2026-05-21,project_updates_sample_10.csv,UPD-GERGRID-20250908,record,,10-project sample update row created,Created linked project update/event row with exact ConstructionFront URL.,Codex sample expansion
+2026-05-21,project_updates_sample_10.csv,UPD-WAGERUP-20250920,record,,10-project sample update row created,Created linked project update/event row with exact ConstructionFront URL.,Codex sample expansion
+2026-05-21,project_updates_sample_10.csv,UPD-HLRT-20260504,record,,10-project sample update row created,Created linked project update/event row with exact ConstructionFront URL.,Codex sample expansion
+2026-05-21,project_updates_sample_10.csv,UPD-NSWWTP-20260517,record,,10-project sample update row created,Created linked project update/event row with exact ConstructionFront URL.,Codex sample expansion
+2026-05-21,project_updates_sample_10.csv,UPD-OL32-20260511,record,,10-project sample update row created,Created linked project update/event row with exact ConstructionFront URL.,Codex sample expansion
+2026-05-21,project_updates_sample_10.csv,UPD-BIGHORN-20260521,record,,10-project sample update row created,Created linked project update/event row with exact ConstructionFront URL.,Codex sample expansion
+2026-05-21,project_parties_sample_10.csv,PTY-ELP-001,record,,10-project sample party row created,Created linked party row for searchable role classification.,Codex sample expansion
+2026-05-21,project_parties_sample_10.csv,PTY-ELP-002,record,,10-project sample party row created,Created linked party row for searchable role classification.,Codex sample expansion
+2026-05-21,project_parties_sample_10.csv,PTY-ELP-003,record,,10-project sample party row created,Created linked party row for searchable role classification.,Codex sample expansion
+2026-05-21,project_parties_sample_10.csv,PTY-D35-001,record,,10-project sample party row created,Created linked party row for searchable role classification.,Codex sample expansion
+2026-05-21,project_parties_sample_10.csv,PTY-D35-002,record,,10-project sample party row created,Created linked party row for searchable role classification.,Codex sample expansion
+2026-05-21,project_parties_sample_10.csv,PTY-D35-003,record,,10-project sample party row created,Created linked party row for searchable role classification.,Codex sample expansion
+2026-05-21,project_parties_sample_10.csv,PTY-BEACON-001,record,,10-project sample party row created,Created linked party row for searchable role classification.,Codex sample expansion
+2026-05-21,project_parties_sample_10.csv,PTY-BEACON-002,record,,10-project sample party row created,Created linked party row for searchable role classification.,Codex sample expansion
+2026-05-21,project_parties_sample_10.csv,PTY-CWLNG-001,record,,10-project sample party row created,Created linked party row for searchable role classification.,Codex sample expansion
+2026-05-21,project_parties_sample_10.csv,PTY-CWLNG-002,record,,10-project sample party row created,Created linked party row for searchable role classification.,Codex sample expansion
+2026-05-21,project_parties_sample_10.csv,PTY-CWLNG-003,record,,10-project sample party row created,Created linked party row for searchable role classification.,Codex sample expansion
+2026-05-21,project_parties_sample_10.csv,PTY-CWLNG-004,record,,10-project sample party row created,Created linked party row for searchable role classification.,Codex sample expansion
+2026-05-21,project_parties_sample_10.csv,PTY-CWLNG-005,record,,10-project sample party row created,Created linked party row for searchable role classification.,Codex sample expansion
+2026-05-21,project_parties_sample_10.csv,PTY-GERGRID-001,record,,10-project sample party row created,Created linked party row for searchable role classification.,Codex sample expansion
+2026-05-21,project_parties_sample_10.csv,PTY-GERGRID-002,record,,10-project sample party row created,Created linked party row for searchable role classification.,Codex sample expansion
+2026-05-21,project_parties_sample_10.csv,PTY-GERGRID-003,record,,10-project sample party row created,Created linked party row for searchable role classification.,Codex sample expansion
+2026-05-21,project_parties_sample_10.csv,PTY-WAGERUP-001,record,,10-project sample party row created,Created linked party row for searchable role classification.,Codex sample expansion
+2026-05-21,project_parties_sample_10.csv,PTY-WAGERUP-002,record,,10-project sample party row created,Created linked party row for searchable role classification.,Codex sample expansion
+2026-05-21,project_parties_sample_10.csv,PTY-WAGERUP-003,record,,10-project sample party row created,Created linked party row for searchable role classification.,Codex sample expansion
+2026-05-21,project_parties_sample_10.csv,PTY-WAGERUP-004,record,,10-project sample party row created,Created linked party row for searchable role classification.,Codex sample expansion
+2026-05-21,project_parties_sample_10.csv,PTY-HLRT-001,record,,10-project sample party row created,Created linked party row for searchable role classification.,Codex sample expansion
+2026-05-21,project_parties_sample_10.csv,PTY-HLRT-002,record,,10-project sample party row created,Created linked party row for searchable role classification.,Codex sample expansion
+2026-05-21,project_parties_sample_10.csv,PTY-HLRT-003,record,,10-project sample party row created,Created linked party row for searchable role classification.,Codex sample expansion
+2026-05-21,project_parties_sample_10.csv,PTY-HLRT-004,record,,10-project sample party row created,Created linked party row for searchable role classification.,Codex sample expansion
+2026-05-21,project_parties_sample_10.csv,PTY-NSWWTP-001,record,,10-project sample party row created,Created linked party row for searchable role classification.,Codex sample expansion
+2026-05-21,project_parties_sample_10.csv,PTY-NSWWTP-002,record,,10-project sample party row created,Created linked party row for searchable role classification.,Codex sample expansion
+2026-05-21,project_parties_sample_10.csv,PTY-NSWWTP-003,record,,10-project sample party row created,Created linked party row for searchable role classification.,Codex sample expansion
+2026-05-21,project_parties_sample_10.csv,PTY-NSWWTP-004,record,,10-project sample party row created,Created linked party row for searchable role classification.,Codex sample expansion
+2026-05-21,project_parties_sample_10.csv,PTY-OL32-001,record,,10-project sample party row created,Created linked party row for searchable role classification.,Codex sample expansion
+2026-05-21,project_parties_sample_10.csv,PTY-OL32-002,record,,10-project sample party row created,Created linked party row for searchable role classification.,Codex sample expansion
+2026-05-21,project_parties_sample_10.csv,PTY-OL32-003,record,,10-project sample party row created,Created linked party row for searchable role classification.,Codex sample expansion
+2026-05-21,project_parties_sample_10.csv,PTY-OL32-004,record,,10-project sample party row created,Created linked party row for searchable role classification.,Codex sample expansion
+2026-05-21,project_parties_sample_10.csv,PTY-OL32-005,record,,10-project sample party row created,Created linked party row for searchable role classification.,Codex sample expansion
+2026-05-21,project_parties_sample_10.csv,PTY-BIGHORN-001,record,,10-project sample party row created,Created linked party row for searchable role classification.,Codex sample expansion
+2026-05-21,project_parties_sample_10.csv,PTY-BIGHORN-002,record,,10-project sample party row created,Created linked party row for searchable role classification.,Codex sample expansion

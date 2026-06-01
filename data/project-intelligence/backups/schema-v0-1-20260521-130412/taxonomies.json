@@ -1,0 +1,56 @@
+{
+  "region": [
+    "North America",
+    "Europe",
+    "Australia & NZ",
+    "Other"
+  ],
+  "sector": [
+    "Energy",
+    "Transport",
+    "Water",
+    "Digital Infrastructure",
+    "Social Infrastructure",
+    "Industrial / Mining",
+    "Utilities",
+    "Other"
+  ],
+  "projectStage": [
+    "Early Development",
+    "Planning / Approvals",
+    "FEED / Design Development",
+    "FID Pending",
+    "FID Reached",
+    "Tendering / Procurement",
+    "Contract Awarded",
+    "Under Construction",
+    "Operational",
+    "On Hold / Delayed",
+    "Cancelled",
+    "Unknown"
+  ],
+  "bdTiming": [
+    "Early Watch",
+    "Active Opportunity",
+    "Contractor Route",
+    "Late Stage",
+    "O&M Opportunity",
+    "Low Visibility"
+  ],
+  "confidenceLevel": [
+    "Confirmed",
+    "Likely",
+    "Inferred",
+    "Unknown",
+    "Needs Review"
+  ],
+  "reviewStatus": [
+    "Needs Review",
+    "Needs Source Check",
+    "Needs Coordinates",
+    "Needs Contractor Verification",
+    "Needs Value Verification",
+    "Approved",
+    "Rejected"
+  ]
+}
