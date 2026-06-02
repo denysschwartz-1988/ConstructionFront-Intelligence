@@ -33,6 +33,8 @@ export type ProjectRecord = {
   ownerDeveloper: string | null;
   clientAuthority: string | null;
   leadContractor: string | null;
+  contractorConfirmed: boolean | string | null;
+  projectImageUrl: string | null;
   currentProjectStage: string | null;
   latestMilestone: string | null;
   latestMilestoneSummary: string | null;
@@ -66,12 +68,15 @@ export type ProjectRecord = {
 export type ProjectSourceRecord = {
   sourceId: string;
   projectSlug: string;
-  title: string | null;
-  url: string | null;
   sourceType: string | null;
+  sourceTitle: string | null;
+  sourceUrl: string | null;
   publicationDate: string | null;
   publisher: string | null;
-  notes: string | null;
+  milestoneConfirmed: string | null;
+  summary: string | null;
+  agentConfidence: string | null;
+  humanReviewed: boolean | null;
 };
 
 export type ProjectMilestoneRecord = {
@@ -89,10 +94,15 @@ export type ProjectPartyRecord = {
   partyId: string;
   projectSlug: string;
   partyName: string | null;
+  roleCategory: string | null;
+  roleDetail: string | null;
   partyRole: string | null;
   partyType: string | null;
+  confirmedDate: string | null;
   notes: string | null;
   sourceUrl: string | null;
+  agentConfidence: string | null;
+  humanReviewed: boolean | null;
 };
 
 export type Database = {
