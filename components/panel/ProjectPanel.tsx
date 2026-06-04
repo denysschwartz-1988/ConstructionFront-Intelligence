@@ -131,183 +131,161 @@ const ProjectPanel = ({
   );
 
   return (
-    <aside className="h-full min-h-screen overflow-y-auto border-l border-white/10 bg-slate-950">
-      <div className="sticky top-0 z-20 flex justify-end border-b border-white/10 bg-slate-950/90 px-4 py-4 backdrop-blur">
+    <aside className="h-full overflow-y-auto" style={{ backgroundColor: 'var(--secondary-bg)', borderLeft: '1px solid var(--border)' }}>
+      <div style={{ position: 'relative' }}>
         <button
           type="button"
           onClick={onClose}
-          className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-white/10 bg-slate-900/80 text-slate-200 transition hover:bg-slate-800"
           aria-label="Close project panel"
+          style={{ position: 'absolute', top: 12, right: 12, zIndex: 40, background: 'transparent', border: 'none', color: '#94a3b8', fontSize: 20, cursor: 'pointer' }}
         >
           ×
         </button>
       </div>
 
-      <div className="relative h-56 w-full overflow-hidden bg-slate-800">
+      <div style={{ height: 180, width: '100%', overflow: 'hidden', backgroundColor: 'var(--secondary-bg)' }}>
         {imageUrl ? (
           <img
             src={imageUrl}
             alt={selectedProject.projectName ?? "Project image"}
-            className="h-full w-full object-cover"
+            style={{ width: '100%', height: 180, objectFit: 'cover', display: 'block' }}
           />
         ) : (
-          <div className="flex h-full items-center justify-center bg-slate-800 text-slate-500">
+          <div style={{ height: 180, display: 'flex', alignItems: 'center', justifyContent: 'center', backgroundColor: '#1b2736', color: '#64748b' }}>
             <span>No image available</span>
           </div>
         )}
       </div>
 
-      <div className="space-y-6 p-6">
-        <div className="space-y-4">
-          <div className="flex items-start justify-between gap-4">
-            <div className="space-y-3">
-              <h1 className="text-2xl font-semibold leading-tight text-white">
+      <div style={{ padding: 16 }}>
+        <div style={{ marginBottom: 12 }}>
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 8 }}>
+            <div>
+              <h1 style={{ color: 'var(--text)', fontWeight: 600, fontSize: 16, margin: 0 }}>
                 {headerLabel}
               </h1>
-              <span
-                className="inline-flex rounded-full px-3 py-1 text-xs font-semibold uppercase tracking-[0.2em]"
-                style={getStageBadgeStyles(selectedProject.currentProjectStage)}
-              >
-                {selectedProject.currentProjectStage ?? "Stage unknown"}
-              </span>
+              <div style={{ marginTop: 8 }}>
+                <span
+                  style={{
+                    display: 'inline-flex',
+                    padding: '4px 10px',
+                    borderRadius: 999,
+                    fontSize: 10,
+                    fontWeight: 500,
+                    textTransform: 'uppercase',
+                    letterSpacing: '0.06em',
+                    ...getStageBadgeStyles(selectedProject.currentProjectStage)
+                  }}
+                >
+                  {selectedProject.currentProjectStage ?? "Stage unknown"}
+                </span>
+              </div>
             </div>
           </div>
 
-          <div className="flex flex-wrap gap-2">
+          <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8, marginTop: 12 }}>
             {selectedProject.country ? (
-              <span className="rounded-full bg-slate-900/70 px-3 py-1 text-xs text-slate-300">
-                {selectedProject.country}
-              </span>
+              <span style={{ background: '#21262d', padding: '6px 10px', borderRadius: 999, color: 'var(--text)', fontSize: 11, border: '1px solid var(--border)' }}>{selectedProject.country}</span>
             ) : null}
             {selectedProject.region ? (
-              <span className="rounded-full bg-slate-900/70 px-3 py-1 text-xs text-slate-300">
-                {selectedProject.region}
-              </span>
+              <span style={{ background: '#21262d', padding: '6px 10px', borderRadius: 999, color: 'var(--text)', fontSize: 11, border: '1px solid var(--border)' }}>{selectedProject.region}</span>
             ) : null}
             {selectedProject.sector ? (
-              <span className="rounded-full bg-slate-900/70 px-3 py-1 text-xs text-slate-300">
-                {selectedProject.sector}
-              </span>
+              <span style={{ background: '#21262d', padding: '6px 10px', borderRadius: 999, color: 'var(--text)', fontSize: 11, border: '1px solid var(--border)' }}>{selectedProject.sector}</span>
             ) : null}
             {selectedProject.subsector ? (
-              <span className="rounded-full bg-slate-900/70 px-3 py-1 text-xs text-slate-300">
-                {selectedProject.subsector}
-              </span>
+              <span style={{ background: '#21262d', padding: '6px 10px', borderRadius: 999, color: 'var(--text)', fontSize: 11, border: '1px solid var(--border)' }}>{selectedProject.subsector}</span>
             ) : null}
           </div>
         </div>
 
-        <section className="rounded-3xl border border-white/10 bg-slate-900/70 p-4">
-          <div className="mb-3 text-xs font-semibold uppercase tracking-[0.24em] text-slate-400">
+        <section style={{ borderRadius: 8, border: '1px solid var(--border)', backgroundColor: 'var(--secondary-bg)', padding: 12, marginBottom: 12 }}>
+          <div style={{ marginBottom: 8, color: 'var(--amber)', fontSize: 10, fontWeight: 600, letterSpacing: '0.08em' }}>
             ABOUT THIS PROJECT
           </div>
-          <p className="text-sm leading-6 text-slate-200">
+          <p style={{ color: '#cbd5e1', fontSize: 13, lineHeight: 1.6, margin: 0 }}>
             {getSummarySentences(selectedProject.projectDescription)}
           </p>
         </section>
 
-        <section className="rounded-3xl border border-white/10 bg-slate-900/70 p-4">
-          <div className="mb-3 text-xs font-semibold uppercase tracking-[0.24em] text-slate-400">
+        <section style={{ borderRadius: 8, border: '1px solid var(--border)', backgroundColor: 'var(--secondary-bg)', padding: 12, marginBottom: 12 }}>
+          <div style={{ marginBottom: 8, color: 'var(--amber)', fontSize: 10, fontWeight: 600, letterSpacing: '0.08em' }}>
             KEY DETAILS
           </div>
-          <div className="space-y-3 text-sm text-slate-200">
+          <div style={{ display: 'grid', gap: 10 }}>
             {ownerDeveloper ? (
-              <div className="space-y-1">
-                <p className="text-[11px] uppercase tracking-[0.24em] text-slate-500">
-                  Owner / Developer
-                </p>
-                <p>{ownerDeveloper}</p>
+              <div>
+                <p style={{ color: 'var(--muted)', fontSize: 10, margin: 0, textTransform: 'uppercase' }}>Owner / Developer</p>
+                <p style={{ color: 'var(--text)', fontSize: 13, margin: '6px 0 0' }}>{ownerDeveloper}</p>
               </div>
             ) : null}
 
             {publicAuthority ? (
-              <div className="space-y-1">
-                <p className="text-[11px] uppercase tracking-[0.24em] text-slate-500">
-                  Public Authority
-                </p>
-                <p>{publicAuthority}</p>
+              <div>
+                <p style={{ color: 'var(--muted)', fontSize: 10, margin: 0, textTransform: 'uppercase' }}>Public Authority</p>
+                <p style={{ color: 'var(--text)', fontSize: 13, margin: '6px 0 0' }}>{publicAuthority}</p>
               </div>
             ) : null}
 
             {contractor ? (
-              <div className="space-y-1">
-                <p className="text-[11px] uppercase tracking-[0.24em] text-slate-500">
-                  Main Contractor
-                </p>
-                <p>{contractor}</p>
+              <div>
+                <p style={{ color: 'var(--muted)', fontSize: 10, margin: 0, textTransform: 'uppercase' }}>Main Contractor</p>
+                <p style={{ color: 'var(--text)', fontSize: 13, margin: '6px 0 0' }}>{contractor}</p>
               </div>
             ) : null}
 
             {scaleSize ? (
-              <div className="space-y-1">
-                <p className="text-[11px] uppercase tracking-[0.24em] text-slate-500">
-                  Scale / Size
-                </p>
-                <p>{scaleSize}</p>
+              <div>
+                <p style={{ color: 'var(--muted)', fontSize: 10, margin: 0, textTransform: 'uppercase' }}>Scale / Size</p>
+                <p style={{ color: 'var(--text)', fontSize: 13, margin: '6px 0 0' }}>{scaleSize}</p>
               </div>
             ) : null}
 
             {projectValue ? (
-              <div className="space-y-1">
-                <p className="text-[11px] uppercase tracking-[0.24em] text-slate-500">
-                  Est. Project Value
-                </p>
-                <p>{projectValue}</p>
+              <div>
+                <p style={{ color: 'var(--muted)', fontSize: 10, margin: 0, textTransform: 'uppercase' }}>Est. Project Value</p>
+                <p style={{ color: 'var(--text)', fontSize: 13, margin: '6px 0 0' }}>{projectValue}</p>
               </div>
             ) : null}
 
             {locationParts ? (
-              <div className="space-y-1">
-                <p className="text-[11px] uppercase tracking-[0.24em] text-slate-500">
-                  Location
-                </p>
-                <p>{locationParts}</p>
+              <div>
+                <p style={{ color: 'var(--muted)', fontSize: 10, margin: 0, textTransform: 'uppercase' }}>Location</p>
+                <p style={{ color: 'var(--text)', fontSize: 13, margin: '6px 0 0' }}>{locationParts}</p>
               </div>
-            ) : null}
-
-            {!ownerDeveloper && !publicAuthority && !contractor && !scaleSize && !projectValue && !locationParts ? (
-              <p className="text-sm text-slate-500">No key details available.</p>
             ) : null}
           </div>
         </section>
 
-        <section className="rounded-3xl border border-white/10 bg-slate-900/70 p-4">
-          <div className="mb-3 text-xs font-semibold uppercase tracking-[0.24em] text-slate-400">
+        <section style={{ borderRadius: 12, border: '1px solid #334155', backgroundColor: '#1e293b', padding: 12 }}>
+          <div style={{ marginBottom: 8, color: '#f59e0b', fontSize: 11, fontWeight: 700, letterSpacing: '0.06em' }}>
             CONSTRUCTIONFRONT COVERAGE
           </div>
           {error ? (
-            <p className="text-sm text-rose-300">{error}</p>
+            <p style={{ color: '#ff7b7b' }}>{error}</p>
           ) : isLoading ? (
-            <p className="text-sm text-slate-400">Loading coverage…</p>
+            <p style={{ color: '#94a3b8' }}>Loading coverage…</p>
           ) : cfArticles.length === 0 ? (
-            <p className="text-sm text-slate-400">No coverage recorded yet.</p>
+            <p style={{ color: '#94a3b8' }}>No coverage recorded yet.</p>
           ) : (
-            <div className="space-y-4">
+            <div style={{ display: 'grid', gap: 12 }}>
               {cfArticles.map((source) => (
-                <article key={source.sourceId} className="rounded-3xl border border-white/10 bg-slate-950/60 p-4">
-                  <div className="mb-2 flex items-center justify-between gap-2 text-[11px] uppercase tracking-[0.24em] text-slate-500">
+                <article key={source.sourceId} style={{ borderRadius: 8, border: '1px solid #334155', backgroundColor: '#1e293b', padding: 12 }}>
+                  <div style={{ marginBottom: 6, display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 8, color: '#94a3b8', fontSize: 11, textTransform: 'uppercase' }}>
                     <span>{formatDate(source.publicationDate)}</span>
-                    <span className="rounded-full bg-slate-900/70 px-2 py-1 text-slate-400">
-                      CF Article
-                    </span>
+                    <span style={{ background: 'transparent', padding: '4px 8px', borderRadius: 999, color: '#94a3b8' }}>CF Article</span>
                   </div>
-                  <h2 className="mb-2 text-sm font-semibold text-white">
-                    {source.sourceTitle ?? "ConstructionFront coverage"}
-                  </h2>
-                  <p className="mb-3 text-sm leading-6 text-slate-300">
-                    {source.summary ?? "No summary available."}
-                  </p>
+                  <h2 style={{ marginBottom: 6, color: '#ffffff', fontSize: 14, fontWeight: 700 }}>{source.sourceTitle ?? "ConstructionFront coverage"}</h2>
+                  <p style={{ marginBottom: 8, color: '#cbd5e1', fontSize: 13, lineHeight: 1.6 }}>{source.summary ?? "No summary available."}</p>
                   {source.milestoneConfirmed ? (
-                    <p className="mb-3 text-xs uppercase tracking-[0.24em] text-slate-500">
-                      {source.milestoneConfirmed}
-                    </p>
+                    <p style={{ marginBottom: 8, color: '#94a3b8', fontSize: 12, textTransform: 'uppercase' }}>{source.milestoneConfirmed}</p>
                   ) : null}
                   {source.sourceUrl ? (
                     <a
                       href={source.sourceUrl}
                       target="_blank"
                       rel="noreferrer"
-                      className="text-sm font-semibold text-amber-300 transition hover:text-amber-200"
+                      style={{ color: '#f59e0b', fontWeight: 700 }}
                     >
                       Read on ConstructionFront.com →
                     </a>

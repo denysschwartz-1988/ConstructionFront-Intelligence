@@ -1,0 +1,18 @@
+Using the Construction Front Article Production Prompt V2, produce a full article and LinkedIn post for the following source:
+
+Primary source:
+1) https://hsr.ca.gov/2026/06/01/news-release-california-approves-team-to-build-nations-first-true-high-speed-rail-track-and-systems/
+2) https://www.arup.com/news/sound-transit-selects-hoffman-construction-and-arup-for-progressive-design-build-of-new-light-rail-facility/
+
+Prompt file location:
+C:\Users\denys\OneDrive\Documentos\New project 3\00 CF News article prompt\constructionfront_article_prompt_V2.txt
+
+CSV file for internal URL search:
+C:\Users\denys\OneDrive\Documentos\New project 3\00 CF News article prompt\CF_URLs.csv
+
+Instructions:
+- Follow all rules in the V2 prompt in full.
+- For the "What to Watch" H3 under the Market Outlook section, identify concurrent projects in the same region and sector. Flag any clustering signals, supply chain or labour market pressure, and upcoming procurement opportunities relevant to the project type.
+- Check for a qualifying YouTube video from an official channel associated with the project owner, client authority or lead contractor. Apply all three criteria: relevance, recency and source. Only embed if all three pass.
+- Use CF_URLs.csv to find relevant internal related articles.
+- Create as a WordPress draft. Do not publish.
