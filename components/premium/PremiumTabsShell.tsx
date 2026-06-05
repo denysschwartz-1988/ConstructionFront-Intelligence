@@ -1,26 +1,52 @@
 "use client";
 
 import { useState } from "react";
-import { useClerk } from "@clerk/nextjs";
+import { useAuth } from "@clerk/nextjs";
 import type { ProjectRecord, ProjectPartyRecord, ProjectSourceRecord, ProjectMilestoneRecord } from "@/types/database";
 import ProjectIntelligenceTab from "./tabs/ProjectIntelligenceTab";
+import TimelinesTab from "./tabs/TimelinesTab";
+import MarketSignalsTab from "./tabs/MarketSignalsTab";
+import SourcesTab from "./tabs/SourcesTab";
+import RelatedProjectsTab from "./tabs/RelatedProjectsTab";
+import ProjectReportTab from "./tabs/ProjectReportTab";
 
 type PremiumTabsShellProps = {
   project: ProjectRecord;
   parties: ProjectPartyRecord[];
   sources: ProjectSourceRecord[];
   milestones: ProjectMilestoneRecord[];
-  isAuthenticated: boolean;
+  allProjects: ProjectRecord[];
+  onProjectSelect: (project: ProjectRecord) => void;
 };
 
-export default function PremiumTabsShell({ project, parties, sources, milestones, isAuthenticated }: PremiumTabsShellProps) {
-  const [activeTab, setActiveTab] = useState<"project" | "market" | "sources">("project");
-
-  const placeholderText = {
-    project: "Project Intelligence content coming soon.",
-    market: "Market Signals content coming soon.",
-    sources: "Sources content coming soon."
-  };
+export default function PremiumTabsShell({
+  project,
+  parties,
+  sources,
+  milestones,
+  allProjects,
+  onProjectSelect
+}: PremiumTabsShellProps) {
+  const { isSignedIn } = useAuth();
+  const isAuthenticated = isSignedIn ?? false;
+  const [activeTab, setActiveTab] = useState<
+    "project" | "timelines" | "market" | "related" | "sources" | "report"
+  >("project");
+  const tabs = [
+    { key: "project", label: "Project Intelligence" },
+    { key: "timelines", label: "Timelines & Milestones" },
+    { key: "market", label: "Market Signals" },
+    { key: "related", label: "Related Projects" },
+    { key: "sources", label: "Sources" },
+    { key: "report", label: "Project Report" }
+  ] as const;
+  const premiumTabs = [
+    "Project Intelligence",
+    "Timelines & Milestones",
+    "Market Signals",
+    "Sources",
+    "Project Report"
+  ];
 
   return (
     <div
@@ -37,53 +63,111 @@ export default function PremiumTabsShell({ project, parties, sources, milestones
         style={{
           display: "flex",
           alignItems: "center",
-          gap: 8,
-          padding: "0 24px",
+          justifyContent: "space-between",
           height: 44,
           minHeight: 44,
-          backgroundColor: "var(--secondary-bg)",
-          borderBottom: `1px solid var(--border)`
+          backgroundColor: "#161b22",
+          borderBottom: "1px solid #30363d",
+          padding: "0 24px"
         }}
       >
-        {[
-          { key: "project", label: "Project Intelligence" },
-          { key: "market", label: "Market Signals" },
-          { key: "sources", label: "Sources" }
-        ].map((tab) => (
-          <button
-            key={tab.key}
-            type="button"
-            onClick={() => setActiveTab(tab.key as "project" | "market" | "sources")}
-            style={{
-              border: "none",
-              background: "transparent",
-              color: activeTab === tab.key ? "var(--text)" : "var(--muted)",
-              borderBottom: activeTab === tab.key ? `2px solid var(--amber)` : "2px solid transparent",
-              padding: "10px 12px",
-              cursor: "pointer",
-              fontSize: 13
-            }}
-          >
-            {tab.label}
-          </button>
-        ))}
+        <div style={{ display: "flex", gap: 0 }}>
+          {tabs.map((tab) => (
+            <button
+              key={tab.key}
+              type="button"
+              onClick={() => setActiveTab(tab.key)}
+              style={{
+                backgroundColor: "transparent",
+                border: "none",
+                borderBottom:
+                  activeTab === tab.key
+                    ? "2px solid #f0a500"
+                    : "2px solid transparent",
+                color: activeTab === tab.key ? "#e6edf3" : "#8b949e",
+                fontSize: 13,
+                fontWeight: activeTab === tab.key ? 600 : 400,
+                padding: "0 16px",
+                height: 44,
+                cursor: "pointer",
+                display: "flex",
+                alignItems: "center",
+                gap: 4
+              }}
+            >
+              {!isAuthenticated && premiumTabs.includes(tab.label) ? (
+                <span style={{ fontSize: 9, opacity: 0.7 }}>{"\u{1f512}"}</span>
+              ) : null}
+              {tab.label}
+            </button>
+          ))}
+        </div>
+
+        <button
+          type="button"
+          onClick={() => {
+            // open report modal
+          }}
+          style={{
+            backgroundColor: "transparent",
+            border: "1px solid #30363d",
+            borderRadius: 6,
+            color: "#8b949e",
+            fontSize: 11,
+            padding: "4px 10px",
+            cursor: "pointer",
+            display: "flex",
+            alignItems: "center",
+            gap: 4
+          }}
+        >
+          {"\u2691"} Report an Update
+        </button>
       </div>
-      <div style={{ flex: 1, overflowY: 'auto', padding: 24 }}>
+      <div
+        className="premium-tab-content"
+        style={{
+          flex: 1,
+          overflowY: "auto",
+          overflowX: "hidden",
+          scrollbarWidth: "thin",
+          scrollbarColor: "#30363d #0d1117"
+        }}
+      >
         {activeTab === 'project' ? (
-          <ProjectIntelligenceTab
+          <div style={{ padding: 24 }}>
+            <ProjectIntelligenceTab
+              project={project}
+              parties={parties}
+              sources={sources}
+              isAuthenticated={isAuthenticated}
+            />
+          </div>
+        ) : null}
+        {activeTab === "timelines" ? (
+          <TimelinesTab
             project={project}
-            parties={parties}
             milestones={milestones}
-            sources={sources}
+            isAuthenticated={isAuthenticated}
           />
-        ) : (
-          <>
-            <h3 style={{ color: 'var(--amber)', fontSize: 10, fontWeight: 600, textTransform: 'uppercase', marginBottom: 8, letterSpacing: '0.08em' }}>
-              {activeTab === "market" ? "Market Signals" : "Sources"}
-            </h3>
-            <p style={{ color: 'var(--muted)' }}>{placeholderText[activeTab]}</p>
-          </>
-        )}
+        ) : null}
+        {activeTab === "market" ? (
+          <MarketSignalsTab project={project} isAuthenticated={isAuthenticated} />
+        ) : null}
+        {activeTab === "sources" ? (
+          <SourcesTab project={project} sources={sources} isAuthenticated={isAuthenticated} />
+        ) : null}
+        {activeTab === "related" ? (
+          <RelatedProjectsTab
+            currentProject={project}
+            allProjects={allProjects}
+            onProjectSelect={onProjectSelect}
+            isAuthenticated={isAuthenticated}
+          />
+        ) : null}
+        {activeTab === "report" ? (
+          <ProjectReportTab project={project} isAuthenticated={isAuthenticated} />
+        ) : null}
       </div>
     </div>
   );

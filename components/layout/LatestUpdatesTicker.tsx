@@ -1,13 +1,14 @@
 "use client";
 
 import { useMemo } from "react";
-import { getStageColor } from "@/lib/utils";
+import { getStageBadgeStyle } from "@/lib/utils";
 import type { ProjectRecord } from "@/types/database";
 
 type LatestUpdatesTickerProps = {
   projects: ProjectRecord[];
   isOpen: boolean;
   onToggle: () => void;
+  onProjectSelect: (project: ProjectRecord) => void;
 };
 
 const getUpdateTimestamp = (project: ProjectRecord) => {
@@ -16,7 +17,31 @@ const getUpdateTimestamp = (project: ProjectRecord) => {
   return Number.isFinite(millis) ? millis : 0;
 };
 
-export default function LatestUpdatesTicker({ projects, isOpen, onToggle }: LatestUpdatesTickerProps) {
+const getProjectValue = (project: ProjectRecord) => {
+  if (project.projectValueAmount == null) {
+    return null;
+  }
+
+  const currency = project.projectValueCurrency?.trim();
+  const scale = project.projectValueScale?.trim();
+
+  return [currency, project.projectValueAmount, scale]
+    .filter((value) => value !== undefined && value !== null && value !== "")
+    .join(" ");
+};
+
+const Separator = () => (
+  <span style={{ color: "#475569", fontSize: 12 }} aria-hidden="true">
+    &middot;
+  </span>
+);
+
+export default function LatestUpdatesTicker({
+  projects,
+  isOpen,
+  onToggle,
+  onProjectSelect
+}: LatestUpdatesTickerProps) {
   const sorted = useMemo(
     () =>
       [...projects]
@@ -30,21 +55,24 @@ export default function LatestUpdatesTicker({ projects, isOpen, onToggle }: Late
   return (
     <div
       style={{
-        height: isOpen ? 40 : 0,
+        height: isOpen ? 36 : 0,
         overflow: "hidden",
         transition: "height 0.25s ease",
         backgroundColor: "#0f172a",
-        borderTop: "1px solid #334155",
+        borderTop: "1px solid #30363d",
         display: "flex",
         alignItems: "center",
         padding: isOpen ? "0 24px" : "0",
-        minHeight: isOpen ? 40 : 0
+        minHeight: isOpen ? 36 : 0
       }}
     >
       <style>{`
         @keyframes tickerScroll {
           from { transform: translateX(0); }
           to { transform: translateX(-50%); }
+        }
+        .ticker-project-item:hover {
+          opacity: 0.8;
         }
       `}</style>
       <div
@@ -73,6 +101,7 @@ export default function LatestUpdatesTicker({ projects, isOpen, onToggle }: Late
         >
           LATEST UPDATES
         </div>
+
         <div
           style={{
             position: "relative",
@@ -83,70 +112,117 @@ export default function LatestUpdatesTicker({ projects, isOpen, onToggle }: Late
         >
           <div
             style={{
-                display: "flex",
-                alignItems: "center",
-                gap: 0,
-                minWidth: "max-content",
-                animation: "tickerScroll 120s linear infinite"
-              }}
+              display: "flex",
+              alignItems: "center",
+              gap: 0,
+              paddingLeft: 24,
+              minWidth: "max-content",
+              animation: "tickerScroll 300s linear infinite"
+            }}
           >
             {tickerItems.map((project, index) => {
-              const badgeColor = getStageColor(project.currentProjectStage ?? undefined);
+              const capacityDisplay = project.capacityDisplay?.trim();
+              const projectValue = getProjectValue(project);
+              const stageLabel = project.currentProjectStage?.trim() || "Stage unknown";
+
               return (
-                <div
+                <button
+                  type="button"
                   key={`${project.projectSlug}-${index}`}
+                  className="ticker-project-item"
+                  onClick={() => onProjectSelect(project)}
                   style={{
                     display: "flex",
                     alignItems: "center",
-                      gap: 8,
+                    gap: 8,
+                    background: "transparent",
+                    border: "none",
                     color: "var(--text)",
-                      whiteSpace: "nowrap",
-                      padding: "0 12px",
-                    borderRight: index % 2 === 0 ? "1px solid rgba(255,255,255,0.04)" : undefined
+                    whiteSpace: "nowrap",
+                    padding: "0 24px",
+                    borderRight:
+                      index % 2 === 0
+                        ? "1px solid rgba(255,255,255,0.04)"
+                        : undefined,
+                    cursor: "pointer",
+                    opacity: 1,
+                    transition: "opacity 0.15s ease"
                   }}
                 >
-                  <span style={{ fontSize: 13, fontWeight: 600, color: "var(--text)" }}>
-                      {project.projectName}
-                    </span>
-                  <span style={{ color: 'var(--muted)', fontSize: 12, margin: '0 6px' }}>
-                    ·
+                  <span
+                    style={{
+                      color: "#e6edf3",
+                      fontSize: 13,
+                      fontWeight: 600
+                    }}
+                  >
+                    {project.projectName}
                   </span>
-                  <span style={{ color: 'var(--muted)', fontSize: 12, opacity: 0.9 }}>
-                    {project.capacityDisplay ?? "–"}
-                  </span>
+
+                  {capacityDisplay ? (
+                    <>
+                      <Separator />
+                      <span
+                        style={{
+                          color: "#94a3b8",
+                          fontSize: 12,
+                          fontWeight: 400
+                        }}
+                      >
+                        {capacityDisplay}
+                      </span>
+                    </>
+                  ) : null}
+
+                  {projectValue ? (
+                    <>
+                      <Separator />
+                      <span
+                        style={{
+                          color: "#94a3b8",
+                          fontSize: 12,
+                          fontWeight: 400
+                        }}
+                      >
+                        {projectValue}
+                      </span>
+                    </>
+                  ) : null}
+
+                  <Separator />
                   <span
                     style={{
                       display: "inline-flex",
                       alignItems: "center",
-                      padding: "2px 8px",
-                      borderRadius: 999,
-                        backgroundColor: `${badgeColor}20`,
-                        color: badgeColor,
-                        fontSize: 10,
-                        fontWeight: 500
+                      padding: "2px 7px",
+                      borderRadius: 3,
+                      fontSize: 11,
+                      fontWeight: 600,
+                      ...getStageBadgeStyle(stageLabel)
                     }}
                   >
-                    {project.currentProjectStage ?? "Stage unknown"}
+                    {stageLabel}
                   </span>
-                </div>
+                </button>
               );
             })}
           </div>
         </div>
       </div>
-        <button
+
+      <button
         type="button"
         onClick={onToggle}
         style={{
           flexShrink: 0,
-            padding: "0 12px",
+          padding: "0 12px",
           background: "transparent",
           border: "none",
-            color: "#64748b",
+          color: "#64748b",
           cursor: "pointer"
         }}
       >
-        {isOpen ? "▲" : "▼"}
+        {isOpen ? "\u25b2" : "\u25bc"}
       </button>
     </div>
   );

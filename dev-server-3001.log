@@ -1,0 +1,211 @@
+
+> constructionfront-project-intelligence-map@1.0.0 dev
+> next dev -p 3001
+
+  ▲ Next.js 14.2.35
+  - Local:        http://localhost:3001
+  - Environments: .env.local
+
+ ✓ Starting...
+ ✓ Ready in 1823ms
+ ✓ Compiled /middleware in 333ms (189 modules)
+ ○ Compiling / ...
+ ✓ Compiled / in 5.2s (1221 modules)
+ GET / 200 in 5481ms
+ GET / 200 in 41ms
+ GET / 200 in 44ms
+ POST / 200 in 23ms
+ POST / 200 in 15ms
+ ✓ Compiled in 429ms (1178 modules)
+ GET / 200 in 109ms
+ POST / 200 in 13ms
+ POST / 200 in 16ms
+ ✓ Compiled in 212ms (505 modules)
+ ✓ Compiled in 139ms (505 modules)
+ ✓ Compiled in 768ms (1353 modules)
+ ✓ Compiled in 437ms (529 modules)
+ ○ Compiling /_not-found ...
+ ✓ Compiled /_not-found in 991ms (1018 modules)
+ ✓ Compiled / in 290ms (871 modules)
+ GET / 200 in 112ms
+ POST / 200 in 23ms
+ POST / 200 in 20ms
+ ○ Compiling /map ...
+ ✓ Compiled /map in 842ms (1179 modules)
+ GET / 200 in 1015ms
+ GET /map 200 in 1127ms
+ GET /sign-up 404 in 49ms
+ POST /sign-up 404 in 17ms
+ POST /sign-up 404 in 23ms
+ GET / 200 in 53ms
+ POST / 200 in 10ms
+ POST / 200 in 37ms
+ ✓ Compiled in 705ms (1190 modules)
+ ✓ Compiled in 95ms (509 modules)
+ ✓ Compiled in 94ms (509 modules)
+ ✓ Compiled in 102ms (509 modules)
+ ✓ Compiled in 93ms (509 modules)
+ ✓ Compiled in 92ms (509 modules)
+ ✓ Compiled in 110ms (509 modules)
+ ✓ Compiled in 123ms (509 modules)
+ ✓ Compiled in 555ms (1192 modules)
+ ✓ Compiled in 441ms (1200 modules)
+ ✓ Compiled in 712ms (1200 modules)
+ GET /map 200 in 165ms
+ GET / 200 in 193ms
+ ✓ Compiled in 484ms (1200 modules)
+ ✓ Compiled in 385ms (1200 modules)
+ ✓ Compiled in 311ms (1200 modules)
+ ✓ Compiled in 787ms (1200 modules)
+ ✓ Compiled in 510ms (1200 modules)
+ ✓ Compiled in 324ms (1200 modules)
+ ✓ Compiled in 279ms (1200 modules)
+ GET /map 200 in 159ms
+ GET /map 200 in 48ms
+ POST /map 200 in 20ms
+ POST /map 200 in 13ms
+ GET /map 200 in 56ms
+ POST /map 200 in 36ms
+ POST /map 200 in 14ms
+ ✓ Compiled in 555ms (1200 modules)
+ ✓ Compiled in 122ms (514 modules)
+ ✓ Compiled in 798ms (1200 modules)
+ GET / 200 in 98ms
+ POST / 200 in 15ms
+ POST / 200 in 19ms
+ ✓ Compiled in 514ms (1200 modules)
+ ✓ Compiled in 724ms (1198 modules)
+ GET /map 200 in 122ms
+ POST /map 200 in 14ms
+ POST /map 200 in 12ms
+ ✓ Compiled in 734ms (1198 modules)
+ GET /map 200 in 98ms
+ POST /map 200 in 11ms
+ POST /map 200 in 16ms
+ ✓ Compiled in 420ms (1198 modules)
+ ✓ Compiled in 415ms (1198 modules)
+ ✓ Compiled in 292ms (1198 modules)
+ ✓ Compiled in 858ms (1198 modules)
+ ✓ Compiled in 268ms (1198 modules)
+ ✓ Compiled in 493ms (1198 modules)
+ ✓ Compiled in 384ms (1198 modules)
+ ✓ Compiled in 272ms (1198 modules)
+ ✓ Compiled in 336ms (1198 modules)
+ GET /map 200 in 120ms
+ ✓ Compiled in 396ms (1198 modules)
+ GET / 200 in 91ms
+ POST / 200 in 14ms
+ POST / 200 in 26ms
+ ✓ Compiled in 292ms (1198 modules)
+ ✓ Compiled in 265ms (1198 modules)
+ ✓ Compiled in 435ms (1198 modules)
+ ✓ Compiled in 404ms (1198 modules)
+ ✓ Compiled in 368ms (1198 modules)
+ ✓ Compiled in 299ms (1198 modules)
+ ✓ Compiled in 183ms (1198 modules)
+ ✓ Compiled in 242ms (1198 modules)
+ ✓ Compiled in 481ms (1198 modules)
+ ✓ Compiled in 358ms (1198 modules)
+ GET /map 200 in 146ms
+ POST /map 200 in 13ms
+ POST /map 200 in 17ms
+ ✓ Compiled in 374ms (1198 modules)
+ ✓ Compiled in 743ms (1198 modules)
+ GET /map 200 in 266ms
+ POST /map 200 in 18ms
+ POST /map 200 in 14ms
+ ✓ Compiled in 239ms (1198 modules)
+ GET /map 200 in 194ms
+ POST /map 200 in 8ms
+ POST /map 200 in 15ms
+ ✓ Compiled in 108ms (513 modules)
+ ✓ Compiled in 354ms (1200 modules)
+ ✓ Compiled in 324ms (1200 modules)
+ ✓ Compiled in 116ms (514 modules)
+ ✓ Compiled in 346ms (1200 modules)
+ ✓ Compiled in 190ms (1200 modules)
+ GET /map 200 in 124ms
+ POST /map 200 in 12ms
+ POST /map 200 in 11ms
+ GET / 200 in 60ms
+ POST / 200 in 20ms
+ POST / 200 in 31ms
+ ✓ Compiled /_not-found in 409ms (1189 modules)
+ ✓ Compiled in 389ms (1200 modules)
+ GET / 200 in 107ms
+ POST / 200 in 14ms
+ POST / 200 in 28ms
+ GET /map 200 in 86ms
+ POST /map 200 in 12ms
+ POST /map 200 in 10ms
+ ✓ Compiled in 571ms (1200 modules)
+ ✓ Compiled in 285ms (1200 modules)
+ ✓ Compiled in 237ms (1200 modules)
+ GET /map 200 in 159ms
+ POST /map 200 in 14ms
+ POST /map 200 in 13ms
+ GET / 200 in 40ms
+ POST / 200 in 377ms
+ POST / 200 in 22ms
+ GET /map 200 in 333ms
+ POST /map 200 in 14ms
+ POST /map 200 in 13ms
+ GET /map 200 in 77ms
+ POST /map 200 in 12ms
+ POST /map 200 in 10ms
+ GET /map 200 in 116ms
+ POST /map 200 in 11ms
+ POST /map 200 in 12ms
+ ✓ Compiled in 457ms (1200 modules)
+ ✓ Compiled in 97ms (514 modules)
+ ✓ Compiled in 274ms (1200 modules)
+ ✓ Compiled in 293ms (1200 modules)
+ GET /map 200 in 54ms
+ POST /map 200 in 20ms
+ POST /map 200 in 12ms
+ ✓ Compiled in 447ms (1200 modules)
+ ✓ Compiled in 391ms (1200 modules)
+ ✓ Compiled in 437ms (1200 modules)
+ ✓ Compiled in 375ms (1200 modules)
+ ✓ Compiled in 277ms (1200 modules)
+ ✓ Compiled in 139ms (514 modules)
+ ✓ Compiled in 417ms (1202 modules)
+ ✓ Compiled in 451ms (1202 modules)
+ ✓ Compiled in 340ms (1202 modules)
+ ✓ Compiled in 229ms (1202 modules)
+ ✓ Compiled in 198ms (1202 modules)
+ ✓ Compiled in 278ms (1202 modules)
+ GET / 200 in 116ms
+ POST / 200 in 22ms
+ POST / 200 in 29ms
+ GET /map 200 in 74ms
+ POST /map 200 in 12ms
+ POST /map 200 in 11ms
+ ✓ Compiled in 617ms (1202 modules)
+ GET /map 200 in 122ms
+ POST /map 200 in 12ms
+ POST /map 200 in 13ms
+ ✓ Compiled in 542ms (1202 modules)
+ ✓ Compiled in 238ms (1202 modules)
+ GET /map 200 in 208ms
+ GET /map 200 in 53ms
+ POST /map 200 in 10ms
+ POST /map 200 in 10ms
+ GET /map 200 in 51ms
+ GET /map 200 in 67ms
+ POST /map 200 in 12ms
+ POST /map 200 in 20ms
+ GET / 200 in 61ms
+ POST / 200 in 13ms
+ POST / 200 in 27ms
+ ✓ Compiled in 413ms (1202 modules)
+ ✓ Compiled in 122ms (515 modules)
+ GET /map 200 in 69ms
+ POST /map 200 in 15ms
+ POST /map 200 in 13ms
+ ✓ Compiled in 384ms (1202 modules)
+ ✓ Compiled in 245ms (1202 modules)
+ GET /map 200 in 173ms
+ POST /map 200 in 16ms
+ POST /map 200 in 14ms
+ ✓ Compiled in 419ms (1202 modules)

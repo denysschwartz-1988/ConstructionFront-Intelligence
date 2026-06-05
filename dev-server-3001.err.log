@@ -1,0 +1,296 @@
+ ⚠ Cross origin request detected from 127.0.0.1 to /_next/* resource. In a future major version of Next.js, you will need to explicitly configure "allowedDevOrigins" in next.config to allow this.
+Read more: https://nextjs.org/docs/app/api-reference/config/next-config-js/allowedDevOrigins
+ ⨯ ./components/premium/tabs/ProcurementOppsTab.tsx
+Error: Failed to read source code from C:\Users\denys\OneDrive\Documentos\New project 3\components\premium\tabs\ProcurementOppsTab.tsx
+
+Caused by:
+    The system cannot find the file specified. (os error 2)
+
+Import trace for requested module:
+./components/premium/tabs/ProcurementOppsTab.tsx
+./components/premium/PremiumTabsShell.tsx
+./app/map/page.tsx
+ ⨯ ./components/premium/tabs/ProcurementOppsTab.tsx
+Error: Failed to read source code from C:\Users\denys\OneDrive\Documentos\New project 3\components\premium\tabs\ProcurementOppsTab.tsx
+
+Caused by:
+    The system cannot find the file specified. (os error 2)
+
+Import trace for requested module:
+./components/premium/tabs/ProcurementOppsTab.tsx
+./components/premium/PremiumTabsShell.tsx
+./app/map/page.tsx
+ ⨯ ./components/list/ProjectListView.tsx
+Error: Failed to read source code from C:\Users\denys\OneDrive\Documentos\New project 3\components\list\ProjectListView.tsx
+
+Caused by:
+    The system cannot find the file specified. (os error 2)
+
+Import trace for requested module:
+./components/list/ProjectListView.tsx
+./app/map/page.tsx
+ ⚠ Fast Refresh had to perform a full reload due to a runtime error.
+ ⚠ Fast Refresh had to perform a full reload due to a runtime error.
+ ⚠ ./components/list/ProjectListView.tsx
+Attempted import error: 'getStageColor' is not exported from '@/lib/utils' (imported as 'getStageColor').
+
+Import trace for requested module:
+./components/list/ProjectListView.tsx
+./app/map/page.tsx
+
+./components/panel/ProjectPanel.tsx
+Attempted import error: 'getStageColor' is not exported from '@/lib/utils' (imported as 'getStageColor').
+
+Import trace for requested module:
+./components/panel/ProjectPanel.tsx
+./app/map/page.tsx
+
+./components/premium/tabs/RelatedProjectsTab.tsx
+Attempted import error: 'getStageColor' is not exported from '@/lib/utils' (imported as 'getStageColor').
+
+Import trace for requested module:
+./components/premium/tabs/RelatedProjectsTab.tsx
+./components/premium/PremiumTabsShell.tsx
+./app/map/page.tsx
+
+./components/list/ProjectListView.tsx
+Attempted import error: 'getStageColor' is not exported from '@/lib/utils' (imported as 'getStageColor').
+
+Import trace for requested module:
+./components/list/ProjectListView.tsx
+./app/map/page.tsx
+
+./components/panel/ProjectPanel.tsx
+Attempted import error: 'getStageColor' is not exported from '@/lib/utils' (imported as 'getStageColor').
+
+Import trace for requested module:
+./components/panel/ProjectPanel.tsx
+./app/map/page.tsx
+
+./components/premium/tabs/RelatedProjectsTab.tsx
+Attempted import error: 'getStageColor' is not exported from '@/lib/utils' (imported as 'getStageColor').
+
+Import trace for requested module:
+./components/premium/tabs/RelatedProjectsTab.tsx
+./components/premium/PremiumTabsShell.tsx
+./app/map/page.tsx
+ ⚠ ./components/list/ProjectListView.tsx
+Attempted import error: 'getStageColor' is not exported from '@/lib/utils' (imported as 'getStageColor').
+
+Import trace for requested module:
+./components/list/ProjectListView.tsx
+./app/map/page.tsx
+
+./components/panel/ProjectPanel.tsx
+Attempted import error: 'getStageColor' is not exported from '@/lib/utils' (imported as 'getStageColor').
+
+Import trace for requested module:
+./components/panel/ProjectPanel.tsx
+./app/map/page.tsx
+
+./components/premium/tabs/RelatedProjectsTab.tsx
+Attempted import error: 'getStageColor' is not exported from '@/lib/utils' (imported as 'getStageColor').
+
+Import trace for requested module:
+./components/premium/tabs/RelatedProjectsTab.tsx
+./components/premium/PremiumTabsShell.tsx
+./app/map/page.tsx
+
+./components/list/ProjectListView.tsx
+Attempted import error: 'getStageColor' is not exported from '@/lib/utils' (imported as 'getStageColor').
+
+Import trace for requested module:
+./components/list/ProjectListView.tsx
+./app/map/page.tsx
+
+./components/panel/ProjectPanel.tsx
+Attempted import error: 'getStageColor' is not exported from '@/lib/utils' (imported as 'getStageColor').
+
+Import trace for requested module:
+./components/panel/ProjectPanel.tsx
+./app/map/page.tsx
+
+./components/premium/tabs/RelatedProjectsTab.tsx
+Attempted import error: 'getStageColor' is not exported from '@/lib/utils' (imported as 'getStageColor').
+
+Import trace for requested module:
+./components/premium/tabs/RelatedProjectsTab.tsx
+./components/premium/PremiumTabsShell.tsx
+./app/map/page.tsx
+ ⚠ ./components/list/ProjectListView.tsx
+Attempted import error: 'getStageColor' is not exported from '@/lib/utils' (imported as 'getStageColor').
+
+Import trace for requested module:
+./components/list/ProjectListView.tsx
+./app/map/page.tsx
+
+./components/panel/ProjectPanel.tsx
+Attempted import error: 'getStageColor' is not exported from '@/lib/utils' (imported as 'getStageColor').
+
+Import trace for requested module:
+./components/panel/ProjectPanel.tsx
+./app/map/page.tsx
+
+./components/premium/tabs/RelatedProjectsTab.tsx
+Attempted import error: 'getStageColor' is not exported from '@/lib/utils' (imported as 'getStageColor').
+
+Import trace for requested module:
+./components/premium/tabs/RelatedProjectsTab.tsx
+./components/premium/PremiumTabsShell.tsx
+./app/map/page.tsx
+
+./components/list/ProjectListView.tsx
+Attempted import error: 'getStageColor' is not exported from '@/lib/utils' (imported as 'getStageColor').
+
+Import trace for requested module:
+./components/list/ProjectListView.tsx
+./app/map/page.tsx
+
+./components/panel/ProjectPanel.tsx
+Attempted import error: 'getStageColor' is not exported from '@/lib/utils' (imported as 'getStageColor').
+
+Import trace for requested module:
+./components/panel/ProjectPanel.tsx
+./app/map/page.tsx
+
+./components/premium/tabs/RelatedProjectsTab.tsx
+Attempted import error: 'getStageColor' is not exported from '@/lib/utils' (imported as 'getStageColor').
+
+Import trace for requested module:
+./components/premium/tabs/RelatedProjectsTab.tsx
+./components/premium/PremiumTabsShell.tsx
+./app/map/page.tsx
+ ⚠ Fast Refresh had to perform a full reload due to a runtime error.
+ ⚠ ./components/panel/ProjectPanel.tsx
+Attempted import error: 'getStageColor' is not exported from '@/lib/utils' (imported as 'getStageColor').
+
+Import trace for requested module:
+./components/panel/ProjectPanel.tsx
+./app/map/page.tsx
+
+./components/premium/tabs/RelatedProjectsTab.tsx
+Attempted import error: 'getStageColor' is not exported from '@/lib/utils' (imported as 'getStageColor').
+
+Import trace for requested module:
+./components/premium/tabs/RelatedProjectsTab.tsx
+./components/premium/PremiumTabsShell.tsx
+./app/map/page.tsx
+
+./components/panel/ProjectPanel.tsx
+Attempted import error: 'getStageColor' is not exported from '@/lib/utils' (imported as 'getStageColor').
+
+Import trace for requested module:
+./components/panel/ProjectPanel.tsx
+./app/map/page.tsx
+
+./components/premium/tabs/RelatedProjectsTab.tsx
+Attempted import error: 'getStageColor' is not exported from '@/lib/utils' (imported as 'getStageColor').
+
+Import trace for requested module:
+./components/premium/tabs/RelatedProjectsTab.tsx
+./components/premium/PremiumTabsShell.tsx
+./app/map/page.tsx
+ ⚠ ./components/panel/ProjectPanel.tsx
+Attempted import error: 'getStageColor' is not exported from '@/lib/utils' (imported as 'getStageColor').
+
+Import trace for requested module:
+./components/panel/ProjectPanel.tsx
+./app/map/page.tsx
+
+./components/premium/tabs/RelatedProjectsTab.tsx
+Attempted import error: 'getStageColor' is not exported from '@/lib/utils' (imported as 'getStageColor').
+
+Import trace for requested module:
+./components/premium/tabs/RelatedProjectsTab.tsx
+./components/premium/PremiumTabsShell.tsx
+./app/map/page.tsx
+
+./components/panel/ProjectPanel.tsx
+Attempted import error: 'getStageColor' is not exported from '@/lib/utils' (imported as 'getStageColor').
+
+Import trace for requested module:
+./components/panel/ProjectPanel.tsx
+./app/map/page.tsx
+
+./components/premium/tabs/RelatedProjectsTab.tsx
+Attempted import error: 'getStageColor' is not exported from '@/lib/utils' (imported as 'getStageColor').
+
+Import trace for requested module:
+./components/premium/tabs/RelatedProjectsTab.tsx
+./components/premium/PremiumTabsShell.tsx
+./app/map/page.tsx
+ ⚠ ./components/panel/ProjectPanel.tsx
+Attempted import error: 'getStageColor' is not exported from '@/lib/utils' (imported as 'getStageColor').
+
+Import trace for requested module:
+./components/panel/ProjectPanel.tsx
+./app/map/page.tsx
+
+./components/premium/tabs/RelatedProjectsTab.tsx
+Attempted import error: 'getStageColor' is not exported from '@/lib/utils' (imported as 'getStageColor').
+
+Import trace for requested module:
+./components/premium/tabs/RelatedProjectsTab.tsx
+./components/premium/PremiumTabsShell.tsx
+./app/map/page.tsx
+
+./components/panel/ProjectPanel.tsx
+Attempted import error: 'getStageColor' is not exported from '@/lib/utils' (imported as 'getStageColor').
+
+Import trace for requested module:
+./components/panel/ProjectPanel.tsx
+./app/map/page.tsx
+
+./components/premium/tabs/RelatedProjectsTab.tsx
+Attempted import error: 'getStageColor' is not exported from '@/lib/utils' (imported as 'getStageColor').
+
+Import trace for requested module:
+./components/premium/tabs/RelatedProjectsTab.tsx
+./components/premium/PremiumTabsShell.tsx
+./app/map/page.tsx
+ ⚠ ./components/panel/ProjectPanel.tsx
+Attempted import error: 'getStageColor' is not exported from '@/lib/utils' (imported as 'getStageColor').
+
+Import trace for requested module:
+./components/panel/ProjectPanel.tsx
+./app/map/page.tsx
+
+./components/premium/tabs/RelatedProjectsTab.tsx
+Attempted import error: 'getStageColor' is not exported from '@/lib/utils' (imported as 'getStageColor').
+
+Import trace for requested module:
+./components/premium/tabs/RelatedProjectsTab.tsx
+./components/premium/PremiumTabsShell.tsx
+./app/map/page.tsx
+
+./components/panel/ProjectPanel.tsx
+Attempted import error: 'getStageColor' is not exported from '@/lib/utils' (imported as 'getStageColor').
+
+Import trace for requested module:
+./components/panel/ProjectPanel.tsx
+./app/map/page.tsx
+
+./components/premium/tabs/RelatedProjectsTab.tsx
+Attempted import error: 'getStageColor' is not exported from '@/lib/utils' (imported as 'getStageColor').
+
+Import trace for requested module:
+./components/premium/tabs/RelatedProjectsTab.tsx
+./components/premium/PremiumTabsShell.tsx
+./app/map/page.tsx
+ ⚠ Fast Refresh had to perform a full reload due to a runtime error.
+ ⚠ Fast Refresh had to perform a full reload due to a runtime error.
+ ⚠ ./components/premium/tabs/RelatedProjectsTab.tsx
+Attempted import error: 'getStageColor' is not exported from '@/lib/utils' (imported as 'getStageColor').
+
+Import trace for requested module:
+./components/premium/tabs/RelatedProjectsTab.tsx
+./components/premium/PremiumTabsShell.tsx
+./app/map/page.tsx
+
+./components/premium/tabs/RelatedProjectsTab.tsx
+Attempted import error: 'getStageColor' is not exported from '@/lib/utils' (imported as 'getStageColor').
+
+Import trace for requested module:
+./components/premium/tabs/RelatedProjectsTab.tsx
+./components/premium/PremiumTabsShell.tsx
+./app/map/page.tsx

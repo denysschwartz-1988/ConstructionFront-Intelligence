@@ -1,29 +1,41 @@
 import { type ClassValue, clsx } from "clsx";
+import type { CSSProperties } from "react";
 import { twMerge } from "tailwind-merge";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
-export function getStageColor(currentProjectStage?: string) {
-  const stage = currentProjectStage?.trim().toLowerCase() ?? "";
-
-  if (
-    stage.includes("under development") ||
-    stage.includes("fid") ||
-    stage.includes("procurement") ||
-    stage.includes("financing")
-  ) {
-    return "#E8A020";
+export function getStageBadgeStyle(stage: string | null | undefined): CSSProperties {
+  if (!stage) {
+    return { backgroundColor: "#8b949e", color: "#ffffff" };
   }
 
-  if (stage.includes("contract awarded") || stage.includes("under construction")) {
-    return "#74c69d";
+  const s = stage.toLowerCase();
+
+  if (s.includes("under development")) {
+    return { backgroundColor: "#f0a500", color: "#0d1117" };
   }
 
-  if (stage.includes("construction complete") || stage.includes("operational")) {
-    return "#7fb3ff";
+  if (s.includes("fid") || s.includes("procurement") || s.includes("financing")) {
+    return { backgroundColor: "#f0a500", color: "#0d1117" };
   }
 
-  return "#E8A020";
+  if (s.includes("contract awarded")) {
+    return { backgroundColor: "#238636", color: "#ffffff" };
+  }
+
+  if (s.includes("under construction")) {
+    return { backgroundColor: "#1a7f37", color: "#ffffff" };
+  }
+
+  if (s.includes("construction complete") || s.includes("operational")) {
+    return { backgroundColor: "#1f6feb", color: "#ffffff" };
+  }
+
+  if (s.includes("on hold") || s.includes("cancelled")) {
+    return { backgroundColor: "#6e7681", color: "#ffffff" };
+  }
+
+  return { backgroundColor: "#6e7681", color: "#ffffff" };
 }

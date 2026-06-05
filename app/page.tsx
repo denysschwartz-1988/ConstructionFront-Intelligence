@@ -1,313 +1,398 @@
-"use client";
+import Link from "next/link";
+import type { CSSProperties } from "react";
 
-import { useEffect, useMemo, useState } from "react";
-import { useAuth } from "@clerk/nextjs";
-import TopBar from "@/components/layout/TopBar";
-import FiltersBar from "@/components/layout/FiltersBar";
-import LatestUpdatesTicker from "@/components/layout/LatestUpdatesTicker";
-import ProjectMap from "@/components/map/ProjectMap";
-import ProjectPanel from "@/components/panel/ProjectPanel";
-import PremiumTabsShell from "@/components/premium/PremiumTabsShell";
-import { supabase } from "@/lib/supabase/client";
-import type {
-  ProjectRecord,
-  ProjectPartyRecord,
-  ProjectSourceRecord,
-  ProjectMilestoneRecord
-} from "@/types/database";
-
-const isValidProject = (project: ProjectRecord) => {
-  return Boolean(
-    project.projectDescription?.trim() &&
-      project.latitude != null &&
-      project.longitude != null
-  );
+const navButtonStyle: CSSProperties = {
+  border: "1px solid #30363d",
+  color: "#e6edf3",
+  padding: "8px 16px",
+  borderRadius: 6,
+  textDecoration: "none",
+  fontSize: 13
 };
 
-const getUpdateTimestamp = (project: ProjectRecord) => {
-  const value = project.latestUpdateDate?.trim();
-  const millis = value ? new Date(value).getTime() : 0;
-  return Number.isFinite(millis) ? millis : 0;
+const amberButtonStyle: CSSProperties = {
+  backgroundColor: "#f0a500",
+  color: "#0d1117",
+  fontWeight: 700,
+  padding: "12px 24px",
+  borderRadius: 8,
+  fontSize: 15,
+  border: "none",
+  textDecoration: "none",
+  display: "inline-flex"
 };
 
-export default function Home() {
-  const { isSignedIn } = useAuth();
-  const isAuthenticated = Boolean(isSignedIn);
+const ghostCtaStyle: CSSProperties = {
+  border: "1px solid #30363d",
+  color: "#e6edf3",
+  backgroundColor: "transparent",
+  padding: "12px 24px",
+  borderRadius: 8,
+  fontSize: 15,
+  textDecoration: "none",
+  display: "inline-flex"
+};
 
-  const [projects, setProjects] = useState<ProjectRecord[]>([]);
-  const [selectedProject, setSelectedProject] = useState<ProjectRecord | null>(null);
-  const [projectParties, setProjectParties] = useState<ProjectPartyRecord[]>([]);
-  const [projectSources, setProjectSources] = useState<ProjectSourceRecord[]>([]);
-  const [projectMilestones, setProjectMilestones] = useState<ProjectMilestoneRecord[]>([]);
-  const [coverageCount, setCoverageCount] = useState<number>(0);
-  const [panelLoading, setPanelLoading] = useState(false);
-  const [panelError, setPanelError] = useState<string | null>(null);
-  const [searchValue, setSearchValue] = useState("");
-  const [selectedRegion, setSelectedRegion] = useState("All Regions");
-  const [selectedSector, setSelectedSector] = useState("All Sectors");
-  const [selectedCountry, setSelectedCountry] = useState("All Countries");
-  const [selectedSubsector, setSelectedSubsector] = useState("All Subsectors");
-  const [selectedStage, setSelectedStage] = useState("All Stages");
-  const [tickerOpen, setTickerOpen] = useState(true);
+const featureTiles = [
+  {
+    icon: "📋",
+    title: "Source-Backed",
+    text: "Every claim linked to an official source. No guesswork."
+  },
+  {
+    icon: "🎯",
+    title: "Stakeholder Lens",
+    text: "Intelligence tailored to your role — contractor, lender, consultant and more."
+  },
+  {
+    icon: "📡",
+    title: "Live Pipeline",
+    text: "Active procurement signals across energy and infrastructure sectors."
+  },
+  {
+    icon: "📍",
+    title: "Milestone Tracking",
+    text: "Full project lifecycle tracked from planning permit to operations."
+  }
+];
 
-  useEffect(() => {
-    const loadProjects = async () => {
-      const { data, error } = await supabase
-        .from("projects_master")
-        .select("*")
-        .not("projectDescription", "is", null)
-        .neq("projectDescription", "");
+const pricingCards = [
+  {
+    tier: "Free",
+    price: "£0",
+    per: "/month",
+    features: [
+      "Interactive project map",
+      "Project overview panel",
+      "ConstructionFront coverage",
+      "Region and sector filters"
+    ],
+    cta: "Explore Map ->",
+    href: "/map",
+    highlighted: false
+  },
+  {
+    tier: "Professional",
+    price: "£79",
+    per: "/month",
+    features: [
+      "Everything in Free",
+      "Full project intelligence",
+      "Market signals — 9 stakeholder lenses",
+      "Sources and milestone history",
+      "All filters including country and stage",
+      "Save and bookmark projects"
+    ],
+    cta: "Get Started ->",
+    href: "/sign-up",
+    highlighted: true
+  },
+  {
+    tier: "Enterprise",
+    price: "£299",
+    per: "/month per team",
+    features: [
+      "Everything in Professional",
+      "Team access — unlimited users",
+      "API access",
+      "Analytics dashboard",
+      "Custom sector/region focus",
+      "White label option"
+    ],
+    cta: "Contact Us ->",
+    href: "/contact",
+    highlighted: false
+  }
+];
 
-      if (error) {
-        console.error("Failed to load projects:", error.message);
-        return;
-      }
-
-      const filtered = (data ?? []).filter(isValidProject);
-      const sorted = filtered.sort(
-        (a, b) => getUpdateTimestamp(b) - getUpdateTimestamp(a)
-      );
-
-      setProjects(sorted);
-      if (sorted.length) {
-        setSelectedProject(sorted[0]);
-      }
-    };
-
-    loadProjects();
-
-    const fetchCoverageCount = async () => {
-      const { count, error } = await supabase
-        .from('project_sources')
-        .select('*', { count: 'exact', head: true })
-        .eq('sourceType', 'CF Article');
-
-      if (!error) {
-        setCoverageCount(count ?? 0);
-      } else {
-        console.error('Failed to load coverage count:', error.message);
-      }
-    };
-
-    fetchCoverageCount();
-  }, []);
-
-  useEffect(() => {
-    if (!selectedProject) {
-      setProjectParties([]);
-      setProjectSources([]);
-      setPanelError(null);
-      return;
-    }
-
-    const fetchDetails = async () => {
-      setPanelLoading(true);
-      setPanelError(null);
-
-        const [partiesResponse, sourcesResponse, milestonesResponse] = await Promise.all([
-          supabase
-            .from("project_parties")
-            .select("*")
-            .eq("projectSlug", selectedProject.projectSlug),
-          supabase
-            .from("project_sources")
-            .select("*")
-            .eq("projectSlug", selectedProject.projectSlug),
-          supabase
-            .from("project_milestones")
-            .select("*")
-            .eq("projectSlug", selectedProject.projectSlug)
-            .order('milestoneDate', { ascending: false })
-        ]);
-
-      if (partiesResponse.error || sourcesResponse.error) {
-        setPanelError(
-          partiesResponse.error?.message ?? sourcesResponse.error?.message ??
-            "Failed to load project details."
-        );
-        setProjectParties([]);
-        setProjectSources([]);
-        setPanelLoading(false);
-        return;
-      }
-
-      setProjectParties(partiesResponse.data ?? []);
-      setProjectSources(sourcesResponse.data ?? []);
-      setProjectMilestones(milestonesResponse.data ?? []);
-      setPanelLoading(false);
-    };
-
-    fetchDetails();
-  }, [selectedProject]);
-
-  const filteredProjects = useMemo(() => {
-    return projects
-      .filter((project) => {
-        const matchesSearch = searchValue
-          ? [
-              project.projectName,
-              project.ownerDeveloper,
-              project.leadContractor,
-              project.sector,
-              project.subsector
-            ]
-              .filter(Boolean)
-              .some((value) =>
-                value
-                  ?.toString()
-                  .toLowerCase()
-                  .includes(searchValue.toLowerCase())
-              )
-          : true;
-
-        const matchesRegion =
-          selectedRegion === "All Regions" ||
-          project.region === selectedRegion;
-        const matchesSector =
-          selectedSector === "All Sectors" ||
-          project.sector === selectedSector;
-        const matchesCountry =
-          !isAuthenticated ||
-          selectedCountry === "All Countries" ||
-          project.country === selectedCountry;
-        const matchesSubsector =
-          !isAuthenticated ||
-          selectedSubsector === "All Subsectors" ||
-          project.subsector === selectedSubsector;
-        const matchesStage =
-          !isAuthenticated ||
-          selectedStage === "All Stages" ||
-          project.currentProjectStage === selectedStage;
-
-        return (
-          matchesSearch &&
-          matchesRegion &&
-          matchesSector &&
-          matchesCountry &&
-          matchesSubsector &&
-          matchesStage
-        );
-      })
-      .sort((a, b) => getUpdateTimestamp(b) - getUpdateTimestamp(a));
-  }, [projects, searchValue, selectedRegion, selectedSector, selectedCountry, selectedSubsector, selectedStage, isAuthenticated]);
-
-  const mapProjects = useMemo(() => {
-    if (!selectedProject) {
-      return filteredProjects;
-    }
-
-    const exists = filteredProjects.some(
-      (project) => project.projectSlug === selectedProject.projectSlug
-    );
-
-    return exists ? filteredProjects : [selectedProject, ...filteredProjects];
-  }, [filteredProjects, selectedProject]);
-
-  const handleProjectSelect = (project: ProjectRecord | null) => {
-    setSelectedProject(project);
-  };
-
+export default function LandingPage() {
   return (
-    <div
+    <main
       style={{
-        display: "flex",
-        flexDirection: "column",
-        height: "100vh",
-        width: "100vw",
-        overflow: "hidden",
-        backgroundColor: "#0f172a"
+        minHeight: "100vh",
+        backgroundColor: "#0d1117",
+        color: "#e6edf3"
       }}
     >
-      <div style={{ flex: "0 0 56px" }}>
-        <TopBar
-          visibleCount={filteredProjects.length}
-          projectCount={projects.length}
-          coverageCount={coverageCount}
-          searchValue={searchValue}
-          onSearchChange={setSearchValue}
-        />
-      </div>
-
-      <div style={{ flex: "0 0 44px" }}>
-        <FiltersBar
-          selectedRegion={selectedRegion}
-          selectedSector={selectedSector}
-          selectedCountry={selectedCountry}
-          selectedSubsector={selectedSubsector}
-          selectedStage={selectedStage}
-          isAuthenticated={isAuthenticated}
-          onRegionChange={setSelectedRegion}
-          onSectorChange={setSelectedSector}
-          onCountryChange={setSelectedCountry}
-          onSubsectorChange={setSelectedSubsector}
-          onStageChange={setSelectedStage}
-        />
-      </div>
-
-      <div
+      <nav
         style={{
-          flex: "0 0 auto",
-          height: tickerOpen ? 40 : 0,
-          overflow: "hidden"
-        }}
-      >
-        <LatestUpdatesTicker
-          projects={filteredProjects}
-          isOpen={tickerOpen}
-          onToggle={() => setTickerOpen((current) => !current)}
-        />
-      </div>
-
-      <div
-        style={{
+          height: 56,
+          backgroundColor: "#161b22",
+          borderBottom: "1px solid #30363d",
+          padding: "0 48px",
           display: "flex",
-          flexDirection: "row",
-          flex: "0 0 52vh",
-          height: "52vh",
-          overflow: "hidden"
+          alignItems: "center",
+          justifyContent: "space-between"
         }}
       >
-        <div style={{ flex: 1, height: "100%", overflow: "hidden" }}>
-          <ProjectMap
-            projects={mapProjects}
-            onProjectSelect={handleProjectSelect}
-          />
+        <div style={{ fontSize: 16, fontWeight: 700 }}>
+          <span style={{ color: "#f0a500" }}>ConstructionFront</span>{" "}
+          <span style={{ color: "#ffffff" }}>Intelligence</span>
         </div>
-
-        {selectedProject ? (
-          <div
-              style={{
-                width: 360,
-                flexShrink: 0,
-                height: "100%",
-                overflowY: "auto",
-                backgroundColor: "#1e293b",
-                borderLeft: "1px solid #334155"
-              }}
+        <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
+          <Link href="/sign-in" style={navButtonStyle}>
+            Sign In
+          </Link>
+          <Link
+            href="/map"
+            style={{
+              backgroundColor: "#f0a500",
+              color: "#0d1117",
+              fontWeight: 600,
+              padding: "8px 18px",
+              borderRadius: 6,
+              textDecoration: "none",
+              fontSize: 13
+            }}
           >
-            <ProjectPanel
-              selectedProject={selectedProject}
-              projectParties={projectParties}
-              projectSources={projectSources}
-              onClose={() => setSelectedProject(null)}
-              isLoading={panelLoading}
-              error={panelError}
-            />
-          </div>
-        ) : null}
-      </div>
-
-      {selectedProject ? (
-        <div style={{ flex: 1, overflow: "hidden" }}>
-          <PremiumTabsShell
-            project={selectedProject}
-            parties={projectParties}
-            sources={projectSources}
-            milestones={projectMilestones}
-            isAuthenticated={isAuthenticated}
-          />
+            Open App -&gt;
+          </Link>
         </div>
-      ) : null}
-    </div>
+      </nav>
+
+      <section
+        style={{
+          backgroundColor: "#0d1117",
+          padding: "80px 48px",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
+          gap: 48,
+          minHeight: 480
+        }}
+      >
+        <div style={{ maxWidth: 560 }}>
+          <div
+            style={{
+              color: "#f0a500",
+              fontSize: 13,
+              fontWeight: 500,
+              marginBottom: 16
+            }}
+          >
+            37 projects · 12 countries · 226 sources
+          </div>
+          <h1
+            style={{
+              fontSize: 42,
+              fontWeight: 800,
+              color: "#e6edf3",
+              lineHeight: 1.2,
+              margin: "0 0 16px"
+            }}
+          >
+            Commercial Intelligence for
+            <br />
+            Energy &amp; Infrastructure
+          </h1>
+          <p
+            style={{
+              fontSize: 16,
+              color: "#8b949e",
+              lineHeight: 1.6,
+              margin: "0 0 32px"
+            }}
+          >
+            Source-backed project tracking, stakeholder signals and procurement
+            intelligence across the full development lifecycle.
+          </p>
+          <div style={{ display: "flex", gap: 12 }}>
+            <Link href="/map" style={ghostCtaStyle}>
+              Explore Free -&gt;
+            </Link>
+            <Link href="/sign-up" style={amberButtonStyle}>
+              Get Started
+            </Link>
+          </div>
+          <div style={{ fontSize: 12, color: "#8b949e", marginTop: 12 }}>
+            No sign up required to explore the map.
+          </div>
+        </div>
+
+        <div
+          style={{
+            width: 580,
+            height: 336,
+            borderRadius: 12,
+            border: "1px solid #30363d",
+            overflow: "hidden",
+            boxShadow: "0 24px 48px rgba(0,0,0,0.4)",
+            backgroundColor: "#161b22",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            color: "#8b949e",
+            fontSize: 14
+          }}
+        >
+          Intelligence Map Preview
+        </div>
+      </section>
+
+      <section
+        style={{
+          backgroundColor: "#161b22",
+          borderTop: "1px solid #30363d",
+          borderBottom: "1px solid #30363d",
+          padding: 48,
+          display: "grid",
+          gridTemplateColumns: "repeat(4, 1fr)",
+          gap: 32
+        }}
+      >
+        {featureTiles.map((feature) => (
+          <div
+            key={feature.title}
+            style={{
+              backgroundColor: "#1c2128",
+              border: "1px solid #30363d",
+              borderRadius: 8,
+              padding: 24
+            }}
+          >
+            <div style={{ fontSize: 24, marginBottom: 12 }}>{feature.icon}</div>
+            <div
+              style={{
+                color: "#e6edf3",
+                fontSize: 15,
+                fontWeight: 600,
+                marginBottom: 8
+              }}
+            >
+              {feature.title}
+            </div>
+            <p style={{ color: "#8b949e", fontSize: 13, lineHeight: 1.6, margin: 0 }}>
+              {feature.text}
+            </p>
+          </div>
+        ))}
+      </section>
+
+      <section
+        style={{
+          backgroundColor: "#0d1117",
+          padding: "80px 48px",
+          textAlign: "center"
+        }}
+      >
+        <h2
+          style={{
+            fontSize: 32,
+            fontWeight: 700,
+            color: "#e6edf3",
+            margin: "0 0 8px"
+          }}
+        >
+          Simple, transparent pricing
+        </h2>
+        <p style={{ fontSize: 15, color: "#8b949e", margin: "0 0 48px" }}>
+          Start free. Upgrade when you need full intelligence.
+        </p>
+        <div
+          style={{
+            display: "grid",
+            gridTemplateColumns: "repeat(3, 1fr)",
+            gap: 24,
+            maxWidth: 960,
+            margin: "0 auto"
+          }}
+        >
+          {pricingCards.map((card) => (
+            <div
+              key={card.tier}
+              style={{
+                backgroundColor: "#161b22",
+                border: card.highlighted ? "2px solid #f0a500" : "1px solid #30363d",
+                borderRadius: 12,
+                padding: 32,
+                textAlign: "left",
+                position: "relative"
+              }}
+            >
+              {card.highlighted ? (
+                <div
+                  style={{
+                    backgroundColor: "#f0a500",
+                    color: "#0d1117",
+                    fontSize: 10,
+                    fontWeight: 700,
+                    padding: "3px 8px",
+                    borderRadius: 4,
+                    position: "absolute",
+                    top: 16,
+                    right: 16
+                  }}
+                >
+                  Most Popular
+                </div>
+              ) : null}
+              <div
+                style={{
+                  fontSize: 13,
+                  color: "#8b949e",
+                  fontWeight: 600,
+                  textTransform: "uppercase"
+                }}
+              >
+                {card.tier}
+              </div>
+              <div style={{ marginTop: 12, marginBottom: 20 }}>
+                <span
+                  style={{
+                    fontSize: 36,
+                    fontWeight: 800,
+                    color: card.highlighted ? "#f0a500" : "#e6edf3"
+                  }}
+                >
+                  {card.price}
+                </span>
+                <span style={{ color: "#8b949e", marginLeft: 6 }}>{card.per}</span>
+              </div>
+              <div style={{ borderTop: "1px solid #30363d", marginBottom: 20 }} />
+              <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+                {card.features.map((feature) => (
+                  <div
+                    key={feature}
+                    style={{ color: "#e6edf3", fontSize: 13, lineHeight: 1.5 }}
+                  >
+                    <span style={{ color: "#3fb950", marginRight: 8 }}>✓</span>
+                    {feature}
+                  </div>
+                ))}
+              </div>
+              <Link
+                href={card.href}
+                style={{
+                  ...(card.highlighted ? amberButtonStyle : ghostCtaStyle),
+                  width: "100%",
+                  justifyContent: "center",
+                  marginTop: 28
+                }}
+              >
+                {card.cta}
+              </Link>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      <footer
+        style={{
+          backgroundColor: "#161b22",
+          borderTop: "1px solid #30363d",
+          padding: "24px 48px",
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center"
+        }}
+      >
+        <div style={{ color: "#8b949e", fontSize: 12 }}>
+          ConstructionFront Intelligence
+        </div>
+        <div style={{ color: "#8b949e", fontSize: 12 }}>
+          © 2026 ConstructionFront. All rights reserved.
+        </div>
+      </footer>
+    </main>
   );
 }

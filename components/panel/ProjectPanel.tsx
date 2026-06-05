@@ -1,7 +1,7 @@
 "use client";
 
 import type { ProjectPartyRecord, ProjectRecord, ProjectSourceRecord } from "@/types/database";
-import { getStageColor } from "@/lib/utils";
+import { getStageBadgeStyle } from "@/lib/utils";
 
 export type ProjectPanelProps = {
   selectedProject: ProjectRecord;
@@ -29,18 +29,6 @@ const formatDate = (value?: string | null) => {
   });
 };
 
-const getStageBadgeStyles = (stage?: string | null) => {
-  const color = getStageColor(stage ?? undefined);
-
-  return {
-    backgroundColor: `${color}20`,
-    borderColor: color,
-    color,
-    borderWidth: 1,
-    borderStyle: "solid"
-  };
-};
-
 const getSummarySentences = (text?: string | null, sentenceCount = 2) => {
   if (!text) {
     return "No project description available.";
@@ -61,6 +49,24 @@ const truncate = (value?: string | null, maxLength = 40) => {
 
   return value.length > maxLength ? `${value.slice(0, maxLength)}…` : value;
 };
+
+function cleanCityArea(cityArea: string | null): string {
+  if (!cityArea) {
+    return "";
+  }
+
+  const stopWords = [" of ", " to ", " near ", " connecting", " approximately", ","];
+  let result = cityArea;
+
+  for (const word of stopWords) {
+    const index = result.indexOf(word);
+    if (index > 0) {
+      result = result.substring(0, index);
+    }
+  }
+
+  return result.trim().substring(0, 40);
+}
 
 const getPartyNames = (parties: ProjectPartyRecord[], category: string) => {
   return parties
@@ -110,7 +116,6 @@ const ProjectPanel = ({
 }: ProjectPanelProps) => {
   const imageUrl = selectedProject.projectImageUrl?.trim();
   const headerLabel = selectedProject.projectName ?? selectedProject.projectSlug;
-  const stageColor = getStageColor(selectedProject.currentProjectStage ?? undefined);
   const ownerDeveloper = getPartyNames(projectParties, "Developer / Owner");
   const publicAuthority = getPartyNames(projectParties, "Public Authority");
   const contractor = isContractorVisible(selectedProject)
@@ -121,7 +126,7 @@ const ProjectPanel = ({
   const locationParts = [
     selectedProject.country?.trim(),
     selectedProject.stateProvince?.trim(),
-    truncate(selectedProject.cityArea)
+    cleanCityArea(selectedProject.cityArea)
   ]
     .filter(Boolean)
     .join(" / ");
@@ -129,9 +134,24 @@ const ProjectPanel = ({
   const cfArticles = projectSources.filter(
     (source) => source.sourceType?.trim().toLowerCase() === "cf article"
   );
+  const keyDetails = [
+    { label: "Owner / Developer", value: ownerDeveloper },
+    { label: "Public Authority", value: publicAuthority },
+    { label: "Main Contractor", value: contractor },
+    { label: "Scale / Size", value: scaleSize },
+    { label: "Est. Project Value", value: projectValue },
+    { label: "Location", value: locationParts }
+  ].filter((detail) => detail.value);
 
   return (
-    <aside className="h-full overflow-y-auto" style={{ backgroundColor: 'var(--secondary-bg)', borderLeft: '1px solid var(--border)' }}>
+    <div
+      style={{
+        display: 'flex',
+        flexDirection: 'column',
+        flex: 1,
+        backgroundColor: '#161b22'
+      }}
+    >
       <div style={{ position: 'relative' }}>
         <button
           type="button"
@@ -143,38 +163,45 @@ const ProjectPanel = ({
         </button>
       </div>
 
-      <div style={{ height: 180, width: '100%', overflow: 'hidden', backgroundColor: 'var(--secondary-bg)' }}>
+      <div style={{ height: 140, width: '100%', overflow: 'hidden', backgroundColor: 'var(--secondary-bg)', flexShrink: 0 }}>
         {imageUrl ? (
           <img
             src={imageUrl}
             alt={selectedProject.projectName ?? "Project image"}
-            style={{ width: '100%', height: 180, objectFit: 'cover', display: 'block' }}
+            style={{ width: '100%', height: 140, objectFit: 'cover', display: 'block' }}
           />
         ) : (
-          <div style={{ height: 180, display: 'flex', alignItems: 'center', justifyContent: 'center', backgroundColor: '#1b2736', color: '#64748b' }}>
+          <div style={{ height: 140, display: 'flex', alignItems: 'center', justifyContent: 'center', backgroundColor: '#1b2736', color: '#64748b' }}>
             <span>No image available</span>
           </div>
         )}
       </div>
 
-      <div style={{ padding: 16 }}>
+      <div
+        style={{
+          padding: 16,
+          display: 'flex',
+          flexDirection: 'column',
+          flex: 1
+        }}
+      >
         <div style={{ marginBottom: 12 }}>
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 8 }}>
             <div>
-              <h1 style={{ color: 'var(--text)', fontWeight: 600, fontSize: 16, margin: 0 }}>
+              <h1 style={{ color: 'var(--text)', fontWeight: 600, fontSize: 14, margin: 0 }}>
                 {headerLabel}
               </h1>
               <div style={{ marginTop: 8 }}>
                 <span
                   style={{
                     display: 'inline-flex',
-                    padding: '4px 10px',
+                    padding: '2px 6px',
                     borderRadius: 999,
                     fontSize: 10,
                     fontWeight: 500,
                     textTransform: 'uppercase',
                     letterSpacing: '0.06em',
-                    ...getStageBadgeStyles(selectedProject.currentProjectStage)
+                    ...getStageBadgeStyle(selectedProject.currentProjectStage)
                   }}
                 >
                   {selectedProject.currentProjectStage ?? "Stage unknown"}
@@ -199,65 +226,46 @@ const ProjectPanel = ({
           </div>
         </div>
 
-        <section style={{ borderRadius: 8, border: '1px solid var(--border)', backgroundColor: 'var(--secondary-bg)', padding: 12, marginBottom: 12 }}>
+        <section style={{ borderRadius: 8, border: '1px solid var(--border)', backgroundColor: 'var(--card-bg)', padding: 12, marginBottom: 12 }}>
           <div style={{ marginBottom: 8, color: 'var(--amber)', fontSize: 10, fontWeight: 600, letterSpacing: '0.08em' }}>
             ABOUT THIS PROJECT
           </div>
-          <p style={{ color: '#cbd5e1', fontSize: 13, lineHeight: 1.6, margin: 0 }}>
-            {getSummarySentences(selectedProject.projectDescription)}
+          <p
+            style={{
+              color: '#cbd5e1',
+              fontSize: 13,
+              lineHeight: 1.6,
+              margin: 0
+            }}
+          >
+            {selectedProject.projectDescription?.trim() || "No project description available."}
           </p>
         </section>
 
-        <section style={{ borderRadius: 8, border: '1px solid var(--border)', backgroundColor: 'var(--secondary-bg)', padding: 12, marginBottom: 12 }}>
+        <section style={{ borderRadius: 8, border: '1px solid var(--border)', backgroundColor: 'var(--card-bg)', padding: 12, marginBottom: 12 }}>
           <div style={{ marginBottom: 8, color: 'var(--amber)', fontSize: 10, fontWeight: 600, letterSpacing: '0.08em' }}>
             KEY DETAILS
           </div>
           <div style={{ display: 'grid', gap: 10 }}>
-            {ownerDeveloper ? (
-              <div>
-                <p style={{ color: 'var(--muted)', fontSize: 10, margin: 0, textTransform: 'uppercase' }}>Owner / Developer</p>
-                <p style={{ color: 'var(--text)', fontSize: 13, margin: '6px 0 0' }}>{ownerDeveloper}</p>
+            {keyDetails.map((detail) => (
+              <div key={detail.label}>
+                <p style={{ color: 'var(--muted)', fontSize: 10, margin: 0, textTransform: 'uppercase' }}>{detail.label}</p>
+                <p style={{ color: 'var(--text)', fontSize: 13, margin: '6px 0 0' }}>{detail.value}</p>
               </div>
-            ) : null}
-
-            {publicAuthority ? (
-              <div>
-                <p style={{ color: 'var(--muted)', fontSize: 10, margin: 0, textTransform: 'uppercase' }}>Public Authority</p>
-                <p style={{ color: 'var(--text)', fontSize: 13, margin: '6px 0 0' }}>{publicAuthority}</p>
-              </div>
-            ) : null}
-
-            {contractor ? (
-              <div>
-                <p style={{ color: 'var(--muted)', fontSize: 10, margin: 0, textTransform: 'uppercase' }}>Main Contractor</p>
-                <p style={{ color: 'var(--text)', fontSize: 13, margin: '6px 0 0' }}>{contractor}</p>
-              </div>
-            ) : null}
-
-            {scaleSize ? (
-              <div>
-                <p style={{ color: 'var(--muted)', fontSize: 10, margin: 0, textTransform: 'uppercase' }}>Scale / Size</p>
-                <p style={{ color: 'var(--text)', fontSize: 13, margin: '6px 0 0' }}>{scaleSize}</p>
-              </div>
-            ) : null}
-
-            {projectValue ? (
-              <div>
-                <p style={{ color: 'var(--muted)', fontSize: 10, margin: 0, textTransform: 'uppercase' }}>Est. Project Value</p>
-                <p style={{ color: 'var(--text)', fontSize: 13, margin: '6px 0 0' }}>{projectValue}</p>
-              </div>
-            ) : null}
-
-            {locationParts ? (
-              <div>
-                <p style={{ color: 'var(--muted)', fontSize: 10, margin: 0, textTransform: 'uppercase' }}>Location</p>
-                <p style={{ color: 'var(--text)', fontSize: 13, margin: '6px 0 0' }}>{locationParts}</p>
-              </div>
-            ) : null}
+            ))}
           </div>
         </section>
 
-        <section style={{ borderRadius: 12, border: '1px solid #334155', backgroundColor: '#1e293b', padding: 12 }}>
+        <section
+          style={{
+            borderRadius: 8,
+            border: '1px solid #30363d',
+            backgroundColor: '#1c2128',
+            padding: 16,
+            marginBottom: 12,
+            flex: 1
+          }}
+        >
           <div style={{ marginBottom: 8, color: '#f59e0b', fontSize: 11, fontWeight: 700, letterSpacing: '0.06em' }}>
             CONSTRUCTIONFRONT COVERAGE
           </div>
@@ -270,7 +278,7 @@ const ProjectPanel = ({
           ) : (
             <div style={{ display: 'grid', gap: 12 }}>
               {cfArticles.map((source) => (
-                <article key={source.sourceId} style={{ borderRadius: 8, border: '1px solid #334155', backgroundColor: '#1e293b', padding: 12 }}>
+                <article key={source.sourceId} style={{ borderRadius: 8, border: '1px solid #30363d', backgroundColor: '#1c2128', padding: 12 }}>
                   <div style={{ marginBottom: 6, display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 8, color: '#94a3b8', fontSize: 11, textTransform: 'uppercase' }}>
                     <span>{formatDate(source.publicationDate)}</span>
                     <span style={{ background: 'transparent', padding: '4px 8px', borderRadius: 999, color: '#94a3b8' }}>CF Article</span>
@@ -296,7 +304,7 @@ const ProjectPanel = ({
           )}
         </section>
       </div>
-    </aside>
+    </div>
   );
 };
 
