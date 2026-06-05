@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import { useAuth } from "@clerk/nextjs";
 import type { ProjectRecord, ProjectPartyRecord, ProjectSourceRecord, ProjectMilestoneRecord } from "@/types/database";
 import ProjectIntelligenceTab from "./tabs/ProjectIntelligenceTab";
 import TimelinesTab from "./tabs/TimelinesTab";
@@ -27,8 +26,7 @@ export default function PremiumTabsShell({
   allProjects,
   onProjectSelect
 }: PremiumTabsShellProps) {
-  const { isSignedIn } = useAuth();
-  const isAuthenticated = isSignedIn ?? false;
+  const isAuthenticated = false;
   const [activeTab, setActiveTab] = useState<
     "project" | "timelines" | "market" | "related" | "sources" | "report"
   >("project");
