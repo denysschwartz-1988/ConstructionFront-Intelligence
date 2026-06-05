@@ -272,7 +272,7 @@ export default function ProjectReportTab({
                 Get notified when Project Reports launch
               </div>
               <div style={{ color: "#8b949e", fontSize: 12 }}>
-                We'll let you know as soon as PDF export is available.
+                We&apos;ll let you know as soon as PDF export is available.
               </div>
             </div>
             <button
