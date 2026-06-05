@@ -26,7 +26,7 @@ export default function PremiumTabsShell({
   allProjects,
   onProjectSelect
 }: PremiumTabsShellProps) {
-  const isAuthenticated = false;
+  const isAuthenticated = true;
   const [activeTab, setActiveTab] = useState<
     "project" | "timelines" | "market" | "related" | "sources" | "report"
   >("project");
