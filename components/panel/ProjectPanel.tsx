@@ -1,7 +1,8 @@
 "use client";
 
 import type { ProjectPartyRecord, ProjectRecord, ProjectSourceRecord } from "@/types/database";
-import { getStageBadgeStyle } from "@/lib/utils";
+import { cleanCityArea, getStageBadgeStyle } from "@/lib/utils";
+import { rowLabelStyle, rowValueStyle, sectionLabelStyle } from "@/lib/styles";
 
 export type ProjectPanelProps = {
   selectedProject: ProjectRecord;
@@ -10,6 +11,17 @@ export type ProjectPanelProps = {
   onClose: () => void;
   isLoading?: boolean;
   error?: string | null;
+};
+
+const systemFont =
+  "-apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, 'Helvetica Neue', Arial, sans-serif";
+
+const panelCardStyle = {
+  backgroundColor: "#161b22",
+  border: "1px solid #21262d",
+  borderRadius: 6,
+  padding: 10,
+  marginBottom: 8
 };
 
 const formatDate = (value?: string | null) => {
@@ -49,24 +61,6 @@ const truncate = (value?: string | null, maxLength = 40) => {
 
   return value.length > maxLength ? `${value.slice(0, maxLength)}…` : value;
 };
-
-function cleanCityArea(cityArea: string | null): string {
-  if (!cityArea) {
-    return "";
-  }
-
-  const stopWords = [" of ", " to ", " near ", " connecting", " approximately", ","];
-  let result = cityArea;
-
-  for (const word of stopWords) {
-    const index = result.indexOf(word);
-    if (index > 0) {
-      result = result.substring(0, index);
-    }
-  }
-
-  return result.trim().substring(0, 40);
-}
 
 const getPartyNames = (parties: ProjectPartyRecord[], category: string) => {
   return parties
@@ -146,10 +140,12 @@ const ProjectPanel = ({
   return (
     <div
       style={{
+        fontFamily: systemFont,
+        fontSize: 13,
         display: 'flex',
         flexDirection: 'column',
         flex: 1,
-        backgroundColor: '#161b22'
+        backgroundColor: '#0d1117'
       }}
     >
       <div style={{ position: 'relative' }}>
@@ -163,15 +159,15 @@ const ProjectPanel = ({
         </button>
       </div>
 
-      <div style={{ height: 140, width: '100%', overflow: 'hidden', backgroundColor: 'var(--secondary-bg)', flexShrink: 0 }}>
+      <div style={{ height: 160, width: '100%', overflow: 'hidden', backgroundColor: 'var(--secondary-bg)', flexShrink: 0 }}>
         {imageUrl ? (
           <img
             src={imageUrl}
             alt={selectedProject.projectName ?? "Project image"}
-            style={{ width: '100%', height: 140, objectFit: 'cover', display: 'block' }}
+            style={{ width: '100%', height: 160, objectFit: 'cover', display: 'block' }}
           />
         ) : (
-          <div style={{ height: 140, display: 'flex', alignItems: 'center', justifyContent: 'center', backgroundColor: '#1b2736', color: '#64748b' }}>
+          <div style={{ height: 160, display: 'flex', alignItems: 'center', justifyContent: 'center', backgroundColor: '#1b2736', color: '#64748b' }}>
             <span>No image available</span>
           </div>
         )}
@@ -179,28 +175,36 @@ const ProjectPanel = ({
 
       <div
         style={{
-          padding: 16,
+          padding: 12,
           display: 'flex',
           flexDirection: 'column',
           flex: 1
         }}
       >
-        <div style={{ marginBottom: 12 }}>
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 8 }}>
+        <div style={{ marginBottom: 8 }}>
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 6 }}>
             <div>
-              <h1 style={{ color: 'var(--text)', fontWeight: 600, fontSize: 14, margin: 0 }}>
+              <h1
+                style={{
+                  color: '#e6edf3',
+                  fontWeight: 700,
+                  fontSize: 16,
+                  margin: '0 0 6px',
+                  lineHeight: 1.3
+                }}
+              >
                 {headerLabel}
               </h1>
-              <div style={{ marginTop: 8 }}>
+              <div>
                 <span
                   style={{
-                    display: 'inline-flex',
-                    padding: '2px 6px',
-                    borderRadius: 999,
                     fontSize: 10,
-                    fontWeight: 500,
-                    textTransform: 'uppercase',
+                    fontWeight: 600,
+                    padding: '2px 8px',
+                    borderRadius: 4,
+                    display: 'inline-block',
                     letterSpacing: '0.06em',
+                    textTransform: 'uppercase',
                     ...getStageBadgeStyle(selectedProject.currentProjectStage)
                   }}
                 >
@@ -210,29 +214,29 @@ const ProjectPanel = ({
             </div>
           </div>
 
-          <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8, marginTop: 12 }}>
+          <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6, marginTop: 10 }}>
             {selectedProject.country ? (
-              <span style={{ background: '#21262d', padding: '6px 10px', borderRadius: 999, color: 'var(--text)', fontSize: 11, border: '1px solid var(--border)' }}>{selectedProject.country}</span>
+              <span style={{ backgroundColor: 'transparent', border: '1px solid #30363d', borderRadius: 4, padding: '3px 8px', color: '#8b949e', fontSize: 11 }}>{selectedProject.country}</span>
             ) : null}
             {selectedProject.region ? (
-              <span style={{ background: '#21262d', padding: '6px 10px', borderRadius: 999, color: 'var(--text)', fontSize: 11, border: '1px solid var(--border)' }}>{selectedProject.region}</span>
+              <span style={{ backgroundColor: 'transparent', border: '1px solid #30363d', borderRadius: 4, padding: '3px 8px', color: '#8b949e', fontSize: 11 }}>{selectedProject.region}</span>
             ) : null}
             {selectedProject.sector ? (
-              <span style={{ background: '#21262d', padding: '6px 10px', borderRadius: 999, color: 'var(--text)', fontSize: 11, border: '1px solid var(--border)' }}>{selectedProject.sector}</span>
+              <span style={{ backgroundColor: 'transparent', border: '1px solid #30363d', borderRadius: 4, padding: '3px 8px', color: '#8b949e', fontSize: 11 }}>{selectedProject.sector}</span>
             ) : null}
             {selectedProject.subsector ? (
-              <span style={{ background: '#21262d', padding: '6px 10px', borderRadius: 999, color: 'var(--text)', fontSize: 11, border: '1px solid var(--border)' }}>{selectedProject.subsector}</span>
+              <span style={{ backgroundColor: 'transparent', border: '1px solid #30363d', borderRadius: 4, padding: '3px 8px', color: '#8b949e', fontSize: 11 }}>{selectedProject.subsector}</span>
             ) : null}
           </div>
         </div>
 
-        <section style={{ borderRadius: 8, border: '1px solid var(--border)', backgroundColor: 'var(--card-bg)', padding: 12, marginBottom: 12 }}>
-          <div style={{ marginBottom: 8, color: 'var(--amber)', fontSize: 10, fontWeight: 600, letterSpacing: '0.08em' }}>
+        <section style={panelCardStyle}>
+          <div style={sectionLabelStyle}>
             ABOUT THIS PROJECT
           </div>
           <p
             style={{
-              color: '#cbd5e1',
+              color: '#e6edf3',
               fontSize: 13,
               lineHeight: 1.6,
               margin: 0
@@ -242,15 +246,37 @@ const ProjectPanel = ({
           </p>
         </section>
 
-        <section style={{ borderRadius: 8, border: '1px solid var(--border)', backgroundColor: 'var(--card-bg)', padding: 12, marginBottom: 12 }}>
-          <div style={{ marginBottom: 8, color: 'var(--amber)', fontSize: 10, fontWeight: 600, letterSpacing: '0.08em' }}>
+        <section style={panelCardStyle}>
+          <div style={sectionLabelStyle}>
             KEY DETAILS
           </div>
-          <div style={{ display: 'grid', gap: 10 }}>
+          <div>
             {keyDetails.map((detail) => (
-              <div key={detail.label}>
-                <p style={{ color: 'var(--muted)', fontSize: 10, margin: 0, textTransform: 'uppercase' }}>{detail.label}</p>
-                <p style={{ color: 'var(--text)', fontSize: 13, margin: '6px 0 0' }}>{detail.value}</p>
+              <div
+                key={detail.label}
+                style={{
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  alignItems: 'flex-start',
+                  padding: '5px 0',
+                  borderBottom: '1px solid #21262d'
+                }}
+              >
+                <span
+                  style={{
+                    ...rowLabelStyle,
+                    paddingRight: 8
+                  }}
+                >
+                  {detail.label}
+                </span>
+                <span
+                  style={{
+                    ...rowValueStyle
+                  }}
+                >
+                  {detail.value}
+                </span>
               </div>
             ))}
           </div>
@@ -258,15 +284,11 @@ const ProjectPanel = ({
 
         <section
           style={{
-            borderRadius: 8,
-            border: '1px solid #30363d',
-            backgroundColor: '#1c2128',
-            padding: 16,
-            marginBottom: 12,
+            ...panelCardStyle,
             flex: 1
           }}
         >
-          <div style={{ marginBottom: 8, color: '#f59e0b', fontSize: 11, fontWeight: 700, letterSpacing: '0.06em' }}>
+          <div style={sectionLabelStyle}>
             CONSTRUCTIONFRONT COVERAGE
           </div>
           {error ? (
@@ -274,33 +296,39 @@ const ProjectPanel = ({
           ) : isLoading ? (
             <p style={{ color: '#94a3b8' }}>Loading coverage…</p>
           ) : cfArticles.length === 0 ? (
-            <p style={{ color: '#94a3b8' }}>No coverage recorded yet.</p>
+            <p style={{ color: '#8b949e', fontSize: 12 }}>No coverage recorded yet.</p>
           ) : (
-            <div style={{ display: 'grid', gap: 12 }}>
+            <>
+              <div style={{ display: 'flex', overflowX: 'auto', gap: 10, paddingBottom: 6, scrollbarWidth: 'thin', scrollbarColor: '#30363d #161b22' }}>
               {cfArticles.map((source) => (
-                <article key={source.sourceId} style={{ borderRadius: 8, border: '1px solid #30363d', backgroundColor: '#1c2128', padding: 12 }}>
-                  <div style={{ marginBottom: 6, display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 8, color: '#94a3b8', fontSize: 11, textTransform: 'uppercase' }}>
-                    <span>{formatDate(source.publicationDate)}</span>
-                    <span style={{ background: 'transparent', padding: '4px 8px', borderRadius: 999, color: '#94a3b8' }}>CF Article</span>
+                <div key={source.sourceId} style={{ minWidth: 220, maxWidth: 220, backgroundColor: '#1c2128', borderLeft: '3px solid #f0a500', borderRadius: '0 6px 6px 0', padding: 10, flexShrink: 0 }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 6 }}>
+                    <span style={{ color: '#8b949e', fontSize: 10 }}>{formatDate(source.publicationDate)}</span>
+                    <span style={{ backgroundColor: 'rgba(240,165,0,0.15)', color: '#f0a500', fontSize: 9, fontWeight: 600, padding: '1px 5px', borderRadius: 3 }}>CF Article</span>
                   </div>
-                  <h2 style={{ marginBottom: 6, color: '#ffffff', fontSize: 14, fontWeight: 700 }}>{source.sourceTitle ?? "ConstructionFront coverage"}</h2>
-                  <p style={{ marginBottom: 8, color: '#cbd5e1', fontSize: 13, lineHeight: 1.6 }}>{source.summary ?? "No summary available."}</p>
+                  <div style={{ color: '#e6edf3', fontSize: 11, fontWeight: 600, marginBottom: 4, lineHeight: 1.3, display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>{source.sourceTitle ?? "ConstructionFront coverage"}</div>
                   {source.milestoneConfirmed ? (
-                    <p style={{ marginBottom: 8, color: '#94a3b8', fontSize: 12, textTransform: 'uppercase' }}>{source.milestoneConfirmed}</p>
+                    <div style={{ color: '#f0a500', fontSize: 9, fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: 4 }}>{source.milestoneConfirmed}</div>
                   ) : null}
                   {source.sourceUrl ? (
                     <a
                       href={source.sourceUrl}
                       target="_blank"
                       rel="noreferrer"
-                      style={{ color: '#f59e0b', fontWeight: 700 }}
+                      style={{ color: '#f0a500', fontSize: 10, fontWeight: 600, textDecoration: 'none' }}
                     >
-                      Read on ConstructionFront.com →
+                      Read on CF.com {"\u2192"}
                     </a>
                   ) : null}
-                </article>
+                </div>
               ))}
-            </div>
+              </div>
+              {cfArticles.length > 1 ? (
+                <div style={{ color: '#8b949e', fontSize: 10, marginTop: 4, textAlign: 'right' }}>
+                  {cfArticles.length} articles {"\u2014"} scroll to see more {"\u2192"}
+                </div>
+              ) : null}
+            </>
           )}
         </section>
       </div>

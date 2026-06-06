@@ -1,0 +1,235 @@
+You are the editor of ConstructionFront's weekly infrastructure and construction intelligence brief.
+
+Your job is to turn structured ConstructionFront project records into a concise, commercially useful newsletter. The output should feel like an intelligence brief, not a list of links.
+
+Editorial objective:
+- Explain what changed this week.
+- Explain why those changes matter.
+- Connect this week's coverage to recent ConstructionFront coverage from the last 60 days where there is a real editorial relationship.
+- Use evergreen ConstructionFront Knowledge Hub links naturally inside the prose when they clarify terms, contract models, claims concepts, delivery structures or project-development milestones.
+- Keep the brief succinct. Prefer a few useful signals over broad commentary.
+
+Tone:
+- Professional, practical and commercially aware.
+- Clear enough for contractors, consultants, suppliers, investors and owner-side readers.
+- Analytical, but not overconfident.
+- Avoid hype, vague macro claims and unsupported causality.
+- Use "suggests", "points to", "fits with", "is relevant to" when the connection is inferential.
+- Use stronger wording only when the supplied records directly support it.
+
+Market Readout logic:
+- Identify the leading sectors, regions, project stages and named contractors in the weekly records.
+- Interpret whether the week is more about early-stage development, financing/FID, procurement, contract awards, construction progress or operational movement.
+- Explain what that means for market participants.
+- If contract awards dominate, focus on delivery teams forming and follow-on package opportunities.
+- If FID/procurement dominates, focus on upcoming tendering and positioning.
+- If early development dominates, focus on monitoring approvals, financing and owner-side moves.
+
+Connected Context logic:
+- First prefer same-project or parent-project links from the last 60 days.
+- Then look for same owner/developer, client authority, contractor or JV.
+- Then look for same sector plus same region.
+- Then look for similar milestone sequences, such as FID followed by EPC/EPCI award, RFQ followed by shortlist, award followed by NTP, or financing followed by procurement.
+- Do not imply one article caused another. Phrase connections as editorial context.
+
+Evergreen link policy:
+- Evergreen links should appear naturally inside sentences, not as a dumped reading list.
+- Link terms such as FID, EPC, EPCI, EPCM, procurement, PPP, Balance of Plant, Notice to Proceed, EOT, delay, variation, RFI, time bar, FEED and contract administration only where they help the reader.
+- Use at most a few evergreen links per section.
+- Do not link every possible term.
+
+Map rationale:
+- The map is used to show where contract awards landed this week.
+- It should support geographic pattern recognition, not replace the project list.
+- If multiple awards cluster in one region, mention that in the award or market interpretation.
+
+Output structure:
+1. Weekly snapshot
+2. Market Readout
+3. Connected Context
+4. Contract Awards Map
+5. Top Project Updates
+6. Signals To Watch
+
+Guardrails:
+- Do not invent values, contractors, dates, financing status or causal relationships.
+- Do not mention data gaps unless they materially affect the interpretation.
+- If a connection is weak, omit it or phrase it as a related signal.
+- Always link back to ConstructionFront articles where URLs are provided.
+
+---
+
+WEEKLY DATA PACK
+
+Source: Supabase
+Week: 2026-05-27 to 2026-06-02
+Weekly update count: 19
+Contract award count: 9
+
+WEEKLY PROJECT RECORDS
+
+1. Second Avenue Subway Phase II
+Location: Manhattan, New York, United States
+Sector: Transport / Rail / Metro / LRT
+Stage: Under Construction
+Latest update: N/A
+Article: N/A
+
+2. Second Avenue Subway Phase II 106th Street Station Package
+Location: Manhattan, New York, United States
+Sector: Transport / Rail / Metro / LRT
+Stage: Contract Awarded
+Latest update: Skanska, Traylor Bros. and Walsh Construction signed a USD 1.02 billion design-build contract with MTA for the 106th Street Station structural package in Second Avenue Subway Phase II.
+Article: https://constructionfront.com/2026-06-02-skanska-traylor-walsh-jv-awarded-1-02b-second-avenue-subway-phase-ii-contract-in-new-york/
+
+3. Paraiba Sanitation PPP
+Location: Alto Piranhas and Litoral microregions, Paraiba, Brazil
+Sector: Water / Wastewater
+Stage: Contract Awarded
+Latest update: ACCIONA won the Paraiba sanitation PPP auction on 15 May 2026 through Consorcio Acciona Agua Saneamento Paraiba. The award covers sewage service expansion, modernisation and operation across 85 municipalities under a long-term administrative concession.
+Article: https://constructionfront.com/2026-05-20-acciona-awarded-724m-sanitation-ppp-for-85-municipalities-in-paraiba-brazil/
+
+4. Centre Manche 2 Offshore Wind Project
+Location: Bay of Seine, more than 40 km off the Normandy coast, Normandy, France
+Sector: Energy / Wind — Offshore
+Stage: Under Development
+Latest update: Centre Manche Energies filed the Single Authorization application for the 1.5 GW Centre Manche 2 offshore wind farm in May 2026. The filing moves the project into the next government examination and permitting phase ahead of FID targeted for early 2029.
+Article: https://constructionfront.com/2026-06-01-totalenergies-files-authorization-for-1-5gw-centre-manche-offshore-wind-project-in-france/
+
+5. Windsor Woods, Princess Anne Plaza and The Lakes Stormwater Improvements
+Location: Virginia Beach, Virginia, United States
+Sector: Water / Water Supply
+Stage: Under Construction
+Latest update: FlatironDragados announced on 2026-05-13 that the USD 518 million project had advanced into construction following a two-year preconstruction phase with the City of Virginia Beach and Arcadis.
+Article: https://constructionfront.com/2026-05-20-flatirondragados-advances-to-construction-phase-of-518m-virginia-beach-resiliency-project/
+
+6. Eagle Springs Solar & BESS Project
+Location: Lake Creek, Delta County, Texas, United States
+Sector: Energy / Solar
+Stage: Under Construction
+Latest update: Sunraycer closed USD 901 million in portfolio financing on 2026-05-14 to support construction and operation of Eagle Springs, Lupinus 1 and Lupinus 2.
+Article: https://constructionfront.com/2026-05-16-sunraycer-closes-901-million-financing-for-eagle-springs-and-lupinus-solar-storage-projects-in-texas/
+
+7. Lupinus 1 Solar & BESS Project
+Location: Hagansport, Franklin County, Texas, United States
+Sector: Energy / Solar
+Stage: Under Construction
+Latest update: Sunraycer closed USD 901 million in portfolio financing on 2026-05-14 to support construction and operation of Lupinus 1, Lupinus 2 and Eagle Springs.
+Article: https://constructionfront.com/2026-05-16-sunraycer-closes-901-million-financing-for-eagle-springs-and-lupinus-solar-storage-projects-in-texas/
+
+8. Lupinus 2 Solar & BESS Project
+Location: Hagansport, Franklin County, Texas, United States
+Sector: Energy / Solar
+Stage: Under Construction
+Latest update: Sunraycer closed USD 901 million in portfolio financing on 2026-05-14 to support construction and operation of Lupinus 2, Lupinus 1 and Eagle Springs.
+Article: https://constructionfront.com/2026-05-16-sunraycer-closes-901-million-financing-for-eagle-springs-and-lupinus-solar-storage-projects-in-texas/
+
+9. Zeevonk Offshore Wind Project
+Location: 63 km to 84 km offshore from Bergen aan Zee, Dutch North Sea, Netherlands
+Sector: Energy / Wind — Offshore
+Stage: Contract Awarded
+Latest update: N/A
+Article: N/A
+
+10. Zeevonk Inter-Array Cable Package
+Location: 63 km to 84 km offshore from Bergen aan Zee, Dutch North Sea, Netherlands
+Sector: Energy / Wind — Offshore
+Stage: Contract Awarded
+Latest update: Vattenfall and Copenhagen Infrastructure Partners awarded TKF the inter-array cable contract for Zeevonk phase 1 on 2026-05-11, confirming approximately 162 km of 66 kV cable scope.
+Article: https://constructionfront.com/2026-05-16-tkf-awarded-inter-array-cable-contract-for-1gw-zeevonk-offshore-wind-project-in-the-netherlands/
+
+11. The Wave Stage 1 Rail Project
+Location: Beerwah to Caloundra, Sunshine Coast, Queensland, Australia
+Sector: Transport / Rail / Metro / LRT
+Stage: Contract Awarded
+Latest update: N/A
+Article: N/A
+
+12. The Wave Stage 1 Brownfield Package
+Location: Beerwah, Sunshine Coast, Queensland, Australia
+Sector: Transport / Rail / Metro / LRT
+Stage: Contract Awarded
+Latest update: On 2026-05-31, the Australian and Queensland governments announced Beerwah Coast Connect as design and pre-construction delivery partner for The Wave Stage 1 Brownfield Package.
+Article: https://constructionfront.com/2026-06-01-beerwah-coast-connect-and-coastaltrax-awarded-the-wave-stage-1-rail-contracts-in-queensland/
+
+CONTRACT AWARDS TO MAP
+
+1. Second Avenue Subway Phase II 106th Street Station Package | Manhattan, New York, United States | Transport | https://constructionfront.com/2026-06-02-skanska-traylor-walsh-jv-awarded-1-02b-second-avenue-subway-phase-ii-contract-in-new-york/
+2. Paraiba Sanitation PPP | Alto Piranhas and Litoral microregions, Paraiba, Brazil | Water | https://constructionfront.com/2026-05-20-acciona-awarded-724m-sanitation-ppp-for-85-municipalities-in-paraiba-brazil/
+3. Zeevonk Offshore Wind Project | 63 km to 84 km offshore from Bergen aan Zee, Dutch North Sea, Netherlands | Energy | N/A
+4. Zeevonk Inter-Array Cable Package | 63 km to 84 km offshore from Bergen aan Zee, Dutch North Sea, Netherlands | Energy | https://constructionfront.com/2026-05-16-tkf-awarded-inter-array-cable-contract-for-1gw-zeevonk-offshore-wind-project-in-the-netherlands/
+5. The Wave Stage 1 Rail Project | Beerwah to Caloundra, Sunshine Coast, Queensland, Australia | Transport | N/A
+6. The Wave Stage 1 Brownfield Package | Beerwah, Sunshine Coast, Queensland, Australia | Transport | https://constructionfront.com/2026-06-01-beerwah-coast-connect-and-coastaltrax-awarded-the-wave-stage-1-rail-contracts-in-queensland/
+7. The Wave Stage 1 Greenfield 1 Package | Beerwah East to Caloundra, Sunshine Coast, Queensland, Australia | Transport | https://constructionfront.com/2026-06-01-beerwah-coast-connect-and-coastaltrax-awarded-the-wave-stage-1-rail-contracts-in-queensland/
+8. The Wave Stage 1 ETCS Signalling Package | Beerwah to Caloundra, Sunshine Coast, Queensland, Australia | Transport | https://constructionfront.com/2026-06-01-beerwah-coast-connect-and-coastaltrax-awarded-the-wave-stage-1-rail-contracts-in-queensland/
+9. South West Arkansas Central Processing Facility EPCC Package | Southern Arkansas / Smackover Formation, Arkansas, United States | Mining and Resources | https://constructionfront.com/2026-05-27-smackover-lithium-awards-epcc-contract-to-sb-for-22500tpa-south-west-arkansas-lithium-project-ahead-of-fid/
+
+RECENT 60-DAY CONSTRUCTIONFRONT CONTEXT SOURCES
+
+1. Skanska-Traylor-Walsh JV Awarded $1.02B Second Avenue Subway Phase II Contract in New York | 2026-06-02 | https://constructionfront.com/2026-06-02-skanska-traylor-walsh-jv-awarded-1-02b-second-avenue-subway-phase-ii-contract-in-new-york/
+2. Skanska-Traylor-Walsh JV Awarded $1.02B Second Avenue Subway Phase II Contract in New York | 2026-06-02 | https://constructionfront.com/2026-06-02-skanska-traylor-walsh-jv-awarded-1-02b-second-avenue-subway-phase-ii-contract-in-new-york/
+3. TotalEnergies Files Authorization for 1.5GW Centre Manche Offshore Wind Project in France | 2026-06-01 | https://constructionfront.com/2026-06-01-totalenergies-files-authorization-for-1-5gw-centre-manche-offshore-wind-project-in-france/
+4. The Wave Stage 1 Rail Contracts Awarded in Queensland | 2026-06-01 | https://constructionfront.com/2026-06-01-beerwah-coast-connect-and-coastaltrax-awarded-the-wave-stage-1-rail-contracts-in-queensland/
+5. Beerwah Coast Connect and CoastalTraX Awarded The Wave Stage 1 Rail Contracts in Queensland | 2026-06-01 | https://constructionfront.com/2026-06-01-beerwah-coast-connect-and-coastaltrax-awarded-the-wave-stage-1-rail-contracts-in-queensland/
+6. Beerwah Coast Connect and CoastalTraX Awarded The Wave Stage 1 Rail Contracts in Queensland | 2026-06-01 | https://constructionfront.com/2026-06-01-beerwah-coast-connect-and-coastaltrax-awarded-the-wave-stage-1-rail-contracts-in-queensland/
+7. Beerwah Coast Connect and CoastalTraX Awarded The Wave Stage 1 Rail Contracts in Queensland | 2026-06-01 | https://constructionfront.com/2026-06-01-beerwah-coast-connect-and-coastaltrax-awarded-the-wave-stage-1-rail-contracts-in-queensland/
+8. ACE Power's 620MW Morwell BESS Receives Victorian Planning Permit Approval | 2026-05-30 | https://constructionfront.com/2026-05-30-victorian-minister-approves-planning-permit-for-ace-powers-620mw-morwell-battery-in-victoria/
+9. Cheniere Partners Signs USD 4.69 Billion EPC Contract with Bechtel and Issues LNTP for Sabine Pass Train 7 | 2026-05-29 | https://constructionfront.com/2026-05-29-cheniere-partners-signs-4-69-billion-epc-contract-with-bechtel-and-issues-lntp-for-sabine-pass-train-7/
+10. MetroLink Launches EUR 7.3 Billion M500 PPP for Trains, Stations and 25-Year Operations in Dublin | 2026-05-28 | https://constructionfront.com/2026-05-28-metrolink-launches-eur-7-3-billion-m500-ppp-for-trains-stations-and-25-year-operations-in-dublin/
+11. AtkinsRealis Appointed to EDF and Sizewell C Professional Services Framework Across UK Nuclear Portfolio | 2026-05-27 | https://constructionfront.com/2026-05-27-atkinsrealis-appointed-to-edf-and-sizewell-c-professional-services-framework-across-uk-nuclear-portfolio/
+12. Smackover Lithium Awards EPCC Contract to S&B for 22,500tpa South West Arkansas Lithium Project Ahead of FID | 2026-05-27 | https://constructionfront.com/2026-05-27-smackover-lithium-awards-epcc-contract-to-sb-for-22500tpa-south-west-arkansas-lithium-project-ahead-of-fid/
+13. LS Power Breaks Ground on $2 Billion Power the Bay Transmission Projects in California | 2026-05-26 | https://constructionfront.com/2026-05-26-ls-power-breaks-ground-on-2-billion-power-the-bay-transmission-projects-in-california/
+14. DOE Issues Presidential Permit for Basin Electric's 650MW U.S.-Canada Transmission Expansion | 2026-05-25 | https://constructionfront.com/2026-05-25-doe-issues-presidential-permit-for-basin-electrics-650mw-us-canada-transmission-expansion/
+15. HOCHTIEF Begins Construction of YEXIO Data Center at FunkenbergQuartier in Herne, Germany | 2026-05-25 | https://constructionfront.com/2026-05-25-hochtief-begins-construction-of-yexio-data-center-at-funkenbergquartier-in-herne-germany/
+16. Fortescue Starts Construction on 690MW Turner River Solar Farm and 650MWh Cloudbreak BESS in Western Australia | 2026-05-25 | https://constructionfront.com/2026-05-25-fortescue-starts-construction-on-690mw-turner-river-solar-farm-and-650mwh-cloudbreak-bess-in-western-australia/
+17. Fortescue Starts Construction on 690MW Turner River Solar Farm and 650MWh Cloudbreak BESS in Western Australia | 2026-05-25 | https://constructionfront.com/2026-05-25-fortescue-starts-construction-on-690mw-turner-river-solar-farm-and-650mwh-cloudbreak-bess-in-western-australia/
+18. Thrive AECOM-Aurecon JV Appointed Five-Year Planning Partner for Greater Western Water Infrastructure Program | 2026-05-22 | https://constructionfront.com/2026-05-22-thrive-aecom-aurecon-jv-appointed-five-year-planning-partner-for-greater-western-water-infrastructure-program/
+19. Antora and POET Commission 5GWh Project Big Stone Thermal Battery in South Dakota | 2026-05-21 | https://constructionfront.com/2026-05-21-antora-and-poet-commission-5gwh-project-big-stone-thermal-battery-in-south-dakota/
+20. Hitachi Energy to Support Akaysha Energy's 155MW Ulinda Park BESS Under 20-Year Service Agreement in Queensland | 2026-05-21 | https://constructionfront.com/2026-05-21-hitachi-energy-to-support-akaysha-energys-155mw-ulinda-park-bess-under-20-year-service-agreement-in-queensland/
+
+EVERGREEN CONSTRUCTIONFRONT CANDIDATES
+
+1. What is an Extension of Time Claim (EOT)? Understanding delays in Construction Projects | Claims &amp; Contract Administration, Knowledge Hub | https://constructionfront.com/what-is-an-extension-of-time-claim/
+2. What are the existing Delay Analysis Methods? (And When To Use Each) | Claims &amp; Contract Administration, Knowledge Hub | https://constructionfront.com/delay-analysis-methods/
+3. Are Concrete Expansion Joints necessary? (How to Correctly Use Them) | Engineering | https://constructionfront.com/are-concrete-expansion-joints-necessary/
+4. What is a Cold Joint in Concrete? (And How to Fix them!) | Engineering | https://constructionfront.com/concrete-cold-joint/
+5. What are Dowels in Concrete? (And Why You Need them) | Engineering | https://constructionfront.com/what-are-dowels-in-concrete/
+6. What is an Early Warning Notice? (And How To Effectively Use them) | Claims &amp; Contract Administration, Knowledge Hub | https://constructionfront.com/what-is-an-early-warning-notice/
+7. What is a Keyway Joint in Concrete? (and When to use Them) | Engineering | https://constructionfront.com/keyway-concrete/
+8. Variation Order (VO) in Construction: Templates, Examples and Process | Claims &amp; Contract Administration, Knowledge Hub | https://constructionfront.com/what-is-a-variation-order/
+9. What is a Concrete Curing Blanket? (And When/Why to Use them?) | Engineering | https://constructionfront.com/concrete-curing-blanket/
+10. Are Heated Concrete Blankets Effective? (Read this&#8230;) | Engineering | https://constructionfront.com/are-heated-concrete-blankets-effective/
+11. What is a Variation Request? (And How to Submit one!) | Claims &amp; Contract Administration, Knowledge Hub | https://constructionfront.com/variation-request/
+12. What is the Window  Analysis Method? (And When to Use It) | Claims &amp; Contract Administration, Knowledge Hub | https://constructionfront.com/window-analysis-method/
+13. What is a Time Bar Clause? (And Why it is so Important!) | Claims &amp; Contract Administration, Knowledge Hub | https://constructionfront.com/time-bar-clause/
+14. What is a Liquid Waterproofing Membrane? (And When to Use Them!) | Engineering | https://constructionfront.com/liquid-waterproofing-membrane/
+15. Can you Speed Up Concrete Curing? (How to Correctly do it!) | Engineering | https://constructionfront.com/can-you-speed-up-concrete-curing/
+16. Is Concrete Curing the same as Concrete Drying? (The difference is&#8230;) | Engineering, Uncategorized | https://constructionfront.com/concrete-curing-vs-concrete-dryring/
+17. What is a Latent Condition in Construction? (Examples & Tips) | Claims &amp; Contract Administration, Knowledge Hub | https://constructionfront.com/latent-conditions-in-construction/
+18. Management Contracting in Construction: How the Model Works | Knowledge Hub, Procurement and Contract Models | https://constructionfront.com/managing-contractors/
+19. Managing Contracting vs Construction Manager &#8211; Key Differences & Tips | Knowledge Hub, Procurement and Contract Models | https://constructionfront.com/managing-contractor-vs-construction-manager/
+20. Are Time Bars enforceable in Construction Contracts? | Claims &amp; Contract Administration, Knowledge Hub | https://constructionfront.com/are-time-bars-enforceable-in-construction-contracts/
+21. What is an Alliance Contract? (Pros, Cons & Examples) | Knowledge Hub, Procurement and Contract Models | https://constructionfront.com/alliance-contract/
+22. How to Repair a Cold Joint in Concrete? (Effectively!) | Engineering | https://constructionfront.com/concrete-cold-joint-repair/
+23. ECI Contract (Early Contractor Involvement): Phases, Process and Benefits | Knowledge Hub, Procurement and Contract Models | https://constructionfront.com/eci-contract/
+24. Patent vs Latent Defects – What is the Difference? | Claims &amp; Contract Administration, Knowledge Hub | https://constructionfront.com/patent-defect-vs-latent-defect/
+25. EPC Contract: What It Is, How It Works and Key Risks | Knowledge Hub, Procurement and Contract Models | https://constructionfront.com/epc-contract/
+26. Estoppel in Construction Contracts: How do they work? | Claims &amp; Contract Administration, Knowledge Hub | https://constructionfront.com/estoppel-in-construction/
+27. Design and Construct (D&C) Contracts &#8211; How do they Work? | Knowledge Hub, Procurement and Contract Models | https://constructionfront.com/design-construct-contract/
+28. FEED Study (Front-End Engineering Design): Process, Deliverables and Cost | Knowledge Hub, Project Development | https://constructionfront.com/front-end-engineering-design/
+29. Glass Fiber Reinforced Concrete (GFRC) &#8211; What is it? (Pros and Cons) | Engineering | https://constructionfront.com/glass-reinforced-concrete/
+30. Performance Bond: What is it and How it Works? (How to Obtain one?) | Knowledge Hub, Procurement and Contract Models | https://constructionfront.com/performance-bond/
+31. Construction Manager at Risk (CMaR): What is it? How it Works? | Knowledge Hub, Procurement and Contract Models | https://constructionfront.com/construction-manager-at-risk-cmar/
+32. Public Private Partnerships (PPPs): What are they? How they Work? | Knowledge Hub, Procurement and Contract Models | https://constructionfront.com/public-private-partnerships-ppps/
+33. What is Contract Novation? (Examples and Key Features) | Knowledge Hub, Procurement and Contract Models | https://constructionfront.com/contract-novation/
+34. Balance of Plant (BoP): BOP Contract, Scope and EPC Procurement | Knowledge Hub, Procurement and Contract Models | https://constructionfront.com/balance-of-plant-bop-contract/
+35. Final Investment Decision (FID) in Construction & Energy Projects | Knowledge Hub, Project Development | https://constructionfront.com/final-investment-decision-fid/
+36. EPC vs EPCM: Key Differences in Risk, Scope and Contractor Responsibility | Knowledge Hub, Procurement and Contract Models | https://constructionfront.com/epc-vs-epcm/
+37. What is the Float in a Construction Program? (Who owns it?) | Claims &amp; Contract Administration, Knowledge Hub | https://constructionfront.com/float-in-construction-program/
+38. Delays, Disruptions, and Liquidated Damages in Construction Contracts | Claims &amp; Contract Administration, Knowledge Hub | https://constructionfront.com/delays-disruptions-and-liquidated-damages/
+39. Liquidated Damages in Construction Contracts &#8211; An In-Depth Review | Claims &amp; Contract Administration, Knowledge Hub | https://constructionfront.com/liquidated-damages-in-construction-contracts/
+40. Power Purchase Agreement (PPA): What It Is and How It Works in Construction | Knowledge Hub, Procurement and Contract Models | https://constructionfront.com/power-purchase-agreement-ppa/
+
+---
+
+Use the prompt above to refine the newsletter's editorial judgement, tone and linking rationale. The current script implements deterministic approximations of this prompt; future versions can send this data pack to an LLM and then render the edited prose into the HTML template.

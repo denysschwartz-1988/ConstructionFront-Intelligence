@@ -1,0 +1,4 @@
+[0606/120728.064:ERROR:third_party\crashpad\crashpad\util\file\file_io_win.cc:188] CreateFile C:\Users\denys\AppData\Local\Microsoft\Edge\User Data\Crashpad\throttle_store.dat: Access is denied. (0x5)
+[0606/120728.064:ERROR:third_party\crashpad\crashpad\util\win\registration_protocol_win.cc:108] CreateFile: Access is denied. (0x5)
+[17468:39344:0606/120728.098:ERROR:chrome\browser\process_singleton_win.cc:868] Lock file can not be created! Error code: 5
+[17468:39344:0606/120728.098:ERROR:chrome\app\chrome_main_delegate.cc:672] Failed to create a ProcessSingleton for your profile directory. This means that running multiple instances would start multiple browser processes rather than opening a new window in the existing process. Aborting now to avoid profile corruption.

@@ -1,99 +1,69 @@
 "use client";
 
 import { Search, Settings, UserCircle } from "lucide-react";
+import MultiSelectDropdown from "@/components/ui/MultiSelectDropdown";
+
+const systemFont =
+  "-apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, 'Helvetica Neue', Arial, sans-serif";
 
 type TopBarProps = {
   visibleCount: number;
   projectCount: number;
   coverageCount: number;
   searchValue: string;
-  selectedRegion: string;
-  selectedSector: string;
-  selectedCountry: string;
-  selectedSubsector: string;
-  selectedStage: string;
+  selectedRegions: string[];
+  selectedCountries: string[];
+  selectedSectors: string[];
+  selectedSubsectors: string[];
+  selectedStages: string[];
   regionOptions: string[];
   countryOptions: string[];
   sectorOptions: string[];
   subsectorOptions: string[];
   stageOptions: string[];
   onSearchChange: (value: string) => void;
-  onRegionChange: (value: string) => void;
-  onSectorChange: (value: string) => void;
-  onCountryChange: (value: string) => void;
-  onSubsectorChange: (value: string) => void;
-  onStageChange: (value: string) => void;
+  onRegionsChange: (value: string[]) => void;
+  onCountriesChange: (value: string[]) => void;
+  onSectorsChange: (value: string[]) => void;
+  onSubsectorsChange: (value: string[]) => void;
+  onStagesChange: (value: string[]) => void;
 };
-
-const selectStyle = {
-  height: 28,
-  minWidth: 112,
-  maxWidth: 148,
-  padding: "0 24px 0 8px",
-  borderRadius: 4,
-  border: "1px solid #223a59",
-  backgroundColor: "#061322",
-  color: "#e6edf3",
-  fontSize: 12,
-  lineHeight: "28px",
-  outline: "none",
-  cursor: "pointer"
-} as const;
-
-const renderSelect = (
-  ariaLabel: string,
-  value: string,
-  onChange: (value: string) => void,
-  options: string[],
-  minWidth = 112
-) => (
-  <select
-    aria-label={ariaLabel}
-    value={value}
-    onChange={(event) => onChange(event.target.value)}
-    style={{ ...selectStyle, minWidth }}
-  >
-    {options.map((option) => (
-      <option key={option} value={option}>
-        {option}
-      </option>
-    ))}
-  </select>
-);
 
 export default function TopBar({
   visibleCount,
   projectCount,
   coverageCount,
   searchValue,
-  selectedRegion,
-  selectedSector,
-  selectedCountry,
-  selectedSubsector,
-  selectedStage,
+  selectedRegions,
+  selectedCountries,
+  selectedSectors,
+  selectedSubsectors,
+  selectedStages,
   regionOptions,
   countryOptions,
   sectorOptions,
   subsectorOptions,
   stageOptions,
   onSearchChange,
-  onRegionChange,
-  onSectorChange,
-  onCountryChange,
-  onSubsectorChange,
-  onStageChange
+  onRegionsChange,
+  onCountriesChange,
+  onSectorsChange,
+  onSubsectorsChange,
+  onStagesChange
 }: TopBarProps) {
   return (
     <div
       style={{
+        fontFamily: systemFont,
+        fontSize: 13,
         display: "flex",
         alignItems: "center",
         gap: 12,
         height: 56,
         minHeight: 56,
         padding: "0 12px",
-        backgroundColor: "#0b1a2d",
-        borderBottom: "1px solid #223a59",
+        backgroundColor: "#0b1929",
+        borderBottom: "1px solid #21262d",
         overflow: "hidden",
         whiteSpace: "nowrap"
       }}
@@ -202,11 +172,36 @@ export default function TopBar({
           overflow: "hidden"
         }}
       >
-        {renderSelect("Region", selectedRegion, onRegionChange, regionOptions)}
-        {renderSelect("Country", selectedCountry, onCountryChange, countryOptions)}
-        {renderSelect("Sector", selectedSector, onSectorChange, sectorOptions, 110)}
-        {renderSelect("Subsector", selectedSubsector, onSubsectorChange, subsectorOptions, 126)}
-        {renderSelect("Project stage", selectedStage, onStageChange, stageOptions, 138)}
+        <MultiSelectDropdown
+          label="All Regions"
+          options={regionOptions.filter((region) => region !== "All Regions")}
+          selected={selectedRegions}
+          onChange={onRegionsChange}
+        />
+        <MultiSelectDropdown
+          label="All Countries"
+          options={countryOptions.filter((country) => country !== "All Countries")}
+          selected={selectedCountries}
+          onChange={onCountriesChange}
+        />
+        <MultiSelectDropdown
+          label="All Sectors"
+          options={sectorOptions.filter((sector) => sector !== "All Sectors")}
+          selected={selectedSectors}
+          onChange={onSectorsChange}
+        />
+        <MultiSelectDropdown
+          label="All Subsectors"
+          options={subsectorOptions.filter((subsector) => subsector !== "All Subsectors")}
+          selected={selectedSubsectors}
+          onChange={onSubsectorsChange}
+        />
+        <MultiSelectDropdown
+          label="All Project Stages"
+          options={stageOptions.filter((stage) => stage !== "All Project Stages")}
+          selected={selectedStages}
+          onChange={onStagesChange}
+        />
       </div>
 
       <div

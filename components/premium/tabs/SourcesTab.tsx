@@ -3,6 +3,7 @@
 import { useMemo, useState } from "react";
 import type { CSSProperties, ReactNode } from "react";
 import type { ProjectRecord, ProjectSourceRecord } from "@/types/database";
+import { cardStyle, rowLabelStyle, rowValueStyle, sectionLabelStyle, tabRootStyle } from "@/lib/styles";
 
 type SourcesTabProps = {
   project: ProjectRecord;
@@ -10,14 +11,7 @@ type SourcesTabProps = {
   isAuthenticated: boolean;
 };
 
-const sectionLabel: CSSProperties = {
-  color: "#f0a500",
-  fontSize: 10,
-  fontWeight: 600,
-  letterSpacing: "0.08em",
-  marginBottom: 8,
-  textTransform: "uppercase"
-};
+const sectionLabel: CSSProperties = sectionLabelStyle;
 
 const badgeStyle: CSSProperties = {
   borderRadius: 4,
@@ -91,10 +85,10 @@ const SourceCard = ({
     <div
       style={{
         backgroundColor: "#1c2128",
-        border: "1px solid #30363d",
-        borderLeft: `4px solid ${borderColor}`,
-        borderRadius: 8,
-        padding: 16
+        borderLeft: `3px solid ${borderColor}`,
+        borderRadius: "0 6px 6px 0",
+        padding: 12,
+        marginBottom: 8
       }}
     >
       <div
@@ -130,7 +124,7 @@ const SourceCard = ({
       </div>
 
       {!isCfArticle && source.sourceTitle ? (
-        <div style={{ color: "#e6edf3", fontSize: 13, fontWeight: 700, marginBottom: 8 }}>
+        <div style={{ color: "#e6edf3", fontSize: 13, fontWeight: 600, marginBottom: 6, lineHeight: 1.4 }}>
           {source.sourceTitle}
         </div>
       ) : null}
@@ -138,8 +132,8 @@ const SourceCard = ({
       {source.summary ? (
         <p
           style={{
-            color: isCfArticle ? "#e6edf3" : "#8b949e",
-            fontSize: 13,
+            color: "#8b949e",
+            fontSize: 12,
             lineHeight: 1.5,
             margin: 0
           }}
@@ -309,7 +303,7 @@ export default function SourcesTab({
     : externalSources.slice(0, 3);
 
   return (
-    <div style={{ padding: 24, display: "flex", flexDirection: "column", gap: 24 }}>
+    <div style={{ ...tabRootStyle, display: "flex", flexDirection: "column", gap: 24 }}>
       <section>
         <div style={sectionLabel}>CONSTRUCTIONFRONT COVERAGE</div>
         <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
@@ -389,9 +383,7 @@ export default function SourcesTab({
             <div style={sectionLabel}>DATA RECORD</div>
             <div
               style={{
-                backgroundColor: "#1c2128",
-                border: "1px solid #30363d",
-                borderRadius: 8,
+                ...cardStyle,
                 padding: "8px 16px"
               }}
             >
@@ -409,8 +401,8 @@ export default function SourcesTab({
                     padding: "8px 0"
                   }}
                 >
-                  <span style={{ color: "#8b949e", fontSize: 12 }}>{label}</span>
-                  <span style={{ color: "#e6edf3", fontSize: 13, fontWeight: 600 }}>
+                  <span style={rowLabelStyle}>{label}</span>
+                  <span style={rowValueStyle}>
                     {value}
                   </span>
                 </div>

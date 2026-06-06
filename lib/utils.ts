@@ -39,3 +39,21 @@ export function getStageBadgeStyle(stage: string | null | undefined): CSSPropert
 
   return { backgroundColor: "#6e7681", color: "#ffffff" };
 }
+
+export function cleanCityArea(cityArea: string | null | undefined): string {
+  if (!cityArea) {
+    return "";
+  }
+
+  const stopPatterns = [", ", " of ", " to ", " near ", " connecting", " approximately"];
+  let result = cityArea;
+
+  for (const pattern of stopPatterns) {
+    const index = result.indexOf(pattern);
+    if (index > 0) {
+      result = result.substring(0, index);
+    }
+  }
+
+  return result.trim().substring(0, 40);
+}

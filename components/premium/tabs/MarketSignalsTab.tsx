@@ -3,36 +3,15 @@
 import { useState } from "react";
 import type { CSSProperties, ReactNode } from "react";
 import type { ProjectRecord } from "@/types/database";
+import { bodyTextStyle, cardStyle, mutedTextStyle, rowLabelStyle, sectionLabelStyle, tabRootStyle } from "@/lib/styles";
 
 type MarketSignalsTabProps = {
   project: ProjectRecord;
   isAuthenticated: boolean;
 };
 
-const sectionLabel: CSSProperties = {
-  color: "#f0a500",
-  fontSize: 10,
-  fontWeight: 600,
-  letterSpacing: "0.08em",
-  marginBottom: 8,
-  textTransform: "uppercase"
-};
-
-const cardStyle: CSSProperties = {
-  backgroundColor: "#1c2128",
-  border: "1px solid #30363d",
-  borderRadius: 8,
-  padding: 16
-};
-
-const subsectionLabel: CSSProperties = {
-  color: "#8b949e",
-  fontSize: 11,
-  fontWeight: 700,
-  letterSpacing: "0.08em",
-  marginBottom: 8,
-  textTransform: "uppercase"
-};
+const sectionLabel: CSSProperties = sectionLabelStyle;
+const subsectionLabel: CSSProperties = rowLabelStyle;
 
 const getTimingColor = (status?: string | null) => {
   const normalizedStatus = status?.trim();
@@ -172,7 +151,7 @@ export default function MarketSignalsTab({
   const narrative = narrativeMap[lens]?.trim();
 
   return (
-    <div style={{ padding: 24, display: "flex", flexDirection: "column", gap: 16 }}>
+    <div style={{ ...tabRootStyle, display: "flex", flexDirection: "column", gap: 16 }}>
       <div style={cardStyle}>
         <div style={sectionLabel}>STAKEHOLDER LENS</div>
         <select

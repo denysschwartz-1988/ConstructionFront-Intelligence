@@ -2,27 +2,12 @@
 
 import React, { useMemo, useState } from "react";
 import type { ProjectMilestoneRecord, ProjectRecord } from "@/types/database";
+import { bodyTextStyle, cardStyle, mutedTextStyle, sectionLabelStyle, tabRootStyle } from "@/lib/styles";
 
 type TimelinesTabProps = {
   project: ProjectRecord;
   milestones: ProjectMilestoneRecord[];
   isAuthenticated: boolean;
-};
-
-const cardStyle: React.CSSProperties = {
-  backgroundColor: "#1c2128",
-  border: "1px solid #30363d",
-  borderRadius: 8,
-  padding: 16
-};
-
-const sectionLabelStyle: React.CSSProperties = {
-  color: "#f0a500",
-  fontSize: 10,
-  letterSpacing: "0.08em",
-  fontWeight: 600,
-  textTransform: "uppercase",
-  marginBottom: 8
 };
 
 const PremiumBlur = ({
@@ -128,7 +113,7 @@ export default function TimelinesTab({
   }, [milestones]);
 
   return (
-    <div style={{ padding: 24, display: "flex", flexDirection: "column", gap: 16 }}>
+    <div style={{ ...tabRootStyle, display: "flex", flexDirection: "column", gap: 16 }}>
       <div style={cardStyle}>
         <div style={sectionLabelStyle}>PROJECT PROGRAMME</div>
         <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>

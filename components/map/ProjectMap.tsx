@@ -1,7 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useRef, useState } from "react";
-import { getStageBadgeStyle } from "@/lib/utils";
+import { forwardRef, useEffect, useImperativeHandle, useMemo, useRef, useState } from "react";
 import type { ProjectRecord } from "@/types/database";
 
 import "leaflet/dist/leaflet.css";
@@ -15,36 +14,61 @@ export type ProjectMapProps = {
   onProjectSelect?: (project: ProjectRecord) => void;
 };
 
+export type ProjectMapHandle = {
+  flyToProjects: (projects: ProjectRecord[]) => void;
+  flyToProject: (project: ProjectRecord) => void;
+  resetView: () => void;
+};
+
 const legendItems = [
-  { label: "Under Development", stage: "Under Development" },
-  { label: "FID / Procurement", stage: "FID / Procurement / Financing" },
-  { label: "Contract Awarded", stage: "Contract Awarded" },
-  { label: "Under Construction", stage: "Under Construction" },
-  { label: "Operational", stage: "Operational" }
+  {
+    label: "Under Development / FID / Procurement",
+    color: "#f0a500"
+  },
+  {
+    label: "Contract Awarded / Under Construction",
+    color: "#22c55e"
+  },
+  {
+    label: "Construction Complete / Operational",
+    color: "#3b82f6"
+  },
+  {
+    label: "Mixed / Multiple stages",
+    color: "#6e7681"
+  }
 ];
 
-const getMapStageColor = (currentProjectStage?: string | null) => {
-  const stage = currentProjectStage?.trim().toLowerCase() ?? "";
+function getMarkerColor(stage: string | null | undefined): string {
+  if (!stage) {
+    return "#8b949e";
+  }
+
+  const s = stage.toLowerCase();
 
   if (
-    stage.includes("under development") ||
-    stage.includes("fid") ||
-    stage.includes("procurement") ||
-    stage.includes("financing")
+    s.includes("under development") ||
+    s.includes("fid") ||
+    s.includes("procurement") ||
+    s.includes("financing")
   ) {
-    return { bg: "#f0a500", border: "#f0a500" };
+    return "#f0a500";
   }
 
-  if (stage.includes("contract awarded") || stage.includes("under construction")) {
-    return { bg: "#3fb950", border: "#3fb950" };
+  if (s.includes("contract awarded") || s.includes("under construction")) {
+    return "#22c55e";
   }
 
-  if (stage.includes("construction complete") || stage.includes("operational")) {
-    return { bg: "#58a6ff", border: "#58a6ff" };
+  if (s.includes("construction complete") || s.includes("operational")) {
+    return "#3b82f6";
   }
 
-  return { bg: "#8b949e", border: "#8b949e" };
-};
+  if (s.includes("on hold") || s.includes("cancelled")) {
+    return "#8b949e";
+  }
+
+  return "#f0a500";
+}
 
 const getMarkerSize = (recordType?: string) => {
   const type = recordType?.trim().toLowerCase() ?? "";
@@ -65,12 +89,15 @@ const isValidProject = (project: ProjectRecord) => {
   );
 };
 
-export default function ProjectMap({
-  projects,
-  focusProject,
-  focusRequest = 0,
-  onProjectSelect
-}: ProjectMapProps) {
+const ProjectMap = forwardRef<ProjectMapHandle, ProjectMapProps>(function ProjectMap(
+  {
+    projects,
+    focusProject,
+    focusRequest = 0,
+    onProjectSelect
+  },
+  ref
+) {
   const [loadError, setLoadError] = useState<string | null>(null);
   const [leaflet, setLeaflet] = useState<any>(null);
   const [reactLeaflet, setReactLeaflet] = useState<any>(null);
@@ -106,6 +133,61 @@ export default function ProjectMap({
 
   // Legend removed in favor of compact Project Status legend rendered below
 
+  useImperativeHandle(ref, () => ({
+    flyToProjects: (projectsToShow: ProjectRecord[]) => {
+      if (!mapInstance.current) {
+        return;
+      }
+
+      const validProjects = projectsToShow.filter(
+        (project) => project.latitude != null && project.longitude != null
+      );
+
+      if (validProjects.length === 0) {
+        return;
+      }
+
+      if (validProjects.length === 1) {
+        mapInstance.current.flyTo(
+          [validProjects[0].latitude as number, validProjects[0].longitude as number],
+          8,
+          { animate: true, duration: 1.0 }
+        );
+        return;
+      }
+
+      mapInstance.current.flyToBounds(
+        validProjects.map(
+          (project) => [project.latitude as number, project.longitude as number] as [number, number]
+        ),
+        {
+          padding: [48, 48],
+          maxZoom: 10,
+          animate: true,
+          duration: 1.0
+        }
+      );
+    },
+    flyToProject: (project: ProjectRecord) => {
+      if (!mapInstance.current || project.latitude == null || project.longitude == null) {
+        return;
+      }
+
+      mapInstance.current.flyTo(
+        [project.latitude, project.longitude],
+        8,
+        { animate: true, duration: 1.0 }
+      );
+    },
+    resetView: () => {
+      if (!mapInstance.current) {
+        return;
+      }
+
+      mapInstance.current.flyTo([20, 0], 2, { animate: true, duration: 1.0 });
+    }
+  }), []);
+
   if (loadError) {
     return (
       <div className="min-h-[640px] rounded-3xl border border-white/10 bg-slate-950/80 p-8 text-slate-200">
@@ -139,19 +221,11 @@ export default function ProjectMap({
     }, [map]);
 
     useEffect(() => {
-      if (focusRequest <= 0) {
-        return;
-      }
-
       if (!mapInstance.current) {
         return;
       }
 
-      if (!focusProject) {
-        return;
-      }
-
-      if (focusProject.latitude == null || focusProject.longitude == null) {
+      if (!focusProject || focusProject.latitude == null || focusProject.longitude == null) {
         return;
       }
 
@@ -160,7 +234,7 @@ export default function ProjectMap({
         8,
         {
           animate: true,
-          duration: 1.2
+          duration: 1.0
         }
       );
     }, [focusRequest]);
@@ -176,16 +250,49 @@ export default function ProjectMap({
         return;
       }
 
-      const clusterGroup = leaflet.markerClusterGroup();
+      const createClusterIcon = (cluster: any) => {
+        const childMarkers = cluster.getAllChildMarkers();
+        const colors = childMarkers.map((marker: any) => marker.options.fillColor || "#f0a500");
+        const uniqueColors = [...new Set(colors)];
+        const clusterColor = uniqueColors.length === 1 ? uniqueColors[0] : "#6e7681";
+        const textColor = clusterColor === "#6e7681" ? "#ffffff" : "#0d1117";
+        const count = cluster.getChildCount();
+
+        return leaflet.divIcon({
+          html: `<div style="
+            background-color:${clusterColor};
+            width:36px;
+            height:36px;
+            border-radius:50%;
+            display:flex;
+            align-items:center;
+            justify-content:center;
+            color:${textColor};
+            font-weight:700;
+            font-size:13px;
+            border:2px solid rgba(255,255,255,0.3);
+            box-shadow:0 2px 8px rgba(0,0,0,0.4);
+          ">${count}</div>`,
+          className: "",
+          iconSize: [36, 36]
+        });
+      };
+
+      const clusterGroup = leaflet.markerClusterGroup({
+        iconCreateFunction: createClusterIcon
+      });
+
       const markers = projects.map((project) => {
-        const color = getMapStageColor(project.currentProjectStage ?? undefined);
+        const color = getMarkerColor(project.currentProjectStage);
         const size = getMarkerSize(project.recordType ?? undefined);
         const marker = leaflet.marker(
           [project.latitude as number, project.longitude as number],
           {
+            color,
+            fillColor: color,
             icon: leaflet.divIcon({
               className: "project-map-marker",
-              html: `<span style="display:inline-block;width:${size}px;height:${size}px;border-radius:50%;border:2px solid ${color.border ?? "white"};background:${color.bg};box-shadow:0 0 0 ${Math.round(
+              html: `<span style="display:inline-block;width:${size}px;height:${size}px;border-radius:50%;border:2px solid ${color};background:${color};box-shadow:0 0 0 ${Math.round(
                 size * 0.8
               )}px rgba(0,0,0,0.16);"></span>`,
               iconSize: [size, size],
@@ -211,11 +318,6 @@ export default function ProjectMap({
 
       clusterGroup.addLayers(markers);
       map.addLayer(clusterGroup);
-
-      if (markers.length) {
-        const bounds = leaflet.latLngBounds(markers.map((marker) => marker.getLatLng()));
-        map.fitBounds(bounds, { padding: [40, 40] });
-      }
 
       return () => {
         map.removeLayer(clusterGroup);
@@ -286,43 +388,42 @@ export default function ProjectMap({
 
         <div style={{ width: 1, height: 14, backgroundColor: "#30363d", flexShrink: 0 }} />
 
-        {legendItems.map((item) => {
-          const badgeStyle = getStageBadgeStyle(item.stage);
-          const backgroundColor = String(badgeStyle.backgroundColor ?? "#6e7681");
-
-          return (
+        {legendItems.map((item) => (
+          <div
+            key={item.label}
+            style={{
+              display: "flex",
+              alignItems: "center",
+              gap: 6,
+              flexShrink: 0
+            }}
+          >
             <div
-              key={item.label}
               style={{
-                display: "flex",
-                alignItems: "center",
-                gap: 6,
-                flexShrink: 0
+                width: 10,
+                height: 10,
+                borderRadius: "50%",
+                backgroundColor: item.color,
+                flexShrink: 0,
+                boxShadow: `0 0 4px ${item.color}`
+              }}
+            />
+            <span
+              style={{
+                color: "#e6edf3",
+                fontSize: 11,
+                whiteSpace: "nowrap"
               }}
             >
-              <div
-                style={{
-                  width: 10,
-                  height: 10,
-                  borderRadius: "50%",
-                  backgroundColor,
-                  flexShrink: 0,
-                  boxShadow: `0 0 4px ${backgroundColor}`
-                }}
-              />
-              <span
-                style={{
-                  color: "#e6edf3",
-                  fontSize: 11,
-                  whiteSpace: "nowrap"
-                }}
-              >
-                {item.label}
-              </span>
-            </div>
-          );
-        })}
+              {item.label}
+            </span>
+          </div>
+        ))}
       </div>
     </section>
   );
-}
+});
+
+ProjectMap.displayName = "ProjectMap";
+
+export default ProjectMap;

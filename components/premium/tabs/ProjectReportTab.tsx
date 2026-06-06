@@ -2,6 +2,7 @@
 
 import type { ReactNode } from "react";
 import type { ProjectRecord } from "@/types/database";
+import { cardStyle, mutedTextStyle, sectionLabelStyle, tabRootStyle } from "@/lib/styles";
 
 type ProjectReportTabProps = {
   project: ProjectRecord;
@@ -100,14 +101,12 @@ export default function ProjectReportTab({
   isAuthenticated
 }: ProjectReportTabProps) {
   return (
-    <div style={{ padding: 24, display: "flex", flexDirection: "column", gap: 16 }}>
+    <div style={{ ...tabRootStyle, display: "flex", flexDirection: "column", gap: 16 }}>
       <PremiumBlur isAuthenticated={isAuthenticated}>
         <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
           <div
             style={{
-              backgroundColor: "#1c2128",
-              border: "1px solid #30363d",
-              borderRadius: 8,
+              ...cardStyle,
               padding: 24,
               display: "flex",
               flexDirection: "column",
@@ -128,9 +127,7 @@ export default function ProjectReportTab({
             </div>
             <div
               style={{
-                color: "#8b949e",
-                fontSize: 13,
-                lineHeight: 1.6,
+                ...mutedTextStyle,
                 maxWidth: 480
               }}
             >
@@ -160,23 +157,9 @@ export default function ProjectReportTab({
           </div>
 
           <div
-            style={{
-              backgroundColor: "#1c2128",
-              border: "1px solid #30363d",
-              borderRadius: 8,
-              padding: 20
-            }}
+            style={{ ...cardStyle, padding: 20 }}
           >
-            <div
-              style={{
-                color: "#f0a500",
-                fontSize: 10,
-                fontWeight: 600,
-                letterSpacing: "0.08em",
-                textTransform: "uppercase",
-                marginBottom: 16
-              }}
-            >
+            <div style={{ ...sectionLabelStyle, marginBottom: 16 }}>
               REPORT WILL INCLUDE
             </div>
 
@@ -250,9 +233,7 @@ export default function ProjectReportTab({
 
           <div
             style={{
-              backgroundColor: "#1c2128",
-              border: "1px solid #30363d",
-              borderRadius: 8,
+              ...cardStyle,
               padding: 20,
               display: "flex",
               alignItems: "center",

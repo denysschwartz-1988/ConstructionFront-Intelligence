@@ -2,30 +2,14 @@
 @tailwind components;
 @tailwind utilities;
 
-@layer base {
-  :root {
-    --primary-bg: #0d1117;
-    --secondary-bg: #161b22;
-    --card-bg: #1c2128;
-    --border: #30363d;
-    --border-subtle: #21262d;
-    --text: #e6edf3;
-    --text-muted: #8b949e;
-    --amber: #f0a500;
-    --amber-subtle: rgba(240, 165, 0, 0.15);
-    --muted: #8b949e;
-    --green: #238636;
-    --blue: #1f6feb;
-    --font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, 'Helvetica Neue', Arial, sans-serif;
-    --base-font-size: 13px;
-  }
-
-}
-
+/* Force system font stack everywhere */
 html {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui,
                'Helvetica Neue', Arial, sans-serif !important;
   font-size: 13px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 body {
@@ -35,15 +19,36 @@ body {
   line-height: 1.5;
   color: #e6edf3;
   background-color: #0d1117;
-  -webkit-font-smoothing: antialiased;
 }
 
 *, *::before, *::after {
-  font-family: inherit !important;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui,
+               'Helvetica Neue', Arial, sans-serif !important;
   box-sizing: border-box;
 }
 
-/* Custom scrollbar for premium tabs */
+button, input, select, textarea, a {
+  font-family: inherit !important;
+  font-size: inherit;
+}
+
+/* CSS Variables */
+:root {
+  --primary-bg: #0d1117;
+  --secondary-bg: #161b22;
+  --card-bg: #1c2128;
+  --border: #30363d;
+  --border-subtle: #21262d;
+  --text: #e6edf3;
+  --text-muted: #8b949e;
+  --amber: #f0a500;
+  --amber-subtle: rgba(240, 165, 0, 0.15);
+  --muted: #8b949e;
+  --green: #22c55e;
+  --blue: #3b82f6;
+}
+
+/* Custom scrollbar */
 .premium-tab-content::-webkit-scrollbar {
   width: 6px;
 }

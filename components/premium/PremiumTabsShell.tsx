@@ -18,6 +18,9 @@ type PremiumTabsShellProps = {
   onProjectSelect: (project: ProjectRecord) => void;
 };
 
+const systemFont =
+  "-apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, 'Helvetica Neue', Arial, sans-serif";
+
 export default function PremiumTabsShell({
   project,
   parties,
@@ -49,6 +52,8 @@ export default function PremiumTabsShell({
   return (
     <div
       style={{
+        fontFamily: systemFont,
+        fontSize: 13,
         flex: 1,
         display: "flex",
         flexDirection: "column",
@@ -108,15 +113,23 @@ export default function PremiumTabsShell({
           }}
           style={{
             backgroundColor: "transparent",
-            border: "1px solid #30363d",
+            border: "1px solid #f0a500",
             borderRadius: 6,
-            color: "#8b949e",
+            color: "#f0a500",
             fontSize: 11,
-            padding: "4px 10px",
+            fontWeight: 600,
+            padding: "4px 12px",
             cursor: "pointer",
             display: "flex",
             alignItems: "center",
-            gap: 4
+            gap: 4,
+            letterSpacing: "0.04em"
+          }}
+          onMouseEnter={(event) => {
+            event.currentTarget.style.backgroundColor = "rgba(240,165,0,0.1)";
+          }}
+          onMouseLeave={(event) => {
+            event.currentTarget.style.backgroundColor = "transparent";
           }}
         >
           {"\u2691"} Report an Update
@@ -128,6 +141,7 @@ export default function PremiumTabsShell({
           flex: 1,
           overflowY: "auto",
           overflowX: "hidden",
+          backgroundColor: "#0d1117",
           scrollbarWidth: "thin",
           scrollbarColor: "#30363d #0d1117"
         }}

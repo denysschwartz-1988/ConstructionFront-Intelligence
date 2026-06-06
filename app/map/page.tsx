@@ -1,11 +1,12 @@
 "use client";
 export const dynamic = 'force-dynamic';
 
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import TopBar from "@/components/layout/TopBar";
 import LatestUpdatesTicker from "@/components/layout/LatestUpdatesTicker";
 import ProjectListView from "@/components/list/ProjectListView";
 import ProjectMap from "@/components/map/ProjectMap";
+import type { ProjectMapHandle } from "@/components/map/ProjectMap";
 import EmptyPanel from "@/components/panel/EmptyPanel";
 import EmptyTabsPlaceholder from "@/components/panel/EmptyTabsPlaceholder";
 import ProjectPanel from "@/components/panel/ProjectPanel";
@@ -32,6 +33,9 @@ const getUpdateTimestamp = (project: ProjectRecord) => {
   return Number.isFinite(millis) ? millis : 0;
 };
 
+const systemFont =
+  "-apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, 'Helvetica Neue', Arial, sans-serif";
+
 export default function Home() {
   const [projects, setProjects] = useState<ProjectRecord[]>([]);
   const [selectedProject, setSelectedProject] = useState<ProjectRecord | null>(null);
@@ -42,19 +46,26 @@ export default function Home() {
   const [panelLoading, setPanelLoading] = useState(false);
   const [panelError, setPanelError] = useState<string | null>(null);
   const [searchValue, setSearchValue] = useState("");
-  const [selectedRegion, setSelectedRegion] = useState("All Regions");
-  const [selectedSector, setSelectedSector] = useState("All Sectors");
-  const [selectedCountry, setSelectedCountry] = useState("All Countries");
-  const [selectedSubsector, setSelectedSubsector] = useState("All Subsectors");
-  const [selectedStage, setSelectedStage] = useState("All Project Stages");
+  const [selectedRegions, setSelectedRegions] = useState<string[]>([]);
+  const [selectedCountries, setSelectedCountries] = useState<string[]>([]);
+  const [selectedSectors, setSelectedSectors] = useState<string[]>([]);
+  const [selectedSubsectors, setSelectedSubsectors] = useState<string[]>([]);
+  const [selectedStages, setSelectedStages] = useState<string[]>([]);
   const [view, setView] = useState<"map" | "list">("map");
   const [mapFocusRequest, setMapFocusRequest] = useState(0);
   const [tickerOpen, setTickerOpen] = useState(true);
   const [topHeight, setTopHeight] = useState(52);
+  const [leftWidth, setLeftWidth] = useState(75);
   const isDragging = useRef(false);
+  const isDraggingVertical = useRef(false);
+  const projectMapRef = useRef<ProjectMapHandle>(null);
 
   const handleMouseDown = () => {
     isDragging.current = true;
+  };
+
+  const handleVerticalMouseDown = () => {
+    isDraggingVertical.current = true;
   };
 
   useEffect(() => {
@@ -76,9 +87,7 @@ export default function Home() {
       );
 
       setProjects(sorted);
-      if (sorted.length) {
-        setSelectedProject(sorted[0]);
-      }
+      setSelectedProject(null);
     };
 
     loadProjects();
@@ -115,15 +124,34 @@ export default function Home() {
       setTopHeight(clamped);
     };
 
+    const handleVerticalMouseMove = (event: MouseEvent) => {
+      if (!isDraggingVertical.current) {
+        return;
+      }
+
+      const container = document.getElementById("main-grid");
+      if (!container) {
+        return;
+      }
+
+      const rect = container.getBoundingClientRect();
+      const percentage = ((event.clientX - rect.left) / rect.width) * 100;
+      const clamped = Math.min(Math.max(percentage, 40), 85);
+      setLeftWidth(clamped);
+    };
+
     const handleMouseUp = () => {
       isDragging.current = false;
+      isDraggingVertical.current = false;
     };
 
     window.addEventListener("mousemove", handleMouseMove);
+    window.addEventListener("mousemove", handleVerticalMouseMove);
     window.addEventListener("mouseup", handleMouseUp);
 
     return () => {
       window.removeEventListener("mousemove", handleMouseMove);
+      window.removeEventListener("mousemove", handleVerticalMouseMove);
       window.removeEventListener("mouseup", handleMouseUp);
     };
   }, []);
@@ -191,52 +219,151 @@ export default function Home() {
       );
     }
 
-    if (selectedRegion && selectedRegion !== "All Regions") {
-      result = result.filter((project) => project.region === selectedRegion);
+    if (selectedRegions.length > 0) {
+      result = result.filter((project) => selectedRegions.includes(project.region ?? ""));
     }
 
-    if (selectedCountry && selectedCountry !== "All Countries") {
-      result = result.filter((project) => project.country === selectedCountry);
+    if (selectedCountries.length > 0) {
+      result = result.filter((project) => selectedCountries.includes(project.country ?? ""));
     }
 
-    if (selectedSector && selectedSector !== "All Sectors") {
-      result = result.filter((project) => project.sector === selectedSector);
+    if (selectedSectors.length > 0) {
+      result = result.filter((project) => selectedSectors.includes(project.sector ?? ""));
     }
 
-    if (selectedSubsector && selectedSubsector !== "All Subsectors") {
-      result = result.filter((project) => project.subsector === selectedSubsector);
+    if (selectedSubsectors.length > 0) {
+      result = result.filter((project) => selectedSubsectors.includes(project.subsector ?? ""));
     }
 
-    if (selectedStage && selectedStage !== "All Project Stages") {
-      result = result.filter((project) => project.currentProjectStage === selectedStage);
+    if (selectedStages.length > 0) {
+      result = result.filter((project) => selectedStages.includes(project.currentProjectStage ?? ""));
     }
 
-    return result.sort((a, b) => getUpdateTimestamp(b) - getUpdateTimestamp(a));
-  }, [projects, searchValue, selectedRegion, selectedCountry, selectedSector, selectedSubsector, selectedStage]);
+    return [...result].sort((a, b) => getUpdateTimestamp(b) - getUpdateTimestamp(a));
+  }, [
+    projects,
+    searchValue,
+    selectedRegions,
+    selectedCountries,
+    selectedSectors,
+    selectedSubsectors,
+    selectedStages
+  ]);
+
+  useEffect(() => {
+    if (!projectMapRef.current) {
+      return;
+    }
+
+    const allDefault =
+      selectedRegions.length === 0 &&
+      selectedCountries.length === 0 &&
+      selectedSectors.length === 0 &&
+      selectedSubsectors.length === 0 &&
+      selectedStages.length === 0;
+
+    if (allDefault) {
+      projectMapRef.current.resetView();
+      return;
+    }
+
+    if (filteredProjects.length > 0) {
+      projectMapRef.current.flyToProjects(filteredProjects);
+    }
+  }, [
+    selectedRegions,
+    selectedCountries,
+    selectedSectors,
+    selectedSubsectors,
+    selectedStages,
+    filteredProjects
+  ]);
 
   const regions = useMemo(
     () => ["All Regions", ...new Set(projects.map((project) => project.region).filter(Boolean) as string[])],
     [projects]
   );
-  const countries = useMemo(
-    () =>
-      ["All Countries", ...new Set(projects.map((project) => project.country).filter(Boolean) as string[])].sort(),
-    [projects]
-  );
-  const sectors = useMemo(
-    () =>
-      ["All Sectors", ...new Set(projects.map((project) => project.sector).filter(Boolean) as string[])].sort(),
-    [projects]
-  );
-  const subsectors = useMemo(
-    () =>
-      ["All Subsectors", ...new Set(projects.map((project) => project.subsector).filter(Boolean) as string[])].sort(),
-    [projects]
-  );
-  const stages = useMemo(
-    () => ["All Project Stages", ...new Set(projects.map((project) => project.currentProjectStage).filter(Boolean) as string[])],
-    [projects]
-  );
+  const countries = useMemo(() => {
+    const base =
+      selectedRegions.length === 0
+        ? projects
+        : projects.filter((project) => selectedRegions.includes(project.region ?? ""));
+
+    return [...new Set(base.map((project) => project.country).filter(Boolean) as string[])].sort();
+  }, [projects, selectedRegions]);
+  const sectors = useMemo(() => {
+    let base = projects;
+
+    if (selectedRegions.length > 0) {
+      base = base.filter((project) => selectedRegions.includes(project.region ?? ""));
+    }
+
+    if (selectedCountries.length > 0) {
+      base = base.filter((project) => selectedCountries.includes(project.country ?? ""));
+    }
+
+    return [...new Set(base.map((project) => project.sector).filter(Boolean) as string[])].sort();
+  }, [projects, selectedRegions, selectedCountries]);
+  const subsectors = useMemo(() => {
+    let base = projects;
+
+    if (selectedRegions.length > 0) {
+      base = base.filter((project) => selectedRegions.includes(project.region ?? ""));
+    }
+
+    if (selectedCountries.length > 0) {
+      base = base.filter((project) => selectedCountries.includes(project.country ?? ""));
+    }
+
+    if (selectedSectors.length > 0) {
+      base = base.filter((project) => selectedSectors.includes(project.sector ?? ""));
+    }
+
+    return [...new Set(base.map((project) => project.subsector).filter(Boolean) as string[])].sort();
+  }, [projects, selectedRegions, selectedCountries, selectedSectors]);
+  const stages = useMemo(() => {
+    let base = projects;
+
+    if (selectedRegions.length > 0) {
+      base = base.filter((project) => selectedRegions.includes(project.region ?? ""));
+    }
+
+    if (selectedCountries.length > 0) {
+      base = base.filter((project) => selectedCountries.includes(project.country ?? ""));
+    }
+
+    if (selectedSectors.length > 0) {
+      base = base.filter((project) => selectedSectors.includes(project.sector ?? ""));
+    }
+
+    if (selectedSubsectors.length > 0) {
+      base = base.filter((project) => selectedSubsectors.includes(project.subsector ?? ""));
+    }
+
+    return [...new Set(base.map((project) => project.currentProjectStage).filter(Boolean) as string[])];
+  }, [projects, selectedRegions, selectedCountries, selectedSectors, selectedSubsectors]);
+
+  useEffect(() => {
+    setSelectedCountries([]);
+    setSelectedSectors([]);
+    setSelectedSubsectors([]);
+    setSelectedStages([]);
+  }, [selectedRegions]);
+
+  useEffect(() => {
+    setSelectedSectors([]);
+    setSelectedSubsectors([]);
+    setSelectedStages([]);
+  }, [selectedCountries]);
+
+  useEffect(() => {
+    setSelectedSubsectors([]);
+    setSelectedStages([]);
+  }, [selectedSectors]);
+
+  useEffect(() => {
+    setSelectedStages([]);
+  }, [selectedSubsectors]);
 
   const mapProjects = useMemo(() => {
     if (!selectedProject) {
@@ -250,9 +377,17 @@ export default function Home() {
     return exists ? filteredProjects : [selectedProject, ...filteredProjects];
   }, [filteredProjects, selectedProject]);
 
-  const handleProjectSelect = (project: ProjectRecord | null) => {
+  const handleProjectSelect = useCallback((project: ProjectRecord | null) => {
     setSelectedProject(project);
-  };
+
+    if (project?.latitude != null && project.longitude != null) {
+      projectMapRef.current?.flyToProject(project);
+
+      if (view === "list") {
+        setView("map");
+      }
+    }
+  }, [view]);
 
   const handleViewChange = (newView: "map" | "list") => {
     setView(newView);
@@ -269,11 +404,13 @@ export default function Home() {
   return (
     <div
       style={{
+        fontFamily: systemFont,
+        fontSize: 13,
         display: "flex",
         flexDirection: "column",
         height: "100vh",
         overflow: "hidden",
-        backgroundColor: "#0d1117"
+        backgroundColor: "#0b1929"
       }}
     >
       <div style={{ flex: "0 0 56px" }}>
@@ -282,22 +419,22 @@ export default function Home() {
           projectCount={projects.length}
           coverageCount={coverageCount}
           searchValue={searchValue}
-          selectedRegion={selectedRegion}
-          selectedSector={selectedSector}
-          selectedCountry={selectedCountry}
-          selectedSubsector={selectedSubsector}
-          selectedStage={selectedStage}
+          selectedRegions={selectedRegions}
+          selectedCountries={selectedCountries}
+          selectedSectors={selectedSectors}
+          selectedSubsectors={selectedSubsectors}
+          selectedStages={selectedStages}
           regionOptions={regions}
           countryOptions={countries}
           sectorOptions={sectors}
           subsectorOptions={subsectors}
           stageOptions={stages}
           onSearchChange={setSearchValue}
-          onRegionChange={setSelectedRegion}
-          onSectorChange={setSelectedSector}
-          onCountryChange={setSelectedCountry}
-          onSubsectorChange={setSelectedSubsector}
-          onStageChange={setSelectedStage}
+          onRegionsChange={setSelectedRegions}
+          onCountriesChange={setSelectedCountries}
+          onSectorsChange={setSelectedSectors}
+          onSubsectorsChange={setSelectedSubsectors}
+          onStagesChange={setSelectedStages}
         />
       </div>
 
@@ -321,7 +458,7 @@ export default function Home() {
         style={{
           flex: 1,
           display: "grid",
-          gridTemplateColumns: "75% 25%",
+          gridTemplateColumns: `${leftWidth}% 4px ${100 - leftWidth}%`,
           gridTemplateRows: `${topHeight}% 4px ${100 - topHeight}%`,
           overflow: "hidden",
           minHeight: 0
@@ -332,7 +469,7 @@ export default function Home() {
             gridColumn: 1,
             gridRow: 1,
             overflow: "hidden",
-            borderRight: "1px solid #30363d",
+            borderRight: "none",
             borderBottom: "1px solid #30363d",
             position: "relative",
             minHeight: 0
@@ -392,6 +529,7 @@ export default function Home() {
           </div>
           {view === "map" ? (
             <ProjectMap
+              ref={projectMapRef}
               projects={mapProjects}
               focusProject={selectedProject}
               focusRequest={mapFocusRequest}
@@ -410,12 +548,42 @@ export default function Home() {
           style={{
             gridColumn: 2,
             gridRow: "1 / 4",
+            width: 4,
+            backgroundColor: "#21262d",
+            cursor: "col-resize",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            zIndex: 10,
+            flexDirection: "column"
+          }}
+          onMouseDown={handleVerticalMouseDown}
+          onMouseEnter={(event) => {
+            event.currentTarget.style.backgroundColor = "#f0a500";
+          }}
+          onMouseLeave={(event) => {
+            event.currentTarget.style.backgroundColor = "#21262d";
+          }}
+        >
+          <div
+            style={{
+              width: 3,
+              height: 32,
+              backgroundColor: "#444c56",
+              borderRadius: 2
+            }}
+          />
+        </div>
+
+        <div
+          style={{
+            gridColumn: 3,
+            gridRow: "1 / 4",
             display: "flex",
             flexDirection: "column",
             overflowY: "auto",
             overflowX: "hidden",
             backgroundColor: "#161b22",
-            borderLeft: "1px solid #30363d",
             scrollbarWidth: "thin",
             scrollbarColor: "#30363d #161b22",
             minHeight: 0
@@ -438,15 +606,14 @@ export default function Home() {
 
         <div
           style={{
-            gridColumn: "1 / -1",
+            gridColumn: 1,
             gridRow: 2,
             height: 4,
-            backgroundColor: "#30363d",
+            backgroundColor: "#21262d",
             cursor: "row-resize",
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
-            flexShrink: 0,
             zIndex: 10
           }}
           onMouseDown={handleMouseDown}
@@ -454,7 +621,7 @@ export default function Home() {
             event.currentTarget.style.backgroundColor = "#f0a500";
           }}
           onMouseLeave={(event) => {
-            event.currentTarget.style.backgroundColor = "#30363d";
+            event.currentTarget.style.backgroundColor = "#21262d";
           }}
         >
           <div

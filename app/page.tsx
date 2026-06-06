@@ -2,6 +2,9 @@ export const dynamic = 'force-dynamic'
 import Link from "next/link";
 import type { CSSProperties } from "react";
 
+const systemFont =
+  "-apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, 'Helvetica Neue', Arial, sans-serif";
+
 const navButtonStyle: CSSProperties = {
   border: "1px solid #30363d",
   color: "#e6edf3",
@@ -110,6 +113,8 @@ export default function LandingPage() {
   return (
     <main
       style={{
+        fontFamily: systemFont,
+        fontSize: 13,
         minHeight: "100vh",
         backgroundColor: "#0d1117",
         color: "#e6edf3"

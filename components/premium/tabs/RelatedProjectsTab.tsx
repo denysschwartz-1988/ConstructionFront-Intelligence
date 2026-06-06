@@ -3,6 +3,7 @@
 import { useMemo } from "react";
 import { getStageBadgeStyle } from "@/lib/utils";
 import type { ProjectRecord } from "@/types/database";
+import { cardStyle, mutedTextStyle, sectionLabelStyle, tabRootStyle } from "@/lib/styles";
 
 type RelatedProjectsTabProps = {
   currentProject: ProjectRecord;
@@ -16,6 +17,15 @@ const getTimestamp = (project: ProjectRecord) => {
   const millis = value ? new Date(value).getTime() : 0;
   return Number.isFinite(millis) ? millis : 0;
 };
+
+const relatedCardStyle = {
+  ...cardStyle,
+  cursor: "pointer",
+  display: "flex",
+  flexDirection: "row",
+  gap: 12,
+  alignItems: "center"
+} as const;
 
 export default function RelatedProjectsTab({
   currentProject,
@@ -53,16 +63,8 @@ export default function RelatedProjectsTab({
   }, [currentProject, currentProject.projectSlug, allProjects]);
 
   return (
-    <div style={{ padding: 24, display: "flex", flexDirection: "column", gap: 12 }}>
-      <div
-        style={{
-          color: "#f0a500",
-          fontSize: 10,
-          fontWeight: 600,
-          letterSpacing: "0.08em",
-          textTransform: "uppercase"
-        }}
-      >
+    <div style={{ ...tabRootStyle, display: "flex", flexDirection: "column", gap: 12 }}>
+      <div style={sectionLabelStyle}>
         RELATED PROJECTS
       </div>
 
@@ -72,23 +74,12 @@ export default function RelatedProjectsTab({
             <div
               key={project.projectSlug}
               onClick={() => onProjectSelect(project)}
-              style={{
-                backgroundColor: "#1c2128",
-                border: "1px solid #30363d",
-                borderRadius: 8,
-                overflow: "hidden",
-                cursor: "pointer",
-                display: "flex",
-                flexDirection: "row",
-                gap: 12,
-                padding: "10px 12px",
-                alignItems: "center"
-              }}
+              style={relatedCardStyle}
               onMouseEnter={(event) => {
                 event.currentTarget.style.borderColor = "#f0a500";
               }}
               onMouseLeave={(event) => {
-                event.currentTarget.style.borderColor = "#30363d";
+                event.currentTarget.style.borderColor = "#21262d";
               }}
             >
               {project.projectImageUrl ? (
@@ -140,8 +131,7 @@ export default function RelatedProjectsTab({
                 </div>
                 <div
                   style={{
-                    color: "#8b949e",
-                    fontSize: 11,
+                    ...mutedTextStyle,
                     marginBottom: 4,
                     overflow: "hidden",
                     whiteSpace: "nowrap",

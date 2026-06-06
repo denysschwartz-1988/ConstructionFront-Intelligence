@@ -6,6 +6,16 @@ import type {
   ProjectPartyRecord,
   ProjectSourceRecord
 } from "@/types/database";
+import { cleanCityArea } from "@/lib/utils";
+import {
+  bodyTextStyle,
+  cardStyle,
+  mutedTextStyle,
+  rowLabelStyle,
+  rowValueStyle,
+  sectionLabelStyle,
+  tabRootStyle
+} from "@/lib/styles";
 
 type Props = {
   project: ProjectRecord;
@@ -20,35 +30,19 @@ type PartyGroup = {
   jvOnly?: boolean;
 };
 
-const cardStyle: React.CSSProperties = {
-  backgroundColor: "#1c2128",
-  border: "1px solid #30363d",
-  borderRadius: 8,
-  padding: 16
-};
-
-const sectionLabelStyle: React.CSSProperties = {
-  color: "#f0a500",
-  fontSize: 10,
-  letterSpacing: "0.08em",
-  fontWeight: 600,
-  textTransform: "uppercase",
-  marginBottom: 8
-};
-
 const partyGroupStyle: React.CSSProperties = {
-  backgroundColor: "#21262d",
-  border: "1px solid #30363d",
+  backgroundColor: "#161b22",
+  border: "1px solid #21262d",
   borderRadius: 6,
-  padding: "10px 12px",
+  padding: 12,
   marginBottom: 8
 };
 
 const partyChipStyle: React.CSSProperties = {
-  backgroundColor: "#2d333b",
-  border: "1px solid #444c56",
-  borderRadius: 6,
-  padding: "6px 10px"
+  backgroundColor: "transparent",
+  border: "1px solid #30363d",
+  borderRadius: 4,
+  padding: "3px 8px"
 };
 
 const partyGroups: PartyGroup[] = [
@@ -174,20 +168,15 @@ const FeatureRow = ({
     >
       <span
         style={{
-          color: "#8b949e",
-          fontSize: 11,
-          textTransform: "uppercase",
-          letterSpacing: "0.05em"
+          ...rowLabelStyle
         }}
       >
         {label}
       </span>
       <span
         style={{
-          color: amber ? "#f0a500" : "#e6edf3",
-          fontSize: 13,
-          fontWeight: 500,
-          textAlign: "right",
+          ...rowValueStyle,
+          color: amber ? "#f0a500" : rowValueStyle.color,
           maxWidth: "60%"
         }}
       >
@@ -293,7 +282,7 @@ export default function ProjectIntelligenceTab({
   const fullDescription =
     project.projectDescriptionFull || project.projectDescription || "No project description available.";
   const otherKeyInfo = project.otherKeyInfo ?? project.sourceNotes;
-  const location = [project.country, project.stateProvince, project.cityArea]
+  const location = [project.country, project.stateProvince, cleanCityArea(project.cityArea)]
     .filter(Boolean)
     .join(" / ");
   const projectValue = getProjectValue(project);
@@ -321,16 +310,14 @@ export default function ProjectIntelligenceTab({
   const ninetyDays = 90 * 24 * 60 * 60 * 1000;
 
   return (
-    <div style={{ width: "100%", padding: 0, background: "transparent" }}>
+    <div style={{ ...tabRootStyle, width: "100%" }}>
       <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
         <div style={cardStyle}>
           <div style={sectionLabelStyle}>ABOUT THE PROJECT</div>
 
           <p
             style={{
-              color: "#e6edf3",
-              fontSize: 13,
-              lineHeight: 1.6,
+              ...bodyTextStyle,
               margin: 0,
               marginBottom: otherKeyInfo ? 12 : 0
             }}
@@ -348,9 +335,7 @@ export default function ProjectIntelligenceTab({
               />
               <p
                 style={{
-                  color: "#e6edf3",
-                  fontSize: 13,
-                  lineHeight: 1.6,
+                  ...bodyTextStyle,
                   margin: 0
                 }}
               >
@@ -416,10 +401,10 @@ export default function ProjectIntelligenceTab({
 
             <div style={cardStyle}>
               <div style={sectionLabelStyle}>LATEST INTELLIGENCE</div>
-              <div style={{ color: "#8b949e", fontSize: 12, marginBottom: 8 }}>
+              <div style={{ ...mutedTextStyle, marginBottom: 8 }}>
                 Updated: {formatDate(project.lastUpdated ?? project.latestUpdateDate)}
               </div>
-              <div style={{ color: "#e6edf3", fontSize: 13 }}>
+              <div style={bodyTextStyle}>
                 {project.latestUpdateSummary}
               </div>
               <div style={{ marginTop: 12 }}>

@@ -10,7 +10,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "newsletter:weekly": "node scripts/generate-weekly-newsletter.mjs"
   },
   "keywords": [],
   "author": "",

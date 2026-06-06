@@ -11,6 +11,9 @@ type LatestUpdatesTickerProps = {
   onProjectSelect: (project: ProjectRecord) => void;
 };
 
+const systemFont =
+  "-apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, 'Helvetica Neue', Arial, sans-serif";
+
 const getUpdateTimestamp = (project: ProjectRecord) => {
   const value = project.latestUpdateDate?.trim();
   const millis = value ? new Date(value).getTime() : 0;
@@ -55,11 +58,13 @@ export default function LatestUpdatesTicker({
   return (
     <div
       style={{
+        fontFamily: systemFont,
+        fontSize: 13,
         height: isOpen ? 36 : 0,
         overflow: "hidden",
         transition: "height 0.25s ease",
-        backgroundColor: "#0f172a",
-        borderTop: "1px solid #30363d",
+        backgroundColor: "#0b1929",
+        borderBottom: "1px solid #21262d",
         display: "flex",
         alignItems: "center",
         padding: isOpen ? "0 24px" : "0",
