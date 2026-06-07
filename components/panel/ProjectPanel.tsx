@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import type { ProjectPartyRecord, ProjectRecord, ProjectSourceRecord } from "@/types/database";
-import { cleanCityArea, getStageBadgeStyle } from "@/lib/utils";
+import { cleanCityArea, formatDate, getStageBadgeStyle } from "@/lib/utils";
 import { cardStyle, rowLabelStyle, rowValueStyle, sectionLabelStyle } from "@/lib/styles";
 
 export type ProjectPanelProps = {
@@ -15,23 +15,6 @@ export type ProjectPanelProps = {
 };
 
 const panelCardStyle = cardStyle;
-
-const formatDate = (value?: string | null) => {
-  if (!value) {
-    return "";
-  }
-
-  const [year, month, day] = value.split("-");
-  if (!year || !month) {
-    return value;
-  }
-
-  return new Date(`${year}-${month}-${day}`).toLocaleDateString("en-US", {
-    year: "numeric",
-    month: "short",
-    day: "numeric"
-  });
-};
 
 const getSummarySentences = (text?: string | null, sentenceCount = 2) => {
   if (!text) {

@@ -2,6 +2,7 @@
 
 import React, { useMemo, useState } from "react";
 import type { ProjectMilestoneRecord, ProjectRecord } from "@/types/database";
+import { formatMonthYear } from "@/lib/utils";
 import { bodyTextStyle, cardStyle, mutedTextStyle, sectionLabelStyle, tabRootStyle } from "@/lib/styles";
 
 type TimelinesTabProps = {
@@ -205,12 +206,7 @@ export default function TimelinesTab({
                         flexShrink: 0
                       }}
                     >
-                      {m.milestoneDate
-                        ? new Date(m.milestoneDate).toLocaleString("en-US", {
-                            month: "short",
-                            year: "numeric"
-                          })
-                        : ""}
+                      {formatMonthYear(m.milestoneDate)}
                     </div>
                     <div style={{ display: "flex", flexDirection: "column", gap: 4, flex: 1 }}>
                       <div

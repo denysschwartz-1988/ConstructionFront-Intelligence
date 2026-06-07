@@ -1,6 +1,6 @@
 "use client";
 
-import { getStageBadgeStyle } from "@/lib/utils";
+import { formatDate, getStageBadgeStyle } from "@/lib/utils";
 import type { ProjectRecord } from "@/types/database";
 
 type ProjectListViewProps = {
@@ -41,25 +41,6 @@ const cellTextStyle = {
   whiteSpace: "nowrap",
   textOverflow: "ellipsis"
 } as const;
-
-function formatDate(dateStr: string | null | undefined): string {
-  if (!dateStr) return "\u2014";
-
-  try {
-    if (dateStr.includes("/")) {
-      const [day, month, year] = dateStr.split("/");
-      const date = new Date(`${year}-${month}-${day}`);
-      if (Number.isNaN(date.getTime())) return "\u2014";
-      return date.toLocaleDateString("en-GB", { month: "short", year: "numeric" });
-    }
-
-    const date = new Date(dateStr);
-    if (Number.isNaN(date.getTime())) return "\u2014";
-    return date.toLocaleDateString("en-GB", { month: "short", year: "numeric" });
-  } catch {
-    return "\u2014";
-  }
-}
 
 export default function ProjectListView({
   projects,

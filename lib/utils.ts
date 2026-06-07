@@ -6,6 +6,35 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
+export function formatMonthYear(dateStr: string | null | undefined): string {
+  if (!dateStr) {
+    return "\u2014";
+  }
+
+  try {
+    let date: Date;
+
+    if (dateStr.includes("/")) {
+      const [day, month, year] = dateStr.split("/");
+      date = new Date(`${year}-${month}-${day}`);
+    } else {
+      date = new Date(dateStr);
+    }
+
+    if (Number.isNaN(date.getTime())) {
+      return "\u2014";
+    }
+
+    return date.toLocaleDateString("en-GB", { month: "short", year: "numeric" });
+  } catch {
+    return "\u2014";
+  }
+}
+
+export function formatDate(dateStr: string | null | undefined): string {
+  return formatMonthYear(dateStr);
+}
+
 export function getStageBadgeStyle(stage: string | null | undefined): CSSProperties {
   if (!stage) {
     return { backgroundColor: "#8b949e", color: "#ffffff" };

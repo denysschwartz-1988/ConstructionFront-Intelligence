@@ -3,6 +3,7 @@
 import { useMemo, useState } from "react";
 import type { CSSProperties, ReactNode } from "react";
 import type { ProjectRecord, ProjectSourceRecord } from "@/types/database";
+import { formatDate, formatMonthYear } from "@/lib/utils";
 import { cardStyle, rowLabelStyle, rowStyle, rowValueStyle, sectionLabelStyle, tabRootStyle } from "@/lib/styles";
 
 type SourcesTabProps = {
@@ -30,38 +31,6 @@ const borderColors: Record<string, string> = {
   "Stock Exchange": "#3fb950",
   Other: "#8b949e"
 };
-
-const formatDate = (value?: string | null) => {
-  if (!value) {
-    return "";
-  }
-
-  const date = new Date(value);
-  if (Number.isNaN(date.getTime())) {
-    return value;
-  }
-
-  return date.toLocaleString("en-US", { month: "short", day: "numeric", year: "numeric" });
-};
-
-function formatMonthYear(dateStr: string | null | undefined): string {
-  if (!dateStr) return "\u2014";
-
-  try {
-    if (dateStr.includes("/")) {
-      const [day, month, year] = dateStr.split("/");
-      const date = new Date(`${year}-${month}-${day}`);
-      if (Number.isNaN(date.getTime())) return "\u2014";
-      return date.toLocaleDateString("en-GB", { month: "short", year: "numeric" });
-    }
-
-    const date = new Date(dateStr);
-    if (Number.isNaN(date.getTime())) return "\u2014";
-    return date.toLocaleDateString("en-GB", { month: "short", year: "numeric" });
-  } catch {
-    return "\u2014";
-  }
-}
 
 const sortSources = (items: ProjectSourceRecord[]) =>
   [...items].sort((a, b) => {
@@ -281,7 +250,6 @@ export default function SourcesTab({
   sources,
   isAuthenticated
 }: SourcesTabProps) {
-  const [showAllCf, setShowAllCf] = useState(false);
   const [showAllExternal, setShowAllExternal] = useState(false);
 
   const cfSources = useMemo(
@@ -292,63 +260,74 @@ export default function SourcesTab({
     () => sortSources(sources.filter((source) => source.sourceType !== "CF Article")),
     [sources]
   );
-  const firstCfSource = cfSources[0];
-  const remainingCfSources = cfSources.slice(1);
-  const visibleRemainingCfSources = showAllCf
-    ? remainingCfSources
-    : remainingCfSources.slice(0, 3);
   const visibleExternalSources = showAllExternal
     ? externalSources
     : externalSources.slice(0, 3);
 
   return (
     <div style={tabRootStyle}>
-      <section style={cardStyle}>
-        <div style={sectionLabel}>CONSTRUCTIONFRONT COVERAGE</div>
-        <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
-          {firstCfSource ? (
-            <SourceCard
-              source={firstCfSource}
-              borderColor="#f0a500"
-              isCfArticle
-            />
-          ) : (
-            <p style={{ color: "#8b949e", margin: 0 }}>
-              No ConstructionFront coverage recorded yet.
-            </p>
-          )}
-        </div>
-      </section>
+      {cfSources.length > 0 ? (
+        <section style={cardStyle}>
+          <div style={sectionLabelStyle}>CONSTRUCTIONFRONT COVERAGE</div>
+          <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+            {cfSources.map((source) => (
+              <div
+                key={source.sourceId}
+                style={{
+                  backgroundColor: "#132845",
+                  borderLeft: "3px solid #f0a500",
+                  borderRadius: "0 6px 6px 0",
+                  padding: "10px 12px"
+                }}
+              >
+                <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 6 }}>
+                  <span style={{ color: "#8b949e", fontSize: 11 }}>
+                    {formatDate(source.publicationDate)}
+                  </span>
+                  <span
+                    style={{
+                      backgroundColor: "rgba(240,165,0,0.15)",
+                      color: "#f0a500",
+                      fontSize: 9,
+                      fontWeight: 600,
+                      padding: "1px 5px",
+                      borderRadius: 3
+                    }}
+                  >
+                    CF Article
+                  </span>
+                </div>
+                <div style={{ color: "#e6edf3", fontSize: 13, fontWeight: 600, marginBottom: 4, lineHeight: 1.4 }}>
+                  {source.sourceTitle}
+                </div>
+                {source.milestoneConfirmed ? (
+                  <div style={{ color: "#f0a500", fontSize: 10, fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.06em", marginBottom: 4 }}>
+                    {source.milestoneConfirmed}
+                  </div>
+                ) : null}
+                {source.summary ? (
+                  <div style={{ color: "#8b949e", fontSize: 12, lineHeight: 1.5, marginBottom: 6 }}>
+                    {source.summary}
+                  </div>
+                ) : null}
+                {source.sourceUrl ? (
+                  <a
+                    href={source.sourceUrl}
+                    target="_blank"
+                    rel="noreferrer"
+                    style={{ color: "#f0a500", fontSize: 12, fontWeight: 600, textDecoration: "none" }}
+                  >
+                    Read on ConstructionFront.com {"\u2192"}
+                  </a>
+                ) : null}
+              </div>
+            ))}
+          </div>
+        </section>
+      ) : null}
 
       <PremiumBlur isAuthenticated={isAuthenticated}>
         <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
-          <section style={cardStyle}>
-            <div style={sectionLabel}>MORE CONSTRUCTIONFRONT COVERAGE</div>
-            <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
-              {visibleRemainingCfSources.length > 0 ? (
-                visibleRemainingCfSources.map((source) => (
-                  <SourceCard
-                    key={source.sourceId}
-                    source={source}
-                    borderColor="#f0a500"
-                    isCfArticle
-                  />
-                ))
-              ) : (
-                <p style={{ color: "#8b949e", margin: 0 }}>
-                  No additional ConstructionFront coverage recorded yet.
-                </p>
-              )}
-              {remainingCfSources.length > 3 ? (
-                <ExpandButton
-                  count={remainingCfSources.length - 3}
-                  isExpanded={showAllCf}
-                  onClick={() => setShowAllCf((current) => !current)}
-                />
-              ) : null}
-            </div>
-          </section>
-
           <section style={cardStyle}>
             <div style={sectionLabel}>EXTERNAL SOURCES</div>
             <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
@@ -383,8 +362,7 @@ export default function SourcesTab({
             <div>
               {[
                 ["Total Sources", sources.length],
-                ["Last Updated", formatMonthYear(project.lastUpdated)],
-                ["Data Completeness", project.dataCompleteness || "-"]
+                ["Record Last Updated", formatMonthYear(project.lastUpdated)]
               ].map(([label, value]) => (
                 <div
                   key={label}
