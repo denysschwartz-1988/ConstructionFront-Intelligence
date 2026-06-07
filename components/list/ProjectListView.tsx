@@ -77,8 +77,8 @@ export default function ProjectListView({
     >
       <div
         style={{
-          backgroundColor: "#161b22",
-          borderBottom: "1px solid #30363d",
+          backgroundColor: "#0f2240",
+          borderBottom: "1px solid #1e3a5f",
           flexShrink: 0
         }}
       >
@@ -134,13 +134,13 @@ export default function ProjectListView({
                   key={project.projectSlug}
                   onClick={() => onProjectSelect(project)}
                   style={{
-                    borderBottom: "1px solid #21262d",
+                    borderBottom: "1px solid #162f52",
                     cursor: "pointer",
-                    backgroundColor: isSelected ? "#1c2128" : "transparent"
+                    backgroundColor: isSelected ? "#132845" : "transparent"
                   }}
                   onMouseEnter={(event) => {
                     if (!isSelected) {
-                      event.currentTarget.style.backgroundColor = "#161b22";
+                      event.currentTarget.style.backgroundColor = "#0f2240";
                     }
                   }}
                   onMouseLeave={(event) => {
@@ -167,7 +167,7 @@ export default function ProjectListView({
                         style={{
                           width: 72,
                           height: 72,
-                          backgroundColor: "#21262d",
+                          backgroundColor: "#162f52",
                           borderRadius: 6,
                           display: "flex",
                           alignItems: "center",

@@ -7,190 +7,109 @@
   - Environments: .env.local
 
  ✓ Starting...
- ✓ Ready in 1798ms
+ ✓ Ready in 3.8s
  ○ Compiling / ...
- ✓ Compiled / in 3.6s (882 modules)
- GET / 200 in 3798ms
- GET / 200 in 52ms
- POST / 200 in 33ms
- POST / 200 in 12ms
+ ✓ Compiled / in 3.7s (882 modules)
+ GET / 200 in 3970ms
+ POST / 200 in 30ms
+ POST / 200 in 16ms
+ GET / 200 in 42ms
+ POST / 200 in 29ms
+ POST / 200 in 28ms
  ○ Compiling /map ...
- ✓ Compiled /map in 1625ms (1174 modules)
- GET /map 200 in 1880ms
- POST /map 200 in 19ms
+ ✓ Compiled /map in 1906ms (1178 modules)
+ ✓ Compiled in 366ms (1135 modules)
+ ✓ Compiled in 224ms (1135 modules)
+ ✓ Compiled in 485ms (1135 modules)
+ ✓ Compiled in 1328ms (1135 modules)
+ ✓ Compiled in 1ms (648 modules)
+ ✓ Compiled in 0ms (648 modules)
+ ✓ Compiled in 1ms (648 modules)
+ GET /map 200 in 544ms
+ POST /map 200 in 20ms
  POST /map 200 in 13ms
- ✓ Compiled in 344ms (1131 modules)
- ✓ Compiled in 314ms (1131 modules)
- GET /map 200 in 109ms
- POST /map 200 in 14ms
- POST /map 200 in 13ms
- ✓ Compiled in 210ms (1131 modules)
- ✓ Compiled in 476ms (1131 modules)
- ✓ Compiled in 0ms (646 modules)
- ✓ Compiled in 0ms (646 modules)
- ✓ Compiled in 1ms (646 modules)
- GET /map 200 in 445ms
- POST /map 200 in 25ms
- POST /map 200 in 30ms
- GET /map 200 in 115ms
- POST /map 200 in 11ms
- POST /map 200 in 13ms
- GET /map 200 in 37ms
- POST /map 200 in 16ms
- POST /map 200 in 17ms
- ✓ Compiled in 735ms (1131 modules)
- ✓ Compiled in 312ms (1131 modules)
- GET /map 500 in 213ms
- ✓ Compiled in 328ms (1131 modules)
- ✓ Compiled in 0ms (646 modules)
- ✓ Compiled in 0ms (646 modules)
- ✓ Compiled in 0ms (646 modules)
- GET /map 500 in 404ms
- ✓ Compiled in 316ms (1131 modules)
- ✓ Compiled in 1ms (646 modules)
- GET /map 200 in 179ms
- POST /map 200 in 21ms
- POST /map 200 in 10ms
- GET /map 200 in 74ms
- POST /map 200 in 10ms
- POST /map 200 in 11ms
- ○ Compiling /_not-found ...
- ✓ Compiled /_not-found in 861ms (1134 modules)
- GET /_next/static/webpack/cc35972718f30119.webpack.hot-update.json 404 in 884ms
- GET / 200 in 85ms
- POST / 200 in 256ms
- POST / 200 in 217ms
- ○ Compiling /_error ...
- ✓ Compiled /_error in 1097ms (1347 modules)
- GET /map 500 in 6023ms
- GET /map 200 in 131ms
- POST /map 200 in 15ms
- POST /map 200 in 12ms
- GET /map 200 in 53ms
- POST /map 200 in 11ms
- POST /map 200 in 12ms
- ✓ Compiled in 237ms (671 modules)
- ✓ Compiled in 687ms (1360 modules)
- ✓ Compiled in 1ms (688 modules)
- ✓ Compiled in 0ms (688 modules)
- ✓ Compiled in 0ms (688 modules)
- GET /map 500 in 809ms
- ✓ Compiled in 424ms (1360 modules)
- GET /map 500 in 183ms
- ✓ Compiled in 308ms (1360 modules)
- ✓ Compiled in 1ms (688 modules)
- ✓ Compiled in 0ms (688 modules)
- ✓ Compiled in 1ms (688 modules)
- GET /map 500 in 460ms
- ✓ Compiled in 284ms (1360 modules)
- GET /map 500 in 73ms
- ✓ Compiled in 320ms (1360 modules)
- ✓ Compiled in 1ms (688 modules)
- ✓ Compiled in 0ms (688 modules)
- ✓ Compiled in 0ms (688 modules)
- GET /map 200 in 363ms
- POST /map 200 in 23ms
- POST /map 200 in 16ms
- GET /map 200 in 70ms
- POST /map 200 in 19ms
- POST /map 200 in 14ms
- ✓ Compiled in 2.1s (1360 modules)
- GET /map 200 in 2048ms
- POST /map 200 in 21ms
- POST /map 200 in 15ms
- GET /map 200 in 41ms
- GET /map 200 in 58ms
- POST /map 200 in 13ms
- POST /map 200 in 13ms
- GET /map 200 in 61ms
- POST /map 200 in 18ms
- POST /map 200 in 22ms
- ✓ Compiled in 520ms (1360 modules)
- GET /map 200 in 153ms
- POST /map 200 in 16ms
- POST /map 200 in 21ms
- GET /map 200 in 78ms
- POST /map 200 in 12ms
- POST /map 200 in 9ms
- ✓ Compiled in 362ms (1360 modules)
- GET /map 200 in 51ms
- POST /map 200 in 29ms
- POST /map 200 in 12ms
- GET /map 200 in 61ms
- POST /map 200 in 15ms
- POST /map 200 in 13ms
- GET /map 200 in 68ms
- POST /map 200 in 13ms
- POST /map 200 in 13ms
- ○ Compiling /_not-found ...
- ✓ Compiled /_not-found in 647ms (1349 modules)
- GET /.well-known/appspecific/com.chrome.devtools.json 404 in 792ms
- ✓ Compiled in 739ms (1360 modules)
- GET /map 200 in 144ms
- ✓ Compiled /_not-found in 293ms (1349 modules)
- GET /.well-known/appspecific/com.chrome.devtools.json 404 in 345ms
- POST /map 200 in 26ms
- POST /map 200 in 15ms
- ✓ Compiled in 483ms (1360 modules)
- ✓ Compiled in 1041ms (1360 modules)
- GET /map 200 in 150ms
- ✓ Compiled /_not-found in 481ms (1349 modules)
- GET /.well-known/appspecific/com.chrome.devtools.json 404 in 628ms
- POST /map 200 in 19ms
- POST /map 200 in 10ms
- ✓ Compiled in 178ms (672 modules)
- ✓ Compiled in 682ms (1360 modules)
- ✓ Compiled in 448ms (1362 modules)
- ✓ Compiled in 406ms (1362 modules)
- ✓ Compiled in 336ms (1362 modules)
- ✓ Compiled in 341ms (1362 modules)
- ✓ Compiled in 273ms (1362 modules)
- ✓ Compiled in 282ms (1362 modules)
- ✓ Compiled in 367ms (1362 modules)
- ✓ Compiled in 325ms (1362 modules)
- ✓ Compiled in 316ms (1362 modules)
- ✓ Compiled in 667ms (1362 modules)
- ✓ Compiled in 439ms (1362 modules)
- GET /map 200 in 139ms
- ✓ Compiled /_not-found in 390ms (1351 modules)
- GET /.well-known/appspecific/com.chrome.devtools.json 404 in 497ms
- POST /map 200 in 27ms
- POST /map 200 in 32ms
- ✓ Compiled in 719ms (1362 modules)
- GET /map 200 in 146ms
- ✓ Compiled /_not-found in 352ms (1351 modules)
- GET /.well-known/appspecific/com.chrome.devtools.json 404 in 416ms
- POST /map 200 in 25ms
- POST /map 200 in 14ms
- ✓ Compiled in 1105ms (1362 modules)
- GET /map 200 in 176ms
- GET /map 200 in 178ms
- ✓ Compiled /_not-found in 282ms (1351 modules)
- GET /.well-known/appspecific/com.chrome.devtools.json 404 in 345ms
- POST /map 200 in 24ms
- POST /map 200 in 39ms
- POST /map 200 in 16ms
- POST /map 200 in 33ms
- ✓ Compiled in 936ms (1362 modules)
- GET /map 200 in 128ms
  GET /map 200 in 119ms
- ✓ Compiled /_not-found in 173ms (1351 modules)
- GET /.well-known/appspecific/com.chrome.devtools.json 404 in 315ms
- POST /map 200 in 21ms
- POST /map 200 in 13ms
  POST /map 200 in 14ms
- POST /map 200 in 42ms
- ✓ Compiled in 562ms (1362 modules)
- GET /map 200 in 246ms
- ✓ Compiled /_not-found in 195ms (1351 modules)
- GET /.well-known/appspecific/com.chrome.devtools.json 404 in 264ms
- POST /map 200 in 30ms
- POST /map 200 in 23ms
- ✓ Compiled in 321ms (1365 modules)
- ✓ Compiled in 492ms (1362 modules)
- ✓ Compiled in 513ms (1362 modules)
- GET /map 200 in 160ms
- ✓ Compiled /_not-found in 302ms (1351 modules)
- GET /.well-known/appspecific/com.chrome.devtools.json 404 in 424ms
- POST /map 200 in 36ms
+ POST /map 200 in 14ms
+ GET /map 200 in 51ms
+ POST /map 200 in 11ms
+ POST /map 200 in 13ms
+ GET /map 200 in 56ms
+ POST /map 200 in 13ms
+ POST /map 200 in 12ms
+ ○ Compiling /_not-found ...
+ ✓ Compiled /_not-found in 728ms (1138 modules)
+ GET /.well-known/appspecific/com.chrome.devtools.json 404 in 946ms
+ ✓ Compiled in 1496ms (1135 modules)
+ GET /map 200 in 750ms
  POST /map 200 in 17ms
+ POST /map 200 in 13ms
+ ✓ Compiled in 1477ms (1135 modules)
+ ✓ Compiled in 0ms (648 modules)
+ ✓ Compiled in 0ms (648 modules)
+ ✓ Compiled in 0ms (648 modules)
+ GET /map 200 in 848ms
+ POST /map 200 in 20ms
+ POST /map 200 in 14ms
+ ✓ Compiled in 389ms (1135 modules)
+ ✓ Compiled in 355ms (1135 modules)
+ ✓ Compiled in 920ms (1135 modules)
+ GET /map 200 in 856ms
+ POST /map 200 in 14ms
+ POST /map 200 in 12ms
+ ✓ Compiled in 457ms (1135 modules)
+ ✓ Compiled in 1929ms (1191 modules)
+ ✓ Compiled in 0ms (649 modules)
+ ✓ Compiled in 0ms (649 modules)
+ ✓ Compiled in 0ms (649 modules)
+ GET /map 200 in 609ms
+ POST /map 200 in 16ms
+ POST /map 200 in 11ms
+ ✓ Compiled in 325ms (1139 modules)
+ GET / 200 in 115ms
+ POST / 200 in 23ms
+ POST / 200 in 35ms
+ ✓ Compiled in 591ms (1139 modules)
+ GET /map 200 in 74ms
+ POST /map 200 in 15ms
+ POST /map 200 in 17ms
+ ✓ Compiled in 419ms (1139 modules)
+ GET /map 200 in 131ms
+ POST /map 200 in 17ms
+ POST /map 200 in 12ms
+ ✓ Compiled in 457ms (1139 modules)
+ ✓ Compiled in 269ms (1139 modules)
+ GET /map 200 in 74ms
+ POST /map 200 in 16ms
+ POST /map 200 in 13ms
+ GET /map 200 in 56ms
+ POST /map 200 in 17ms
+ POST /map 200 in 14ms
+ ✓ Compiled in 647ms (1139 modules)
+ ✓ Compiled in 566ms (1139 modules)
+ GET /map 200 in 140ms
+ POST /map 200 in 14ms
+ POST /map 200 in 11ms
+ ✓ Compiled in 1237ms (1139 modules)
+ ✓ Compiled in 482ms (1139 modules)
+ ✓ Compiled in 222ms (1139 modules)
+ GET /map 200 in 113ms
+ POST /map 200 in 15ms
+ POST /map 200 in 15ms
+ ✓ Compiled in 406ms (1139 modules)
+ ✓ Compiled in 387ms (1139 modules)
+ GET /map 200 in 107ms
+ POST /map 200 in 12ms
+ POST /map 200 in 12ms
+ ✓ Compiled in 360ms (1139 modules)
+ ✓ Compiled in 335ms (1139 modules)
+ ✓ Compiled in 738ms (1139 modules)
+ ✓ Compiled in 522ms (1139 modules)
+ ✓ Compiled in 238ms (1139 modules)
+ ✓ Compiled in 256ms (1139 modules)
+ ✓ Compiled in 245ms (1139 modules)
+ GET /map 200 in 126ms
+ POST /map 200 in 19ms
+ POST /map 200 in 12ms
+ ✓ Compiled in 413ms (1139 modules)
+ ✓ Compiled in 490ms (1139 modules)

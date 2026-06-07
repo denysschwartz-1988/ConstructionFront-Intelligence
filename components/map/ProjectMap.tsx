@@ -255,7 +255,7 @@ const ProjectMap = forwardRef<ProjectMapHandle, ProjectMapProps>(function Projec
         const colors = childMarkers.map((marker: any) => marker.options.fillColor || "#f0a500");
         const uniqueColors = [...new Set(colors)];
         const clusterColor = uniqueColors.length === 1 ? uniqueColors[0] : "#6e7681";
-        const textColor = clusterColor === "#6e7681" ? "#ffffff" : "#0d1117";
+        const textColor = clusterColor === "#6e7681" ? "#ffffff" : "#0a1628";
         const count = cluster.getChildCount();
 
         return leaflet.divIcon({
@@ -363,8 +363,8 @@ const ProjectMap = forwardRef<ProjectMapHandle, ProjectMapProps>(function Projec
           left: 0,
           right: 0,
           zIndex: 1000,
-          backgroundColor: "rgba(13,17,23,0.92)",
-          borderTop: "1px solid #30363d",
+          backgroundColor: "rgba(10,22,40,0.92)",
+          borderTop: "1px solid #1e3a5f",
           padding: "6px 16px",
           display: "flex",
           alignItems: "center",
@@ -386,7 +386,7 @@ const ProjectMap = forwardRef<ProjectMapHandle, ProjectMapProps>(function Projec
           PROJECT STATUS
         </span>
 
-        <div style={{ width: 1, height: 14, backgroundColor: "#30363d", flexShrink: 0 }} />
+        <div style={{ width: 1, height: 14, backgroundColor: "#1e3a5f", flexShrink: 0 }} />
 
         {legendItems.map((item) => (
           <div

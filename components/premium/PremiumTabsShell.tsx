@@ -18,9 +18,6 @@ type PremiumTabsShellProps = {
   onProjectSelect: (project: ProjectRecord) => void;
 };
 
-const systemFont =
-  "-apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, 'Helvetica Neue', Arial, sans-serif";
-
 export default function PremiumTabsShell({
   project,
   parties,
@@ -52,13 +49,12 @@ export default function PremiumTabsShell({
   return (
     <div
       style={{
-        fontFamily: systemFont,
         fontSize: 13,
         flex: 1,
         display: "flex",
         flexDirection: "column",
         overflow: "hidden",
-        backgroundColor: "var(--primary-bg)",
+        backgroundColor: "#0f2240",
         borderTop: `1px solid var(--border)`
       }}
     >
@@ -69,8 +65,8 @@ export default function PremiumTabsShell({
           justifyContent: "space-between",
           height: 44,
           minHeight: 44,
-          backgroundColor: "#161b22",
-          borderBottom: "1px solid #30363d",
+          backgroundColor: "#0f2240",
+          borderBottom: "1px solid #1e3a5f",
           padding: "0 24px"
         }}
       >
@@ -141,20 +137,18 @@ export default function PremiumTabsShell({
           flex: 1,
           overflowY: "auto",
           overflowX: "hidden",
-          backgroundColor: "#0d1117",
+          backgroundColor: "#0a1628",
           scrollbarWidth: "thin",
-          scrollbarColor: "#30363d #0d1117"
+          scrollbarColor: "#1e3a5f #0a1628"
         }}
       >
         {activeTab === 'project' ? (
-          <div style={{ padding: 24 }}>
-            <ProjectIntelligenceTab
-              project={project}
-              parties={parties}
-              sources={sources}
-              isAuthenticated={isAuthenticated}
-            />
-          </div>
+          <ProjectIntelligenceTab
+            project={project}
+            parties={parties}
+            sources={sources}
+            isAuthenticated={isAuthenticated}
+          />
         ) : null}
         {activeTab === "timelines" ? (
           <TimelinesTab

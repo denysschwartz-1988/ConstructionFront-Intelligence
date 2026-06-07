@@ -1,8 +1,9 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import type { ProjectPartyRecord, ProjectRecord, ProjectSourceRecord } from "@/types/database";
 import { cleanCityArea, getStageBadgeStyle } from "@/lib/utils";
-import { rowLabelStyle, rowValueStyle, sectionLabelStyle } from "@/lib/styles";
+import { cardStyle, rowLabelStyle, rowValueStyle, sectionLabelStyle } from "@/lib/styles";
 
 export type ProjectPanelProps = {
   selectedProject: ProjectRecord;
@@ -13,16 +14,7 @@ export type ProjectPanelProps = {
   error?: string | null;
 };
 
-const systemFont =
-  "-apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, 'Helvetica Neue', Arial, sans-serif";
-
-const panelCardStyle = {
-  backgroundColor: "#161b22",
-  border: "1px solid #21262d",
-  borderRadius: 6,
-  padding: 10,
-  marginBottom: 8
-};
+const panelCardStyle = cardStyle;
 
 const formatDate = (value?: string | null) => {
   if (!value) {
@@ -108,6 +100,7 @@ const ProjectPanel = ({
   isLoading,
   error
 }: ProjectPanelProps) => {
+  const [currentArticleIndex, setCurrentArticleIndex] = useState(0);
   const imageUrl = selectedProject.projectImageUrl?.trim();
   const headerLabel = selectedProject.projectName ?? selectedProject.projectSlug;
   const ownerDeveloper = getPartyNames(projectParties, "Developer / Owner");
@@ -128,6 +121,7 @@ const ProjectPanel = ({
   const cfArticles = projectSources.filter(
     (source) => source.sourceType?.trim().toLowerCase() === "cf article"
   );
+  const currentArticle = cfArticles[currentArticleIndex] ?? cfArticles[0];
   const keyDetails = [
     { label: "Owner / Developer", value: ownerDeveloper },
     { label: "Public Authority", value: publicAuthority },
@@ -137,15 +131,30 @@ const ProjectPanel = ({
     { label: "Location", value: locationParts }
   ].filter((detail) => detail.value);
 
+  useEffect(() => {
+    if (cfArticles.length <= 1) {
+      return;
+    }
+
+    const timer = window.setInterval(() => {
+      setCurrentArticleIndex((previous) => (previous + 1) % cfArticles.length);
+    }, 4000);
+
+    return () => window.clearInterval(timer);
+  }, [cfArticles.length]);
+
+  useEffect(() => {
+    setCurrentArticleIndex(0);
+  }, [selectedProject.projectSlug]);
+
   return (
     <div
       style={{
-        fontFamily: systemFont,
         fontSize: 13,
         display: 'flex',
         flexDirection: 'column',
         flex: 1,
-        backgroundColor: '#0d1117'
+        backgroundColor: '#0a1628'
       }}
     >
       <div style={{ position: 'relative' }}>
@@ -159,7 +168,7 @@ const ProjectPanel = ({
         </button>
       </div>
 
-      <div style={{ height: 160, width: '100%', overflow: 'hidden', backgroundColor: 'var(--secondary-bg)', flexShrink: 0 }}>
+      <div style={{ height: 160, width: '100%', overflow: 'hidden', backgroundColor: '#0f2240', flexShrink: 0 }}>
         {imageUrl ? (
           <img
             src={imageUrl}
@@ -167,7 +176,7 @@ const ProjectPanel = ({
             style={{ width: '100%', height: 160, objectFit: 'cover', display: 'block' }}
           />
         ) : (
-          <div style={{ height: 160, display: 'flex', alignItems: 'center', justifyContent: 'center', backgroundColor: '#1b2736', color: '#64748b' }}>
+          <div style={{ height: 160, display: 'flex', alignItems: 'center', justifyContent: 'center', backgroundColor: '#0f2240', color: '#64748b' }}>
             <span>No image available</span>
           </div>
         )}
@@ -216,21 +225,21 @@ const ProjectPanel = ({
 
           <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6, marginTop: 10 }}>
             {selectedProject.country ? (
-              <span style={{ backgroundColor: 'transparent', border: '1px solid #30363d', borderRadius: 4, padding: '3px 8px', color: '#8b949e', fontSize: 11 }}>{selectedProject.country}</span>
+              <span style={{ backgroundColor: 'transparent', border: '1px solid #1e3a5f', borderRadius: 4, padding: '3px 8px', color: '#8b949e', fontSize: 11 }}>{selectedProject.country}</span>
             ) : null}
             {selectedProject.region ? (
-              <span style={{ backgroundColor: 'transparent', border: '1px solid #30363d', borderRadius: 4, padding: '3px 8px', color: '#8b949e', fontSize: 11 }}>{selectedProject.region}</span>
+              <span style={{ backgroundColor: 'transparent', border: '1px solid #1e3a5f', borderRadius: 4, padding: '3px 8px', color: '#8b949e', fontSize: 11 }}>{selectedProject.region}</span>
             ) : null}
             {selectedProject.sector ? (
-              <span style={{ backgroundColor: 'transparent', border: '1px solid #30363d', borderRadius: 4, padding: '3px 8px', color: '#8b949e', fontSize: 11 }}>{selectedProject.sector}</span>
+              <span style={{ backgroundColor: 'transparent', border: '1px solid #1e3a5f', borderRadius: 4, padding: '3px 8px', color: '#8b949e', fontSize: 11 }}>{selectedProject.sector}</span>
             ) : null}
             {selectedProject.subsector ? (
-              <span style={{ backgroundColor: 'transparent', border: '1px solid #30363d', borderRadius: 4, padding: '3px 8px', color: '#8b949e', fontSize: 11 }}>{selectedProject.subsector}</span>
+              <span style={{ backgroundColor: 'transparent', border: '1px solid #1e3a5f', borderRadius: 4, padding: '3px 8px', color: '#8b949e', fontSize: 11 }}>{selectedProject.subsector}</span>
             ) : null}
           </div>
         </div>
 
-        <section style={panelCardStyle}>
+        <section style={{ ...panelCardStyle, marginBottom: 14 }}>
           <div style={sectionLabelStyle}>
             ABOUT THIS PROJECT
           </div>
@@ -246,7 +255,7 @@ const ProjectPanel = ({
           </p>
         </section>
 
-        <section style={panelCardStyle}>
+        <section style={{ ...panelCardStyle, marginBottom: 14 }}>
           <div style={sectionLabelStyle}>
             KEY DETAILS
           </div>
@@ -259,7 +268,7 @@ const ProjectPanel = ({
                   justifyContent: 'space-between',
                   alignItems: 'flex-start',
                   padding: '5px 0',
-                  borderBottom: '1px solid #21262d'
+                  borderBottom: '1px solid #162f52'
                 }}
               >
                 <span
@@ -284,8 +293,11 @@ const ProjectPanel = ({
 
         <section
           style={{
-            ...panelCardStyle,
-            flex: 1
+            backgroundColor: '#0f2240',
+            border: '1px solid #1e3a5f',
+            borderRadius: 8,
+            padding: '10px 12px',
+            marginBottom: 14
           }}
         >
           <div style={sectionLabelStyle}>
@@ -297,39 +309,147 @@ const ProjectPanel = ({
             <p style={{ color: '#94a3b8' }}>Loading coverage…</p>
           ) : cfArticles.length === 0 ? (
             <p style={{ color: '#8b949e', fontSize: 12 }}>No coverage recorded yet.</p>
-          ) : (
+          ) : currentArticle ? (
             <>
-              <div style={{ display: 'flex', overflowX: 'auto', gap: 10, paddingBottom: 6, scrollbarWidth: 'thin', scrollbarColor: '#30363d #161b22' }}>
-              {cfArticles.map((source) => (
-                <div key={source.sourceId} style={{ minWidth: 220, maxWidth: 220, backgroundColor: '#1c2128', borderLeft: '3px solid #f0a500', borderRadius: '0 6px 6px 0', padding: 10, flexShrink: 0 }}>
-                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 6 }}>
-                    <span style={{ color: '#8b949e', fontSize: 10 }}>{formatDate(source.publicationDate)}</span>
-                    <span style={{ backgroundColor: 'rgba(240,165,0,0.15)', color: '#f0a500', fontSize: 9, fontWeight: 600, padding: '1px 5px', borderRadius: 3 }}>CF Article</span>
-                  </div>
-                  <div style={{ color: '#e6edf3', fontSize: 11, fontWeight: 600, marginBottom: 4, lineHeight: 1.3, display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>{source.sourceTitle ?? "ConstructionFront coverage"}</div>
-                  {source.milestoneConfirmed ? (
-                    <div style={{ color: '#f0a500', fontSize: 9, fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: 4 }}>{source.milestoneConfirmed}</div>
-                  ) : null}
-                  {source.sourceUrl ? (
-                    <a
-                      href={source.sourceUrl}
-                      target="_blank"
-                      rel="noreferrer"
-                      style={{ color: '#f0a500', fontSize: 10, fontWeight: 600, textDecoration: 'none' }}
-                    >
-                      Read on CF.com {"\u2192"}
-                    </a>
-                  ) : null}
+              <div
+                style={{
+                  backgroundColor: '#0a1e3a',
+                  borderLeft: '3px solid #f0a500',
+                  borderRadius: '0 6px 6px 0',
+                  padding: '10px 12px',
+                  marginTop: 6,
+                  width: '100%',
+                  boxSizing: 'border-box'
+                }}
+              >
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 6 }}>
+                  <span style={{ color: '#8b949e', fontSize: 11 }}>
+                    {formatDate(currentArticle.publicationDate)}
+                  </span>
+                  <span style={{ backgroundColor: 'rgba(240,165,0,0.15)', color: '#f0a500', fontSize: 9, fontWeight: 600, padding: '1px 5px', borderRadius: 3 }}>
+                    CF Article
+                  </span>
                 </div>
-              ))}
+
+                <div
+                  style={{
+                    color: '#e6edf3',
+                    fontSize: 13,
+                    fontWeight: 600,
+                    marginBottom: 6,
+                    lineHeight: 1.4
+                  }}
+                >
+                  {currentArticle.sourceTitle ?? "ConstructionFront coverage"}
+                </div>
+
+                {currentArticle.summary ? (
+                  <div
+                    style={{
+                      color: '#8b949e',
+                      fontSize: 12,
+                      lineHeight: 1.5,
+                      marginBottom: 8
+                    }}
+                  >
+                    {currentArticle.summary}
+                  </div>
+                ) : null}
+
+                {currentArticle.milestoneConfirmed ? (
+                  <div style={{ color: '#f0a500', fontSize: 10, fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: 6 }}>
+                    {currentArticle.milestoneConfirmed}
+                  </div>
+                ) : null}
+
+                {currentArticle.sourceUrl ? (
+                  <a
+                    href={currentArticle.sourceUrl}
+                    target="_blank"
+                    rel="noreferrer"
+                    style={{ color: '#f0a500', fontSize: 12, fontWeight: 600, textDecoration: 'none' }}
+                  >
+                    Read on ConstructionFront.com {"\u2192"}
+                  </a>
+                ) : null}
               </div>
+
               {cfArticles.length > 1 ? (
-                <div style={{ color: '#8b949e', fontSize: 10, marginTop: 4, textAlign: 'right' }}>
-                  {cfArticles.length} articles {"\u2014"} scroll to see more {"\u2192"}
+                <div
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'space-between',
+                    marginTop: 8,
+                    gap: 8
+                  }}
+                >
+                  <div style={{ display: 'flex', gap: 5 }}>
+                    {cfArticles.map((article, index) => (
+                      <button
+                        key={article.sourceId}
+                        type="button"
+                        aria-label={`Show coverage article ${index + 1}`}
+                        onClick={() => setCurrentArticleIndex(index)}
+                        style={{
+                          width: index === currentArticleIndex ? 16 : 6,
+                          height: 6,
+                          borderRadius: 3,
+                          backgroundColor: index === currentArticleIndex ? '#f0a500' : '#1e3a5f',
+                          border: 'none',
+                          cursor: 'pointer',
+                          transition: 'all 0.3s ease',
+                          padding: 0
+                        }}
+                      />
+                    ))}
+                  </div>
+
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                    <span style={{ color: '#8b949e', fontSize: 10 }}>
+                      {currentArticleIndex + 1} of {cfArticles.length}
+                    </span>
+                    <button
+                      type="button"
+                      onClick={() =>
+                        setCurrentArticleIndex((previous) =>
+                          (previous - 1 + cfArticles.length) % cfArticles.length
+                        )
+                      }
+                      style={{
+                        backgroundColor: 'transparent',
+                        border: '1px solid #1e3a5f',
+                        borderRadius: 4,
+                        color: '#8b949e',
+                        fontSize: 11,
+                        padding: '2px 6px',
+                        cursor: 'pointer'
+                      }}
+                    >
+                      {"\u2190"}
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() =>
+                        setCurrentArticleIndex((previous) => (previous + 1) % cfArticles.length)
+                      }
+                      style={{
+                        backgroundColor: 'transparent',
+                        border: '1px solid #1e3a5f',
+                        borderRadius: 4,
+                        color: '#8b949e',
+                        fontSize: 11,
+                        padding: '2px 6px',
+                        cursor: 'pointer'
+                      }}
+                    >
+                      {"\u2192"}
+                    </button>
+                  </div>
                 </div>
               ) : null}
             </>
-          )}
+          ) : null}
         </section>
       </div>
     </div>

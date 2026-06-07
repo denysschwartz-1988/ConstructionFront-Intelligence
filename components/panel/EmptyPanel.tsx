@@ -9,7 +9,7 @@ export default function EmptyPanel() {
         justifyContent: "center",
         gap: 16,
         padding: 32,
-        backgroundColor: "#161b22"
+        backgroundColor: "#0f2240"
       }}
     >
       <div style={{ fontSize: 40 }}>{"\u{1f5fa}"}</div>

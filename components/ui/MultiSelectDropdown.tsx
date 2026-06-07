@@ -78,8 +78,8 @@ export default function MultiSelectDropdown({
         position: "fixed",
         top: panelPosition.top,
         left: panelPosition.left,
-        backgroundColor: "#161b22",
-        border: "1px solid #30363d",
+        backgroundColor: "#0f2240",
+        border: "1px solid #1e3a5f",
         borderRadius: 8,
         padding: "6px 0",
         minWidth: 200,
@@ -97,7 +97,7 @@ export default function MultiSelectDropdown({
             color: "#f0a500",
             fontSize: 11,
             cursor: "pointer",
-            borderBottom: "1px solid #21262d",
+            borderBottom: "1px solid #162f52",
             marginBottom: 4
           }}
         >
@@ -124,7 +124,7 @@ export default function MultiSelectDropdown({
             }}
             onMouseEnter={(event) => {
               if (!isSelected) {
-                event.currentTarget.style.backgroundColor = "#1c2128";
+                event.currentTarget.style.backgroundColor = "#132845";
               }
             }}
             onMouseLeave={(event) => {
@@ -147,7 +147,7 @@ export default function MultiSelectDropdown({
               }}
             >
               {isSelected ? (
-                <span style={{ color: "#0d1117", fontSize: 10, fontWeight: 700 }}>
+                <span style={{ color: "#0a1628", fontSize: 10, fontWeight: 700 }}>
                   {"\u2713"}
                 </span>
               ) : null}
@@ -167,7 +167,7 @@ export default function MultiSelectDropdown({
         style={{
           height: 28,
           padding: "0 10px",
-          backgroundColor: selected.length > 0 ? "rgba(240,165,0,0.1)" : "#061322",
+          backgroundColor: selected.length > 0 ? "rgba(240,165,0,0.1)" : "#0f2240",
           border: selected.length > 0 ? "1px solid #f0a500" : "1px solid #223a59",
           borderRadius: 6,
           color: selected.length > 0 ? "#f0a500" : "#e6edf3",

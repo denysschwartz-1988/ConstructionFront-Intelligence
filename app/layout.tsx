@@ -1,6 +1,13 @@
+import { Inter } from "next/font/google";
 import { ClerkProvider } from "@clerk/nextjs";
 import type { Metadata } from "next";
 import "./globals.css";
+
+const inter = Inter({
+  subsets: ["latin"],
+  weight: ["300", "400", "500", "600", "700"],
+  display: "swap"
+});
 
 export const metadata: Metadata = {
   title: "ConstructionFront Project Intelligence Map",
@@ -14,14 +21,13 @@ export default function RootLayout({
 }>) {
   return (
     <ClerkProvider>
-      <html lang="en">
+      <html lang="en" className={inter.className}>
         <body
           style={{
-            fontFamily:
-              "-apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, 'Helvetica Neue', Arial, sans-serif",
-            fontSize: "13px",
             margin: 0,
-            padding: 0
+            padding: 0,
+            backgroundColor: "#0a1628",
+            color: "#e6edf3"
           }}
         >
           {children}

@@ -12,6 +12,7 @@ import {
   cardStyle,
   mutedTextStyle,
   rowLabelStyle,
+  rowStyle,
   rowValueStyle,
   sectionLabelStyle,
   tabRootStyle
@@ -31,16 +32,15 @@ type PartyGroup = {
 };
 
 const partyGroupStyle: React.CSSProperties = {
-  backgroundColor: "#161b22",
-  border: "1px solid #21262d",
+  backgroundColor: "#132845",
+  border: "1px solid #1e3a5f",
   borderRadius: 6,
-  padding: 12,
-  marginBottom: 8
+  padding: "8px 10px"
 };
 
 const partyChipStyle: React.CSSProperties = {
   backgroundColor: "transparent",
-  border: "1px solid #30363d",
+  border: "1px solid #1e3a5f",
   borderRadius: 4,
   padding: "3px 8px"
 };
@@ -158,13 +158,7 @@ const FeatureRow = ({
 
   return (
     <div
-      style={{
-        display: "flex",
-        justifyContent: "space-between",
-        alignItems: "flex-start",
-        padding: "8px 0",
-        borderBottom: "1px solid #21262d"
-      }}
+      style={rowStyle}
     >
       <span
         style={{
@@ -218,7 +212,7 @@ const PremiumBlur = ({
           alignItems: "center",
           justifyContent: "center",
           gap: 12,
-          backgroundColor: "rgba(13,17,23,0.55)",
+          backgroundColor: "rgba(10,22,40,0.55)",
           borderRadius: 8,
           zIndex: 10
         }}
@@ -243,7 +237,7 @@ const PremiumBlur = ({
             href="/sign-up"
             style={{
               backgroundColor: "#f0a500",
-              color: "#0d1117",
+              color: "#0a1628",
               fontWeight: 700,
               padding: "9px 20px",
               borderRadius: 6,
@@ -258,7 +252,7 @@ const PremiumBlur = ({
             style={{
               backgroundColor: "transparent",
               color: "#e6edf3",
-              border: "1px solid #30363d",
+              border: "1px solid #1e3a5f",
               padding: "9px 20px",
               borderRadius: 6,
               textDecoration: "none",
@@ -310,10 +304,9 @@ export default function ProjectIntelligenceTab({
   const ninetyDays = 90 * 24 * 60 * 60 * 1000;
 
   return (
-    <div style={{ ...tabRootStyle, width: "100%" }}>
-      <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
+    <div style={tabRootStyle}>
         <div style={cardStyle}>
-          <div style={sectionLabelStyle}>ABOUT THE PROJECT</div>
+          <div style={sectionLabelStyle}>PROJECT BRIEF</div>
 
           <p
             style={{
@@ -329,7 +322,7 @@ export default function ProjectIntelligenceTab({
             <>
               <div
                 style={{
-                  borderTop: "1px solid #30363d",
+                  borderTop: "1px solid #1e3a5f",
                   margin: "12px 0"
                 }}
               />
@@ -346,39 +339,41 @@ export default function ProjectIntelligenceTab({
         </div>
 
         <PremiumBlur isAuthenticated={isAuthenticated}>
-          <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
-            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16 }}>
+          <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
+            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
               {groupedParties.length > 0 ? (
                 <div style={cardStyle}>
                   <div style={sectionLabelStyle}>KEY PARTIES</div>
-                  {groupedParties.map((group) => (
-                    <div key={group.label} style={partyGroupStyle}>
-                      <div
-                        style={{
-                          color: "#8b949e",
-                          fontSize: 10,
-                          fontWeight: 600,
-                          letterSpacing: "0.08em",
-                          textTransform: "uppercase",
-                          marginBottom: 8
-                        }}
-                      >
-                        {group.label}
-                      </div>
-                      <div style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
-                        {group.parties.map((party) => (
-                          <div key={party.partyId} style={partyChipStyle}>
-                            <div style={{ color: "#e6edf3", fontSize: 13, fontWeight: 500 }}>
-                              {party.partyName}
+                  <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
+                    {groupedParties.map((group) => (
+                      <div key={group.label} style={partyGroupStyle}>
+                        <div
+                          style={{
+                            color: "#8b949e",
+                            fontSize: 11,
+                            fontWeight: 600,
+                            letterSpacing: "0.08em",
+                            textTransform: "uppercase",
+                            marginBottom: 8
+                          }}
+                        >
+                          {group.label}
+                        </div>
+                        <div style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
+                          {group.parties.map((party) => (
+                            <div key={party.partyId} style={partyChipStyle}>
+                              <div style={{ color: "#e6edf3", fontSize: 13, fontWeight: 500 }}>
+                                {party.partyName}
+                              </div>
+                              <div style={{ color: "#8b949e", fontSize: 11 }}>
+                                {group.jvOnly ? getMemberLabel(party) : party.roleDetail ?? party.partyRole}
+                              </div>
                             </div>
-                            <div style={{ color: "#8b949e", fontSize: 11 }}>
-                              {group.jvOnly ? getMemberLabel(party) : party.roleDetail ?? party.partyRole}
-                            </div>
-                          </div>
-                        ))}
+                          ))}
+                        </div>
                       </div>
-                    </div>
-                  ))}
+                    ))}
+                  </div>
                 </div>
               ) : null}
 
@@ -430,7 +425,6 @@ export default function ProjectIntelligenceTab({
             </div>
           </div>
         </PremiumBlur>
-      </div>
     </div>
   );
 }

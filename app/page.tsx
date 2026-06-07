@@ -2,11 +2,8 @@ export const dynamic = 'force-dynamic'
 import Link from "next/link";
 import type { CSSProperties } from "react";
 
-const systemFont =
-  "-apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, 'Helvetica Neue', Arial, sans-serif";
-
 const navButtonStyle: CSSProperties = {
-  border: "1px solid #30363d",
+  border: "1px solid #1e3a5f",
   color: "#e6edf3",
   padding: "8px 16px",
   borderRadius: 6,
@@ -16,7 +13,7 @@ const navButtonStyle: CSSProperties = {
 
 const amberButtonStyle: CSSProperties = {
   backgroundColor: "#f0a500",
-  color: "#0d1117",
+  color: "#0a1628",
   fontWeight: 700,
   padding: "12px 24px",
   borderRadius: 8,
@@ -27,7 +24,7 @@ const amberButtonStyle: CSSProperties = {
 };
 
 const ghostCtaStyle: CSSProperties = {
-  border: "1px solid #30363d",
+  border: "1px solid #1e3a5f",
   color: "#e6edf3",
   backgroundColor: "transparent",
   padding: "12px 24px",
@@ -113,18 +110,17 @@ export default function LandingPage() {
   return (
     <main
       style={{
-        fontFamily: systemFont,
         fontSize: 13,
         minHeight: "100vh",
-        backgroundColor: "#0d1117",
+        backgroundColor: "#0a1628",
         color: "#e6edf3"
       }}
     >
       <nav
         style={{
           height: 56,
-          backgroundColor: "#161b22",
-          borderBottom: "1px solid #30363d",
+          backgroundColor: "#0f2240",
+          borderBottom: "1px solid #1e3a5f",
           padding: "0 48px",
           display: "flex",
           alignItems: "center",
@@ -143,7 +139,7 @@ export default function LandingPage() {
             href="/map"
             style={{
               backgroundColor: "#f0a500",
-              color: "#0d1117",
+              color: "#0a1628",
               fontWeight: 600,
               padding: "8px 18px",
               borderRadius: 6,
@@ -158,7 +154,7 @@ export default function LandingPage() {
 
       <section
         style={{
-          backgroundColor: "#0d1117",
+          backgroundColor: "#0a1628",
           padding: "80px 48px",
           display: "flex",
           alignItems: "center",
@@ -220,10 +216,10 @@ export default function LandingPage() {
             width: 580,
             height: 336,
             borderRadius: 12,
-            border: "1px solid #30363d",
+            border: "1px solid #1e3a5f",
             overflow: "hidden",
             boxShadow: "0 24px 48px rgba(0,0,0,0.4)",
-            backgroundColor: "#161b22",
+            backgroundColor: "#0f2240",
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
@@ -237,9 +233,9 @@ export default function LandingPage() {
 
       <section
         style={{
-          backgroundColor: "#161b22",
-          borderTop: "1px solid #30363d",
-          borderBottom: "1px solid #30363d",
+          backgroundColor: "#0f2240",
+          borderTop: "1px solid #1e3a5f",
+          borderBottom: "1px solid #1e3a5f",
           padding: 48,
           display: "grid",
           gridTemplateColumns: "repeat(4, 1fr)",
@@ -250,8 +246,8 @@ export default function LandingPage() {
           <div
             key={feature.title}
             style={{
-              backgroundColor: "#1c2128",
-              border: "1px solid #30363d",
+              backgroundColor: "#132845",
+              border: "1px solid #1e3a5f",
               borderRadius: 8,
               padding: 24
             }}
@@ -276,7 +272,7 @@ export default function LandingPage() {
 
       <section
         style={{
-          backgroundColor: "#0d1117",
+          backgroundColor: "#0a1628",
           padding: "80px 48px",
           textAlign: "center"
         }}
@@ -307,8 +303,8 @@ export default function LandingPage() {
             <div
               key={card.tier}
               style={{
-                backgroundColor: "#161b22",
-                border: card.highlighted ? "2px solid #f0a500" : "1px solid #30363d",
+                backgroundColor: "#0f2240",
+                border: card.highlighted ? "2px solid #f0a500" : "1px solid #1e3a5f",
                 borderRadius: 12,
                 padding: 32,
                 textAlign: "left",
@@ -319,7 +315,7 @@ export default function LandingPage() {
                 <div
                   style={{
                     backgroundColor: "#f0a500",
-                    color: "#0d1117",
+                    color: "#0a1628",
                     fontSize: 10,
                     fontWeight: 700,
                     padding: "3px 8px",
@@ -354,7 +350,7 @@ export default function LandingPage() {
                 </span>
                 <span style={{ color: "#8b949e", marginLeft: 6 }}>{card.per}</span>
               </div>
-              <div style={{ borderTop: "1px solid #30363d", marginBottom: 20 }} />
+              <div style={{ borderTop: "1px solid #1e3a5f", marginBottom: 20 }} />
               <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
                 {card.features.map((feature) => (
                   <div
@@ -384,8 +380,8 @@ export default function LandingPage() {
 
       <footer
         style={{
-          backgroundColor: "#161b22",
-          borderTop: "1px solid #30363d",
+          backgroundColor: "#0f2240",
+          borderTop: "1px solid #1e3a5f",
           padding: "24px 48px",
           display: "flex",
           justifyContent: "space-between",

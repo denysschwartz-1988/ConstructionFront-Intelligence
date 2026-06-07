@@ -63,12 +63,12 @@ export default function RelatedProjectsTab({
   }, [currentProject, currentProject.projectSlug, allProjects]);
 
   return (
-    <div style={{ ...tabRootStyle, display: "flex", flexDirection: "column", gap: 12 }}>
+    <div style={tabRootStyle}>
       <div style={sectionLabelStyle}>
         RELATED PROJECTS
       </div>
 
-      <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+      <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
         {relatedProjects.map((project) => {
           return (
             <div
@@ -79,7 +79,7 @@ export default function RelatedProjectsTab({
                 event.currentTarget.style.borderColor = "#f0a500";
               }}
               onMouseLeave={(event) => {
-                event.currentTarget.style.borderColor = "#21262d";
+                event.currentTarget.style.borderColor = "#1e3a5f";
               }}
             >
               {project.projectImageUrl ? (
@@ -87,8 +87,8 @@ export default function RelatedProjectsTab({
                   src={project.projectImageUrl}
                   alt={project.projectName ?? "Related project"}
                   style={{
-                    width: 64,
-                    height: 64,
+                    width: 56,
+                    height: 56,
                     objectFit: "cover",
                     borderRadius: 6,
                     flexShrink: 0
@@ -97,9 +97,9 @@ export default function RelatedProjectsTab({
               ) : (
                 <div
                   style={{
-                    width: 64,
-                    height: 64,
-                    backgroundColor: "#21262d",
+                    width: 56,
+                    height: 56,
+                    backgroundColor: "#162f52",
                     borderRadius: 6,
                     flexShrink: 0,
                     display: "flex",

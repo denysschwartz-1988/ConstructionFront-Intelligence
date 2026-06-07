@@ -3,7 +3,7 @@
 import { useMemo, useState } from "react";
 import type { CSSProperties, ReactNode } from "react";
 import type { ProjectRecord, ProjectSourceRecord } from "@/types/database";
-import { cardStyle, rowLabelStyle, rowValueStyle, sectionLabelStyle, tabRootStyle } from "@/lib/styles";
+import { cardStyle, rowLabelStyle, rowStyle, rowValueStyle, sectionLabelStyle, tabRootStyle } from "@/lib/styles";
 
 type SourcesTabProps = {
   project: ProjectRecord;
@@ -84,11 +84,10 @@ const SourceCard = ({
   return (
     <div
       style={{
-        backgroundColor: "#1c2128",
+        backgroundColor: "#132845",
         borderLeft: `3px solid ${borderColor}`,
         borderRadius: "0 6px 6px 0",
-        padding: 12,
-        marginBottom: 8
+        padding: "10px 12px"
       }}
     >
       <div
@@ -222,7 +221,7 @@ const PremiumBlur = ({
           alignItems: "center",
           justifyContent: "center",
           gap: 12,
-          backgroundColor: "rgba(13,17,23,0.55)",
+          backgroundColor: "rgba(10,22,40,0.55)",
           borderRadius: 8,
           zIndex: 10
         }}
@@ -247,7 +246,7 @@ const PremiumBlur = ({
             href="/sign-up"
             style={{
               backgroundColor: "#f0a500",
-              color: "#0d1117",
+              color: "#0a1628",
               fontWeight: 700,
               padding: "9px 20px",
               borderRadius: 6,
@@ -262,7 +261,7 @@ const PremiumBlur = ({
             style={{
               backgroundColor: "transparent",
               color: "#e6edf3",
-              border: "1px solid #30363d",
+              border: "1px solid #1e3a5f",
               padding: "9px 20px",
               borderRadius: 6,
               textDecoration: "none",
@@ -303,8 +302,8 @@ export default function SourcesTab({
     : externalSources.slice(0, 3);
 
   return (
-    <div style={{ ...tabRootStyle, display: "flex", flexDirection: "column", gap: 24 }}>
-      <section>
+    <div style={tabRootStyle}>
+      <section style={cardStyle}>
         <div style={sectionLabel}>CONSTRUCTIONFRONT COVERAGE</div>
         <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
           {firstCfSource ? (
@@ -322,8 +321,8 @@ export default function SourcesTab({
       </section>
 
       <PremiumBlur isAuthenticated={isAuthenticated}>
-        <div style={{ display: "flex", flexDirection: "column", gap: 24 }}>
-          <section>
+        <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
+          <section style={cardStyle}>
             <div style={sectionLabel}>MORE CONSTRUCTIONFRONT COVERAGE</div>
             <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
               {visibleRemainingCfSources.length > 0 ? (
@@ -350,7 +349,7 @@ export default function SourcesTab({
             </div>
           </section>
 
-          <section>
+          <section style={cardStyle}>
             <div style={sectionLabel}>EXTERNAL SOURCES</div>
             <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
               {visibleExternalSources.length > 0 ? (
@@ -379,14 +378,9 @@ export default function SourcesTab({
             </div>
           </section>
 
-          <section>
+          <section style={cardStyle}>
             <div style={sectionLabel}>DATA RECORD</div>
-            <div
-              style={{
-                ...cardStyle,
-                padding: "8px 16px"
-              }}
-            >
+            <div>
               {[
                 ["Total Sources", sources.length],
                 ["Last Updated", formatMonthYear(project.lastUpdated)],
@@ -394,12 +388,7 @@ export default function SourcesTab({
               ].map(([label, value]) => (
                 <div
                   key={label}
-                  style={{
-                    display: "flex",
-                    justifyContent: "space-between",
-                    borderBottom: "1px solid #21262d",
-                    padding: "8px 0"
-                  }}
+                  style={rowStyle}
                 >
                   <span style={rowLabelStyle}>{label}</span>
                   <span style={rowValueStyle}>

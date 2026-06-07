@@ -71,8 +71,8 @@ export default function RelatedProjects({
             key={project.projectSlug}
             onClick={() => onProjectSelect(project)}
             style={{
-              backgroundColor: "#1c2128",
-              border: "1px solid #30363d",
+              backgroundColor: "#132845",
+              border: "1px solid #1e3a5f",
               borderRadius: 8,
               padding: "12px 14px",
               marginBottom: 8,
@@ -83,7 +83,7 @@ export default function RelatedProjects({
               event.currentTarget.style.borderColor = "#f0a500";
             }}
             onMouseLeave={(event) => {
-              event.currentTarget.style.borderColor = "#30363d";
+              event.currentTarget.style.borderColor = "#1e3a5f";
             }}
           >
             {project.projectImageUrl ? (

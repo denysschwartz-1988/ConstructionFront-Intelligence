@@ -2,7 +2,7 @@
 
 import type { ReactNode } from "react";
 import type { ProjectRecord } from "@/types/database";
-import { cardStyle, mutedTextStyle, sectionLabelStyle, tabRootStyle } from "@/lib/styles";
+import { cardStyle, mutedTextStyle, rowStyle, sectionLabelStyle, tabRootStyle } from "@/lib/styles";
 
 type ProjectReportTabProps = {
   project: ProjectRecord;
@@ -41,7 +41,7 @@ const PremiumBlur = ({
           alignItems: "center",
           justifyContent: "center",
           gap: 12,
-          backgroundColor: "rgba(13,17,23,0.55)",
+          backgroundColor: "rgba(10,22,40,0.55)",
           borderRadius: 8,
           zIndex: 10
         }}
@@ -66,7 +66,7 @@ const PremiumBlur = ({
             href="/sign-up"
             style={{
               backgroundColor: "#f0a500",
-              color: "#0d1117",
+              color: "#0a1628",
               fontWeight: 700,
               padding: "9px 20px",
               borderRadius: 6,
@@ -81,7 +81,7 @@ const PremiumBlur = ({
             style={{
               backgroundColor: "transparent",
               color: "#e6edf3",
-              border: "1px solid #30363d",
+              border: "1px solid #1e3a5f",
               padding: "9px 20px",
               borderRadius: 6,
               textDecoration: "none",
@@ -101,13 +101,12 @@ export default function ProjectReportTab({
   isAuthenticated
 }: ProjectReportTabProps) {
   return (
-    <div style={{ ...tabRootStyle, display: "flex", flexDirection: "column", gap: 16 }}>
+    <div style={tabRootStyle}>
       <PremiumBlur isAuthenticated={isAuthenticated}>
-        <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
+        <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
           <div
             style={{
               ...cardStyle,
-              padding: 24,
               display: "flex",
               flexDirection: "column",
               alignItems: "center",
@@ -156,10 +155,8 @@ export default function ProjectReportTab({
             </div>
           </div>
 
-          <div
-            style={{ ...cardStyle, padding: 20 }}
-          >
-            <div style={{ ...sectionLabelStyle, marginBottom: 16 }}>
+          <div style={cardStyle}>
+            <div style={sectionLabelStyle}>
               REPORT WILL INCLUDE
             </div>
 
@@ -198,11 +195,9 @@ export default function ProjectReportTab({
               <div
                 key={item.title}
                 style={{
-                  display: "flex",
-                  alignItems: "flex-start",
-                  gap: 12,
-                  padding: "10px 0",
-                  borderBottom: "1px solid #21262d"
+                  ...rowStyle,
+                  justifyContent: "flex-start",
+                  gap: 12
                 }}
               >
                 <span style={{ fontSize: 18, flexShrink: 0 }}>{item.icon}</span>
@@ -234,11 +229,10 @@ export default function ProjectReportTab({
           <div
             style={{
               ...cardStyle,
-              padding: 20,
               display: "flex",
               alignItems: "center",
               justifyContent: "space-between",
-              gap: 16
+              gap: 12
             }}
           >
             <div>
@@ -260,7 +254,7 @@ export default function ProjectReportTab({
               type="button"
               style={{
                 backgroundColor: "#f0a500",
-                color: "#0d1117",
+                color: "#0a1628",
                 fontWeight: 700,
                 padding: "8px 16px",
                 borderRadius: 6,

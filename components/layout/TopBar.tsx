@@ -3,9 +3,6 @@
 import { Search, Settings, UserCircle } from "lucide-react";
 import MultiSelectDropdown from "@/components/ui/MultiSelectDropdown";
 
-const systemFont =
-  "-apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, 'Helvetica Neue', Arial, sans-serif";
-
 type TopBarProps = {
   visibleCount: number;
   projectCount: number;
@@ -54,7 +51,6 @@ export default function TopBar({
   return (
     <div
       style={{
-        fontFamily: systemFont,
         fontSize: 13,
         display: "flex",
         alignItems: "center",
@@ -62,8 +58,8 @@ export default function TopBar({
         height: 56,
         minHeight: 56,
         padding: "0 12px",
-        backgroundColor: "#0b1929",
-        borderBottom: "1px solid #21262d",
+        backgroundColor: "#0a1628",
+        borderBottom: "1px solid #1e3a5f",
         overflow: "hidden",
         whiteSpace: "nowrap"
       }}
@@ -152,7 +148,7 @@ export default function TopBar({
               padding: "4px 9px 4px 30px",
               borderRadius: 4,
               border: "1px solid #223a59",
-              backgroundColor: "#061322",
+              backgroundColor: "#0f2240",
               color: "#e6edf3",
               outline: "none",
               fontSize: 12

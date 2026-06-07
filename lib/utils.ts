@@ -14,11 +14,11 @@ export function getStageBadgeStyle(stage: string | null | undefined): CSSPropert
   const s = stage.toLowerCase();
 
   if (s.includes("under development")) {
-    return { backgroundColor: "#f0a500", color: "#0d1117" };
+    return { backgroundColor: "#f0a500", color: "#0a1628" };
   }
 
   if (s.includes("fid") || s.includes("procurement") || s.includes("financing")) {
-    return { backgroundColor: "#f0a500", color: "#0d1117" };
+    return { backgroundColor: "#f0a500", color: "#0a1628" };
   }
 
   if (s.includes("contract awarded")) {

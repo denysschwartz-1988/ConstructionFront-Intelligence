@@ -42,7 +42,7 @@ const PremiumBlur = ({
           alignItems: "center",
           justifyContent: "center",
           gap: 12,
-          backgroundColor: "rgba(13,17,23,0.55)",
+          backgroundColor: "rgba(10,22,40,0.55)",
           borderRadius: 8,
           zIndex: 10
         }}
@@ -67,7 +67,7 @@ const PremiumBlur = ({
             href="/sign-up"
             style={{
               backgroundColor: "#f0a500",
-              color: "#0d1117",
+              color: "#0a1628",
               fontWeight: 700,
               padding: "9px 20px",
               borderRadius: 6,
@@ -82,7 +82,7 @@ const PremiumBlur = ({
             style={{
               backgroundColor: "transparent",
               color: "#e6edf3",
-              border: "1px solid #30363d",
+              border: "1px solid #1e3a5f",
               padding: "9px 20px",
               borderRadius: 6,
               textDecoration: "none",
@@ -113,7 +113,7 @@ export default function TimelinesTab({
   }, [milestones]);
 
   return (
-    <div style={{ ...tabRootStyle, display: "flex", flexDirection: "column", gap: 16 }}>
+    <div style={tabRootStyle}>
       <div style={cardStyle}>
         <div style={sectionLabelStyle}>PROJECT PROGRAMME</div>
         <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
@@ -180,13 +180,22 @@ export default function TimelinesTab({
           {milestonesSorted.length === 0 ? (
             <div style={{ color: "#8b949e" }}>No milestone history recorded yet.</div>
           ) : (
-            <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
+            <div style={{ display: "flex", flexDirection: "column" }}>
               {milestonesSorted
                 .slice(0, showAllMilestones ? milestonesSorted.length : 5)
-                .map((m) => (
+                .map((m, index, visibleMilestones) => (
                   <div
                     key={m.milestoneId}
-                    style={{ display: "flex", gap: 12, alignItems: "flex-start" }}
+                    style={{
+                      display: "flex",
+                      gap: 12,
+                      alignItems: "flex-start",
+                      padding: "10px 0",
+                      borderBottom:
+                        index === visibleMilestones.length - 1
+                          ? "none"
+                          : "1px solid #162f52"
+                    }}
                   >
                     <div
                       style={{
@@ -203,7 +212,7 @@ export default function TimelinesTab({
                           })
                         : ""}
                     </div>
-                    <div style={{ display: "flex", flexDirection: "column", gap: 4 }}>
+                    <div style={{ display: "flex", flexDirection: "column", gap: 4, flex: 1 }}>
                       <div
                         style={{
                           background: "transparent",
@@ -212,7 +221,8 @@ export default function TimelinesTab({
                           fontSize: 10,
                           padding: "2px 6px",
                           borderRadius: 4,
-                          display: "inline-block"
+                          display: "inline-block",
+                          alignSelf: "flex-start"
                         }}
                       >
                         {m.milestoneType}

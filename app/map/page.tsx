@@ -33,9 +33,6 @@ const getUpdateTimestamp = (project: ProjectRecord) => {
   return Number.isFinite(millis) ? millis : 0;
 };
 
-const systemFont =
-  "-apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, 'Helvetica Neue', Arial, sans-serif";
-
 export default function Home() {
   const [projects, setProjects] = useState<ProjectRecord[]>([]);
   const [selectedProject, setSelectedProject] = useState<ProjectRecord | null>(null);
@@ -404,13 +401,12 @@ export default function Home() {
   return (
     <div
       style={{
-        fontFamily: systemFont,
         fontSize: 13,
         display: "flex",
         flexDirection: "column",
         height: "100vh",
         overflow: "hidden",
-        backgroundColor: "#0b1929"
+        backgroundColor: "#0a1628"
       }}
     >
       <div style={{ flex: "0 0 56px" }}>
@@ -470,7 +466,7 @@ export default function Home() {
             gridRow: 1,
             overflow: "hidden",
             borderRight: "none",
-            borderBottom: "1px solid #30363d",
+            borderBottom: "1px solid #1e3a5f",
             position: "relative",
             minHeight: 0
           }}
@@ -482,8 +478,8 @@ export default function Home() {
               right: 12,
               zIndex: 1000,
               display: "flex",
-              backgroundColor: "rgba(13,17,23,0.9)",
-              border: "1px solid #30363d",
+              backgroundColor: "rgba(10,22,40,0.9)",
+              border: "1px solid #1e3a5f",
               borderRadius: 6,
               overflow: "hidden",
               backdropFilter: "blur(4px)"
@@ -497,10 +493,10 @@ export default function Home() {
                 fontSize: 12,
                 fontWeight: 600,
                 backgroundColor: view === "map" ? "#f0a500" : "transparent",
-                color: view === "map" ? "#0d1117" : "#8b949e",
+                color: view === "map" ? "#0a1628" : "#8b949e",
                 border: "none",
                 cursor: "pointer",
-                borderRight: "1px solid #30363d",
+                borderRight: "1px solid #1e3a5f",
                 display: "flex",
                 alignItems: "center",
                 gap: 4
@@ -516,7 +512,7 @@ export default function Home() {
                 fontSize: 12,
                 fontWeight: 600,
                 backgroundColor: view === "list" ? "#f0a500" : "transparent",
-                color: view === "list" ? "#0d1117" : "#8b949e",
+                color: view === "list" ? "#0a1628" : "#8b949e",
                 border: "none",
                 cursor: "pointer",
                 display: "flex",
@@ -549,7 +545,7 @@ export default function Home() {
             gridColumn: 2,
             gridRow: "1 / 4",
             width: 4,
-            backgroundColor: "#21262d",
+            backgroundColor: "#0f2240",
             cursor: "col-resize",
             display: "flex",
             alignItems: "center",
@@ -562,14 +558,14 @@ export default function Home() {
             event.currentTarget.style.backgroundColor = "#f0a500";
           }}
           onMouseLeave={(event) => {
-            event.currentTarget.style.backgroundColor = "#21262d";
+            event.currentTarget.style.backgroundColor = "#0f2240";
           }}
         >
           <div
             style={{
               width: 3,
               height: 32,
-              backgroundColor: "#444c56",
+              backgroundColor: "#1e3a5f",
               borderRadius: 2
             }}
           />
@@ -583,9 +579,9 @@ export default function Home() {
             flexDirection: "column",
             overflowY: "auto",
             overflowX: "hidden",
-            backgroundColor: "#161b22",
+            backgroundColor: "#0a1628",
             scrollbarWidth: "thin",
-            scrollbarColor: "#30363d #161b22",
+            scrollbarColor: "#1e3a5f #0a1628",
             minHeight: 0
           }}
           className="premium-tab-content"
@@ -609,7 +605,7 @@ export default function Home() {
             gridColumn: 1,
             gridRow: 2,
             height: 4,
-            backgroundColor: "#21262d",
+            backgroundColor: "#0f2240",
             cursor: "row-resize",
             display: "flex",
             alignItems: "center",
@@ -621,14 +617,14 @@ export default function Home() {
             event.currentTarget.style.backgroundColor = "#f0a500";
           }}
           onMouseLeave={(event) => {
-            event.currentTarget.style.backgroundColor = "#21262d";
+            event.currentTarget.style.backgroundColor = "#0f2240";
           }}
         >
           <div
             style={{
               width: 32,
               height: 3,
-              backgroundColor: "#444c56",
+              backgroundColor: "#1e3a5f",
               borderRadius: 2
             }}
           />
@@ -641,7 +637,7 @@ export default function Home() {
             display: "flex",
             flexDirection: "column",
             overflow: "hidden",
-            borderRight: "1px solid #30363d",
+            borderRight: "1px solid #1e3a5f",
             minHeight: 0
           }}
         >

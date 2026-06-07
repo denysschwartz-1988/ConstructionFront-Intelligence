@@ -71,7 +71,7 @@ const PremiumBlur = ({
           alignItems: "center",
           justifyContent: "center",
           gap: 12,
-          backgroundColor: "rgba(13,17,23,0.55)",
+          backgroundColor: "rgba(10,22,40,0.55)",
           borderRadius: 8,
           zIndex: 10
         }}
@@ -96,7 +96,7 @@ const PremiumBlur = ({
             href="/sign-up"
             style={{
               backgroundColor: "#f0a500",
-              color: "#0d1117",
+              color: "#0a1628",
               fontWeight: 700,
               padding: "9px 20px",
               borderRadius: 6,
@@ -111,7 +111,7 @@ const PremiumBlur = ({
             style={{
               backgroundColor: "transparent",
               color: "#e6edf3",
-              border: "1px solid #30363d",
+              border: "1px solid #1e3a5f",
               padding: "9px 20px",
               borderRadius: 6,
               textDecoration: "none",
@@ -151,15 +151,15 @@ export default function MarketSignalsTab({
   const narrative = narrativeMap[lens]?.trim();
 
   return (
-    <div style={{ ...tabRootStyle, display: "flex", flexDirection: "column", gap: 16 }}>
+    <div style={tabRootStyle}>
       <div style={cardStyle}>
         <div style={sectionLabel}>STAKEHOLDER LENS</div>
         <select
           value={lens}
           onChange={(event) => setLens(event.target.value)}
           style={{
-            backgroundColor: "#061322",
-            border: "1px solid #30363d",
+            backgroundColor: "#0f2240",
+            border: "1px solid #1e3a5f",
             color: "#e6edf3",
             fontSize: 13,
             borderRadius: 6,
@@ -177,7 +177,7 @@ export default function MarketSignalsTab({
           <option value="legal">Legal</option>
           <option value="developer">Developer</option>
         </select>
-        <div style={{ borderTop: "1px solid #30363d", paddingTop: 16, marginTop: 16 }}>
+        <div style={{ borderTop: "1px solid #1e3a5f", paddingTop: 16, marginTop: 16 }}>
           <div style={subsectionLabel}>SIGNAL STATUS</div>
           {timingStatus ? (
             <span
@@ -201,7 +201,7 @@ export default function MarketSignalsTab({
       </div>
 
       <PremiumBlur isAuthenticated={isAuthenticated}>
-        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16 }}>
+        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
           <div style={cardStyle}>
             <div style={sectionLabel}>COMMERCIAL SIGNALS</div>
             <div style={{ display: "flex", flexWrap: "wrap", gap: 8, marginBottom: 16 }}>
@@ -222,7 +222,7 @@ export default function MarketSignalsTab({
               ))}
             </div>
 
-            <div style={{ borderTop: "1px solid #30363d", paddingTop: 16 }}>
+            <div style={{ borderTop: "1px solid #1e3a5f", paddingTop: 16 }}>
               <div style={subsectionLabel}>SIGNAL TIMING</div>
               {timingStatus ? (
                 <span
@@ -246,7 +246,7 @@ export default function MarketSignalsTab({
               </p>
             </div>
 
-            <div style={{ borderTop: "1px solid #30363d", paddingTop: 16, marginTop: 16 }}>
+            <div style={{ borderTop: "1px solid #1e3a5f", paddingTop: 16, marginTop: 16 }}>
               <div style={subsectionLabel}>COMMERCIAL INTERFACE</div>
               <p style={{ color: "#e6edf3", fontSize: 13, margin: 0 }}>
                 {project.commercialInterface || "No commercial interface recorded."}

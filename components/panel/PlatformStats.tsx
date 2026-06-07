@@ -48,7 +48,7 @@ export default function PlatformStats({
             justifyContent: "space-between",
             alignItems: "center",
             padding: "8px 0",
-            borderBottom: "1px solid #21262d"
+            borderBottom: "1px solid #162f52"
           }}
         >
           <span style={{ color: "#8b949e", fontSize: 12 }}>{stat.label}</span>
