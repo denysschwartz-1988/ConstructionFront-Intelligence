@@ -35,6 +35,34 @@ export function formatDate(dateStr: string | null | undefined): string {
   return formatMonthYear(dateStr);
 }
 
+export function formatMilestoneDate(dateStr: string | null | undefined): string {
+  if (!dateStr) return "";
+
+  const [year, month, day] = dateStr.split("-").map(Number);
+
+  if (!year) return "";
+
+  // Day and month are placeholders - show year only
+  if (month === 1 && day === 1) {
+    return String(year);
+  }
+
+  // Day is placeholder - show MMM YYYY
+  if (day === 1) {
+    return new Date(year, month - 1, 1).toLocaleDateString("en-GB", {
+      month: "short",
+      year: "numeric"
+    });
+  }
+
+  // Full date known - show DD MMM YYYY
+  return new Date(year, month - 1, day).toLocaleDateString("en-GB", {
+    day: "2-digit",
+    month: "short",
+    year: "numeric"
+  });
+}
+
 export function formatProjectValue(
   amount: number | null | undefined,
   currency: string | null | undefined,

@@ -90,8 +90,44 @@ const matchesGroup = (party: ProjectPartyRecord, group: PartyGroup) => {
   });
 };
 
-const hasRole = (party: ProjectPartyRecord, roles: string[]) =>
-  matchesGroup(party, { label: "", roles });
+const hasRoleCategory = (party: ProjectPartyRecord, roles: string[]) =>
+  roles.some((role) => party.roleCategory === role);
+
+const mainContractorRoles = [
+  "EPC Contractor",
+  "EPCC Contractor",
+  "EPCM Contractor",
+  "Main Contractor",
+  "Alliance Contractor",
+  "Design and Build Contractor",
+  "Balance of Plant Contractor"
+];
+
+const technologyRoles = [
+  "Technology Supplier",
+  "Equipment Supplier",
+  "Battery Technology Supplier"
+];
+
+const financierRoles = [
+  "Financier / Lender",
+  "Equity Investor"
+];
+
+const advisorRoles = [
+  "Legal Advisor",
+  "Commercial Advisor",
+  "Engineering Consultant",
+  "Environmental Consultant",
+  "Project Management Consultant"
+];
+
+const otherNamedRoles = [
+  "Civil Contractor",
+  "Grid Operator",
+  "O&M Provider",
+  "Offtaker / Commercial Counterparty"
+];
 
 const getMemberLabel = (party: ProjectPartyRecord) => {
   const roleDetail = party.roleDetail?.trim();
@@ -101,6 +137,38 @@ const getMemberLabel = (party: ProjectPartyRecord) => {
 
   return roleDetail.split(":")[0]?.trim() || roleDetail;
 };
+
+function getShortRoleLabel(roleCategory: string | null): string {
+  if (!roleCategory) return "";
+  const map: Record<string, string> = {
+    "Developer / Owner": "Owner / Developer",
+    "Government / Regulator / Public Authority": "Public Authority",
+    "Joint Venture / Consortium": "Consortium",
+    "Shortlisted Consortium": "Shortlisted Consortium",
+    "EPC Contractor": "EPC Contractor",
+    "EPCC Contractor": "EPCC Contractor",
+    "EPCM Contractor": "EPCM Contractor",
+    "Main Contractor": "Main Contractor",
+    "Civil Contractor": "Other Contractor",
+    "Alliance Contractor": "Alliance Contractor",
+    "Design and Build Contractor": "D&B Contractor",
+    "Balance of Plant Contractor": "BoP Contractor",
+    "Engineering Consultant": "Engineering Consultant",
+    "Project Management Consultant": "PMC",
+    "Legal Advisor": "Legal Advisor",
+    "Commercial Advisor": "Commercial Advisor",
+    "Financier / Lender": "Lender",
+    "Equity Investor": "Equity Investor",
+    "Offtaker / Commercial Counterparty": "Offtaker",
+    "Technology Supplier": "Technology Supplier",
+    "Equipment Supplier": "Equipment Supplier",
+    "Battery Technology Supplier": "Battery Technology",
+    "Environmental Consultant": "Environmental Consultant",
+    "Grid Operator": "Grid Operator",
+    "O&M Provider": "O&M Provider"
+  };
+  return map[roleCategory] ?? roleCategory;
+}
 
 const isMemberMatchedToJv = (
   member: ProjectPartyRecord,
@@ -237,7 +305,7 @@ const memberChipStyle: React.CSSProperties = {
 };
 
 const chipLabel = (party: ProjectPartyRecord, fallbackToRoleCategory = false) =>
-  party.roleDetail ?? (fallbackToRoleCategory ? party.roleCategory : party.partyRole) ?? "";
+  getShortRoleLabel(party.roleCategory);
 
 const FlatPartyChip = ({
   party,
@@ -501,18 +569,15 @@ export default function ProjectIntelligenceTab({
     const primaryGroups: PartyGroup[] = [
       {
         label: "OWNER / DEVELOPER",
-        roles: ["Developer / Owner", "Owner / Developer"],
-        jvOnly: false
+        roles: ["Developer / Owner"]
       },
       {
         label: "PUBLIC AUTHORITY / GOVERNMENT",
-        roles: ["Public Authority", "Client / Public Authority", "Government"],
-        jvOnly: false
+        roles: ["Government / Regulator / Public Authority"]
       },
       {
         label: "MAIN CONTRACTOR",
-        roles: ["Joint Venture / Consortium", "EPC Contractor", "EPCC Contractor", "Main Contractor"],
-        jvOnly: false,
+        roles: mainContractorRoles,
         showWhen: postShortlistStage
       },
       {
@@ -523,8 +588,7 @@ export default function ProjectIntelligenceTab({
       },
       {
         label: "TECHNOLOGY / EQUIPMENT",
-        roles: ["Technology Supplier", "Equipment Supplier", "Battery Technology Supplier"],
-        jvOnly: false
+        roles: technologyRoles
       }
     ];
 
@@ -533,18 +597,17 @@ export default function ProjectIntelligenceTab({
     primaryGroups.forEach((group) => {
       if (group.showWhen === false) return;
 
-      let matchingParties = parties.filter((party) => matchesGroup(party, group));
+      const matchingParties = parties.filter((party) => hasRoleCategory(party, group.roles));
 
-      if (group.label === "MAIN CONTRACTOR") {
-        const leadContractor = project.leadContractor?.trim();
-        matchingParties = leadContractor
-          ? matchingParties.filter((party) => party.partyName?.trim() === leadContractor)
-          : [];
-      }
-
-      const jvEntities = matchingParties.filter((party) => isJvEntity(party) && available(party));
+      const useJvCards = group.label === "MAIN CONTRACTOR" || group.label === "SHORTLISTED CONSORTIA";
+      const jvEntities = useJvCards
+        ? matchingParties.filter((party) => isJvEntity(party) && available(party))
+        : [];
       const flatParties = matchingParties.filter(
-        (party) => !isJvEntity(party) && !isJvMember(party) && available(party)
+        (party) =>
+          !isJvMember(party) &&
+          available(party) &&
+          (useJvCards ? !isJvEntity(party) && !group.jvOnly : true)
       );
 
       if (jvEntities.length === 0 && flatParties.length === 0) return;
@@ -554,20 +617,22 @@ export default function ProjectIntelligenceTab({
       sections.push(renderPartyGroup(group.label, flatParties, jvEntities, parties));
     });
 
-    const advisorRoles = [
-      "Financier",
-      "Lender",
-      "Financier / Lender",
-      "Equity Investor",
-      "Legal Advisor",
-      "Owner's Engineer",
-      "Financial Advisor",
-      "Environmental Consultant",
-      "Grid Operator",
-      "Project Management Consultant"
-    ];
-    const advisorParties = parties.filter((party) => hasRole(party, advisorRoles));
-    const advisorJvEntities = advisorParties.filter((party) => isJvEntity(party) && available(party));
+    const financierParties = parties.filter(
+      (party) => hasRoleCategory(party, financierRoles) && !isJvMember(party) && available(party)
+    );
+
+    if (financierParties.length > 0) {
+      markUsed(financierParties);
+      sections.push(renderPartyGroup("FINANCIERS", financierParties, [], parties, true));
+    }
+
+    const advisorParties = parties.filter((party) => hasRoleCategory(party, advisorRoles));
+    const advisorJvEntities = advisorParties.filter(
+      (party) =>
+        party.roleCategory === "Project Management Consultant" &&
+        isJvEntity(party) &&
+        available(party)
+    );
     const advisorFlatParties = advisorParties.filter(
       (party) => !isJvEntity(party) && !isJvMember(party) && available(party)
     );
@@ -577,7 +642,7 @@ export default function ProjectIntelligenceTab({
       markUsed(advisorFlatParties);
       sections.push(
         renderPartyGroup(
-          "ADVISORS & FINANCIERS",
+          "ADVISORS",
           advisorFlatParties,
           advisorJvEntities,
           parties,
@@ -586,17 +651,31 @@ export default function ProjectIntelligenceTab({
       );
     }
 
-    const otherJvEntities = parties.filter((party) => isJvEntity(party) && available(party));
+    const groupedRoles = [
+      ...primaryGroups.flatMap((group) => group.roles),
+      ...financierRoles,
+      ...advisorRoles,
+      ...otherNamedRoles,
+      "Shortlisted Consortium"
+    ];
     const otherFlatParties = parties.filter(
-      (party) => !isJvEntity(party) && !isJvMember(party) && available(party)
+      (party) =>
+        !isJvMember(party) &&
+        available(party) &&
+        (
+          hasRoleCategory(party, otherNamedRoles) ||
+          (postShortlistStage && party.roleCategory === "Shortlisted Consortium") ||
+          !hasRoleCategory(party, groupedRoles)
+        )
     );
 
-    if (otherJvEntities.length > 0 || otherFlatParties.length > 0) {
+    if (otherFlatParties.length > 0) {
+      markUsed(otherFlatParties);
       sections.push(
         renderPartyGroup(
           "OTHER NAMED PARTIES",
           otherFlatParties,
-          otherJvEntities,
+          [],
           parties,
           true
         )

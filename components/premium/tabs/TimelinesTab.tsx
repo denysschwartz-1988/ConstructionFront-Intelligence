@@ -2,6 +2,7 @@
 
 import React, { useMemo } from "react";
 import type { ProjectMilestoneRecord, ProjectRecord, ProjectSourceRecord } from "@/types/database";
+import { formatMilestoneDate } from "@/lib/utils";
 import { cardStyle, mutedTextStyle, sectionLabelStyle, tabRootStyle } from "@/lib/styles";
 
 type TimelinesTabProps = {
@@ -157,19 +158,6 @@ function getMilestoneBadgeStyle(milestoneType: string): React.CSSProperties {
   return { backgroundColor: "#1e3a5f", color: "#8b949e" };
 }
 
-function formatMilestoneHistoryDate(milestoneDate: string | null | undefined): string {
-  if (!milestoneDate?.trim()) {
-    return "";
-  }
-
-  const date = new Date(milestoneDate);
-  if (Number.isNaN(date.getTime())) {
-    return "";
-  }
-
-  return date.toLocaleDateString("en-GB", { month: "short", year: "numeric" });
-}
-
 function cleanMilestoneSummary(summary: string | null | undefined): string {
   const phrases = [
     "Under Review",
@@ -220,28 +208,6 @@ export default function TimelinesTab({
     );
   };
 
-  const formatMilestoneProgrammeDate = (value: unknown) => {
-    if (isHiddenProgrammeValue(value)) {
-      return "";
-    }
-
-    const date = new Date(String(value).trim());
-    if (Number.isNaN(date.getTime())) {
-      return "";
-    }
-
-    const hasMonth = !/^\d{4}$/.test(String(value).trim());
-    if (!hasMonth) {
-      return String(date.getUTCFullYear());
-    }
-
-    return date.toLocaleString("en-US", {
-      month: "short",
-      year: "numeric",
-      timeZone: "UTC"
-    });
-  };
-
   const getMostRecentMilestoneValue = (milestoneType: string) => {
     const matchingMilestone = milestones
       .filter((milestone) => milestone.milestoneType === milestoneType)
@@ -251,7 +217,7 @@ export default function TimelinesTab({
         return db - da;
       })[0];
 
-    return formatMilestoneProgrammeDate(matchingMilestone?.milestoneDate);
+    return formatMilestoneDate(matchingMilestone?.milestoneDate);
   };
 
   const getMostRecentMilestoneSortDate = (milestoneType: string) => {
@@ -365,7 +331,7 @@ export default function TimelinesTab({
       return {
         milestone,
         cleanedSummary,
-        date: formatMilestoneHistoryDate(milestone.milestoneDate),
+        date: formatMilestoneDate(milestone.milestoneDate),
         sourceUrl,
         sourceType: source?.sourceType,
         sourceTitle: source?.sourceTitle,
