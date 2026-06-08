@@ -42,22 +42,13 @@ export function formatMilestoneDate(dateStr: string | null | undefined): string 
 
   if (!year) return "";
 
-  // Day and month are placeholders - show year only
-  if (month === 1 && day === 1) {
+  // Month is placeholder or missing - show year only
+  if (!month || month === 1 && day === 1 && dateStr.endsWith("01-01")) {
     return String(year);
   }
 
-  // Day is placeholder - show MMM YYYY
-  if (day === 1) {
-    return new Date(year, month - 1, 1).toLocaleDateString("en-GB", {
-      month: "short",
-      year: "numeric"
-    });
-  }
-
-  // Full date known - show DD MMM YYYY
-  return new Date(year, month - 1, day).toLocaleDateString("en-GB", {
-    day: "2-digit",
+  // Month available - show MMM YYYY (ignore day entirely)
+  return new Date(year, month - 1, 1).toLocaleDateString("en-GB", {
     month: "short",
     year: "numeric"
   });

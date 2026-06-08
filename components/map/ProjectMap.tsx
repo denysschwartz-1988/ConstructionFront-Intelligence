@@ -89,6 +89,11 @@ const isValidProject = (project: ProjectRecord) => {
   );
 };
 
+const isRenderableMapProject = (project: ProjectRecord) => {
+  const hierarchy = (project as unknown as { projectHierarchy?: string | null }).projectHierarchy;
+  return project.recordType !== "Programme" && hierarchy !== "Parent";
+};
+
 const ProjectMap = forwardRef<ProjectMapHandle, ProjectMapProps>(function ProjectMap(
   {
     projects,
@@ -125,7 +130,7 @@ const ProjectMap = forwardRef<ProjectMapHandle, ProjectMapProps>(function Projec
   }, []);
 
   const visibleProjects = useMemo(
-    () => projects.filter(isValidProject),
+    () => projects.filter((project) => isValidProject(project) && isRenderableMapProject(project)),
     [projects]
   );
 
@@ -242,7 +247,13 @@ const ProjectMap = forwardRef<ProjectMapHandle, ProjectMapProps>(function Projec
     return null;
   };
 
-  const ClusterLayer = ({ projects }: { projects: ProjectRecord[] }) => {
+  const ClusterLayer = ({
+    projects,
+    selectedProject
+  }: {
+    projects: ProjectRecord[];
+    selectedProject?: ProjectRecord | null;
+  }) => {
     const map = useMap();
 
     useEffect(() => {
@@ -281,10 +292,52 @@ const ProjectMap = forwardRef<ProjectMapHandle, ProjectMapProps>(function Projec
       const clusterGroup = leaflet.markerClusterGroup({
         iconCreateFunction: createClusterIcon
       });
+      const lineGroup = leaflet.layerGroup();
+      const siblingGroups = new Map<string, ProjectRecord[]>();
+      const parentChildCount = new Map<string, number>();
+
+      projects.forEach((project) => {
+        const parentSlug = project.parentProjectSlug?.trim();
+        if (!parentSlug) {
+          return;
+        }
+
+        parentChildCount.set(parentSlug, (parentChildCount.get(parentSlug) ?? 0) + 1);
+
+        if (project.latitude != null && project.longitude != null) {
+          const group = siblingGroups.get(parentSlug) ?? [];
+          group.push(project);
+          siblingGroups.set(parentSlug, group);
+        }
+      });
+
+      siblingGroups.forEach((siblings) => {
+        if (siblings.length < 2) {
+          return;
+        }
+
+        const positions = siblings.map(
+          (project) => [project.latitude as number, project.longitude as number] as [number, number]
+        );
+        const selectedSibling = siblings.some(
+          (project) => project.projectSlug === selectedProject?.projectSlug
+        );
+
+        const line = leaflet.polyline(positions, {
+          color: "#ffffff",
+          opacity: selectedSibling ? 0.5 : 0.15,
+          weight: selectedSibling ? 1.5 : 1,
+          dashArray: "4 4"
+        });
+
+        lineGroup.addLayer(line);
+      });
 
       const markers = projects.map((project) => {
         const color = getMarkerColor(project.currentProjectStage);
         const size = getMarkerSize(project.recordType ?? undefined);
+        const parentSlug = project.parentProjectSlug?.trim() ?? "";
+        const hasParent = Boolean(parentSlug && (parentChildCount.get(parentSlug) ?? 0) >= 2);
         const marker = leaflet.marker(
           [project.latitude as number, project.longitude as number],
           {
@@ -292,9 +345,9 @@ const ProjectMap = forwardRef<ProjectMapHandle, ProjectMapProps>(function Projec
             fillColor: color,
             icon: leaflet.divIcon({
               className: "project-map-marker",
-              html: `<span style="display:inline-block;width:${size}px;height:${size}px;border-radius:50%;border:2px solid ${color};background:${color};box-shadow:0 0 0 ${Math.round(
+              html: `<span style="position:relative;display:inline-block;width:${size}px;height:${size}px;"><span style="display:inline-block;width:${size}px;height:${size}px;border-radius:50%;border:2px solid ${color};background:${color};box-shadow:0 0 0 ${Math.round(
                 size * 0.8
-              )}px rgba(0,0,0,0.16);"></span>`,
+              )}px rgba(0,0,0,0.16);"></span>${hasParent ? `<span style="position:absolute;top:-5px;right:-5px;width:10px;height:10px;border-radius:50%;background-color:#0a1628;border:1px solid #f0a500;color:#f0a500;font-size:8px;font-weight:700;line-height:10px;text-align:center;box-sizing:border-box;">P</span>` : ""}</span>`,
               iconSize: [size, size],
               iconAnchor: [size / 2, size / 2],
               popupAnchor: [0, -size / 2]
@@ -304,6 +357,13 @@ const ProjectMap = forwardRef<ProjectMapHandle, ProjectMapProps>(function Projec
 
         marker.on("click", () => {
           onProjectSelect?.(project);
+        });
+
+        marker.bindTooltip(project.projectName ?? project.projectSlug, {
+          permanent: false,
+          direction: "top",
+          offset: [0, -10],
+          className: "cf-map-tooltip"
         });
 
         marker.bindPopup(`
@@ -318,17 +378,37 @@ const ProjectMap = forwardRef<ProjectMapHandle, ProjectMapProps>(function Projec
 
       clusterGroup.addLayers(markers);
       map.addLayer(clusterGroup);
+      map.addLayer(lineGroup);
+      lineGroup.eachLayer((line: any) => line.bringToBack?.());
 
       return () => {
+        map.removeLayer(lineGroup);
         map.removeLayer(clusterGroup);
       };
-    }, [leaflet, map, onProjectSelect, projects]);
+    }, [leaflet, map, onProjectSelect, projects, selectedProject]);
 
     return null;
   };
 
   return (
     <section className="relative h-full w-full overflow-hidden rounded-3xl bg-slate-950/90 shadow-2xl shadow-slate-950/40">
+      <style>{`
+        .cf-map-tooltip {
+          background-color: #0f2240;
+          border: 1px solid #1e3a5f;
+          color: #e6edf3;
+          font-size: 12px;
+          font-weight: 500;
+          padding: 4px 8px;
+          border-radius: 4px;
+          box-shadow: none;
+          white-space: nowrap;
+        }
+
+        .cf-map-tooltip::before {
+          border-top-color: #1e3a5f;
+        }
+      `}</style>
       <div className="absolute inset-0" style={{ paddingBottom: 28 }}>
         <MapContainer
           center={[20, 0]}
@@ -348,7 +428,7 @@ const ProjectMap = forwardRef<ProjectMapHandle, ProjectMapProps>(function Projec
             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
             attribution="&copy; OpenStreetMap contributors"
           />
-          <ClusterLayer projects={visibleProjects} />
+          <ClusterLayer projects={visibleProjects} selectedProject={focusProject} />
           <FocusProjectController
             focusProject={focusProject}
             focusRequest={focusRequest}

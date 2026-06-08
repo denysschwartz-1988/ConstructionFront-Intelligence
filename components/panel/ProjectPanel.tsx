@@ -3,13 +3,15 @@
 import { useEffect, useState } from "react";
 import type { ProjectPartyRecord, ProjectRecord, ProjectSourceRecord } from "@/types/database";
 import { cleanCityArea, formatDate, formatProjectValue, getStageBadgeStyle } from "@/lib/utils";
-import { cardStyle, rowLabelStyle, rowValueStyle, sectionLabelStyle } from "@/lib/styles";
+import { cardStyle, rowLabelStyle, rowStyle, rowValueStyle, sectionLabelStyle } from "@/lib/styles";
+import { supabase } from "@/lib/supabase/client";
 
 export type ProjectPanelProps = {
   selectedProject: ProjectRecord;
   projectParties: ProjectPartyRecord[];
   projectSources: ProjectSourceRecord[];
   onClose: () => void;
+  onSelectProject?: (projectSlug: string) => void;
   isLoading?: boolean;
   error?: string | null;
 };
@@ -47,6 +49,13 @@ const getPartyNames = (parties: ProjectPartyRecord[], category: string) => {
     .join(" | ");
 };
 
+function truncateParties(value: string | null | undefined, max: number = 2): string {
+  if (!value) return "";
+  const parts = value.split(" | ").map((p) => p.trim()).filter(Boolean);
+  if (parts.length <= max) return parts.join(" | ");
+  return parts.slice(0, max).join(" | ") + " | Others";
+}
+
 const isContractorVisible = (project: ProjectRecord) => {
   const stage = project.currentProjectStage?.toLowerCase() ?? "";
   const validStage = [
@@ -68,10 +77,12 @@ const ProjectPanel = ({
   projectParties,
   projectSources,
   onClose,
+  onSelectProject,
   isLoading,
   error
 }: ProjectPanelProps) => {
   const [currentArticleIndex, setCurrentArticleIndex] = useState(0);
+  const [parentName, setParentName] = useState<string | null>(null);
   const headerLabel = selectedProject.projectName ?? selectedProject.projectSlug;
   const ownerDeveloper = getPartyNames(projectParties, "Developer / Owner");
   const publicAuthority = getPartyNames(projectParties, "Public Authority");
@@ -98,8 +109,8 @@ const ProjectPanel = ({
   const currentArticle = cfArticles[currentArticleIndex] ?? cfArticles[0];
   const keyDetails = [
     { label: "Owner / Developer", value: ownerDeveloper },
-    { label: "Public Authority", value: publicAuthority },
-    { label: "Main Contractor", value: contractor },
+    { label: "Public Authority", value: truncateParties(publicAuthority) },
+    { label: "Main Contractor", value: truncateParties(contractor) },
     { label: "Scale / Size", value: scaleSize },
     { label: "Est. Project Value", value: projectValue },
     { label: "Location", value: locationParts }
@@ -120,6 +131,22 @@ const ProjectPanel = ({
   useEffect(() => {
     setCurrentArticleIndex(0);
   }, [selectedProject.projectSlug]);
+
+  useEffect(() => {
+    if (selectedProject.parentProjectSlug) {
+      supabase
+        .from("projects_master")
+        .select("projectName")
+        .eq("projectSlug", selectedProject.parentProjectSlug)
+        .single()
+        .then(({ data }) => {
+          if (data?.projectName) setParentName(data.projectName);
+        });
+
+    } else {
+      setParentName(null);
+    }
+  }, [selectedProject.projectSlug, selectedProject.parentProjectSlug]);
 
   return (
     <div
@@ -234,6 +261,25 @@ const ProjectPanel = ({
             KEY DETAILS
           </div>
           <div>
+            {selectedProject.parentProjectSlug ? (
+              <div style={rowStyle}>
+                <span style={rowLabelStyle}>PART OF PROGRAMME</span>
+                <span
+                  style={{ ...rowValueStyle, color: "#f0a500", cursor: "pointer" }}
+                  onClick={() => {
+                    if (selectedProject.parentProjectSlug) {
+                      if (onSelectProject) {
+                        onSelectProject(selectedProject.parentProjectSlug);
+                      } else {
+                        window.location.href = `/map?project=${encodeURIComponent(selectedProject.parentProjectSlug)}`;
+                      }
+                    }
+                  }}
+                >
+                  {parentName ?? selectedProject.parentProjectSlug}
+                </span>
+              </div>
+            ) : null}
             {keyDetails.map((detail) => (
               <div
                 key={detail.label}

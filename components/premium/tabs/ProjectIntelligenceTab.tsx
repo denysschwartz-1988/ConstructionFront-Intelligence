@@ -549,8 +549,8 @@ export default function ProjectIntelligenceTab({
 
   const postShortlistStage = milestones.some(
     (milestone) =>
-      milestone.milestoneType === "Preferred Bidder" ||
-      milestone.milestoneType === "Contract Award"
+      milestone.milestoneType?.includes("Preferred Bidder") ||
+      milestone.milestoneType?.includes("Contract Award")
   );
 
   const keyPartySections = useMemo(() => {

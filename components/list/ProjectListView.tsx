@@ -42,11 +42,18 @@ const cellTextStyle = {
   textOverflow: "ellipsis"
 } as const;
 
+const isDisplayProject = (project: ProjectRecord) => {
+  const hierarchy = (project as unknown as { projectHierarchy?: string | null }).projectHierarchy;
+  return project.recordType !== "Programme" && hierarchy !== "Parent";
+};
+
 export default function ProjectListView({
   projects,
   selectedProject,
   onProjectSelect
 }: ProjectListViewProps) {
+  const displayProjects = projects.filter(isDisplayProject);
+
   return (
     <div
       style={{
@@ -105,7 +112,7 @@ export default function ProjectListView({
         >
           {colgroup}
           <tbody>
-            {projects.map((project) => {
+            {displayProjects.map((project) => {
               const isSelected = selectedProject?.projectSlug === project.projectSlug;
               const lastUpdated =
                 project.lastUpdated ?? project.last_updated ?? project.updatedAt;

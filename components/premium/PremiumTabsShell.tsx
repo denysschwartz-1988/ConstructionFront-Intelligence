@@ -155,6 +155,7 @@ export default function PremiumTabsShell({
           <TimelinesTab
             project={project}
             milestones={milestones}
+            sources={sources}
             isAuthenticated={isAuthenticated}
           />
         ) : null}

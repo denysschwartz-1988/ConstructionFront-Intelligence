@@ -16,6 +16,11 @@ const getTimestamp = (project: ProjectRecord) => {
   return Number.isFinite(millis) ? millis : 0;
 };
 
+const isDisplayProject = (project: ProjectRecord) => {
+  const hierarchy = (project as unknown as { projectHierarchy?: string | null }).projectHierarchy;
+  return project.recordType !== "Programme" && hierarchy !== "Parent";
+};
+
 export default function RelatedProjects({
   currentProject,
   allProjects,
@@ -28,6 +33,7 @@ export default function RelatedProjects({
 
     const others = allProjects.filter(
       (project) =>
+        isDisplayProject(project) &&
         project.projectSlug !== currentProject.projectSlug &&
         project.projectDescription
     );

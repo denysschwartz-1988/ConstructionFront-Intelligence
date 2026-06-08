@@ -27,6 +27,11 @@ const isValidProject = (project: ProjectRecord) => {
   );
 };
 
+const isDisplayProject = (project: ProjectRecord) => {
+  const hierarchy = (project as unknown as { projectHierarchy?: string | null }).projectHierarchy;
+  return project.recordType !== "Programme" && hierarchy !== "Parent";
+};
+
 const getUpdateTimestamp = (project: ProjectRecord) => {
   const value = project.latestUpdateDate?.trim();
   const millis = value ? new Date(value).getTime() : 0;
@@ -373,6 +378,8 @@ export default function Home() {
 
     return exists ? filteredProjects : [selectedProject, ...filteredProjects];
   }, [filteredProjects, selectedProject]);
+  const visibleProjectCount = filteredProjects.filter(isDisplayProject).length;
+  const projectCount = projects.filter(isDisplayProject).length;
 
   const handleProjectSelect = useCallback((project: ProjectRecord | null) => {
     setSelectedProject(project);
@@ -411,8 +418,8 @@ export default function Home() {
     >
       <div style={{ flex: "0 0 56px" }}>
         <TopBar
-          visibleCount={filteredProjects.length}
-          projectCount={projects.length}
+          visibleCount={visibleProjectCount}
+          projectCount={projectCount}
           coverageCount={coverageCount}
           searchValue={searchValue}
           selectedRegions={selectedRegions}

@@ -18,6 +18,11 @@ const getTimestamp = (project: ProjectRecord) => {
   return Number.isFinite(millis) ? millis : 0;
 };
 
+const isDisplayProject = (project: ProjectRecord) => {
+  const hierarchy = (project as unknown as { projectHierarchy?: string | null }).projectHierarchy;
+  return project.recordType !== "Programme" && hierarchy !== "Parent";
+};
+
 const relatedCardStyle = {
   ...cardStyle,
   cursor: "pointer",
@@ -40,6 +45,7 @@ export default function RelatedProjectsTab({
 
     const others = allProjects.filter(
       (project) =>
+        isDisplayProject(project) &&
         project.projectSlug !== currentProject.projectSlug &&
         project.projectDescription
     );
