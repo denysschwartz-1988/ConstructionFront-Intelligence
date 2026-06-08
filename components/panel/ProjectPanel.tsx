@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import type { ProjectPartyRecord, ProjectRecord, ProjectSourceRecord } from "@/types/database";
-import { cleanCityArea, formatDate, getStageBadgeStyle } from "@/lib/utils";
+import { cleanCityArea, formatDate, formatProjectValue, getStageBadgeStyle } from "@/lib/utils";
 import { cardStyle, rowLabelStyle, rowValueStyle, sectionLabelStyle } from "@/lib/styles";
 
 export type ProjectPanelProps = {
@@ -63,18 +63,6 @@ const isContractorVisible = (project: ProjectRecord) => {
   return Boolean(validStage && confirmed && project.leadContractor?.trim());
 };
 
-const getProjectValue = (project: ProjectRecord) => {
-  if (!project.projectValueAmount && !project.projectValueCurrency && !project.projectValueScale) {
-    return "";
-  }
-
-  const amount = project.projectValueAmount != null ? project.projectValueAmount : "";
-  const currency = project.projectValueCurrency?.trim() ?? "";
-  const scale = project.projectValueScale?.trim() ?? "";
-
-  return [amount, currency, scale].filter(Boolean).join(" ");
-};
-
 const ProjectPanel = ({
   selectedProject,
   projectParties,
@@ -84,7 +72,6 @@ const ProjectPanel = ({
   error
 }: ProjectPanelProps) => {
   const [currentArticleIndex, setCurrentArticleIndex] = useState(0);
-  const imageUrl = selectedProject.projectImageUrl?.trim();
   const headerLabel = selectedProject.projectName ?? selectedProject.projectSlug;
   const ownerDeveloper = getPartyNames(projectParties, "Developer / Owner");
   const publicAuthority = getPartyNames(projectParties, "Public Authority");
@@ -92,7 +79,11 @@ const ProjectPanel = ({
     ? selectedProject.leadContractor?.trim()
     : "";
   const scaleSize = selectedProject.capacityDisplay?.trim() ?? "";
-  const projectValue = getProjectValue(selectedProject);
+  const projectValue = formatProjectValue(
+    selectedProject.projectValueAmount,
+    selectedProject.projectValueCurrency,
+    selectedProject.projectValueScale
+  );
   const locationParts = [
     selectedProject.country?.trim(),
     selectedProject.stateProvince?.trim(),
@@ -152,9 +143,9 @@ const ProjectPanel = ({
       </div>
 
       <div style={{ height: 160, width: '100%', overflow: 'hidden', backgroundColor: '#0f2240', flexShrink: 0 }}>
-        {imageUrl ? (
+        {selectedProject.projectImageUrl ? (
           <img
-            src={imageUrl}
+            src={selectedProject.projectImageUrl}
             alt={selectedProject.projectName ?? "Project image"}
             style={{ width: '100%', height: 160, objectFit: 'cover', display: 'block' }}
           />
@@ -339,11 +330,7 @@ const ProjectPanel = ({
                   </div>
                 ) : null}
 
-                {currentArticle.milestoneConfirmed ? (
-                  <div style={{ color: '#f0a500', fontSize: 10, fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: 6 }}>
-                    {currentArticle.milestoneConfirmed}
-                  </div>
-                ) : null}
+                {/* Removed secondary label (milestoneConfirmed) as requested */}
 
                 {currentArticle.sourceUrl ? (
                   <a

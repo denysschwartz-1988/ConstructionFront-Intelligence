@@ -113,3 +113,50 @@
  POST /map 200 in 12ms
  ✓ Compiled in 413ms (1139 modules)
  ✓ Compiled in 490ms (1139 modules)
+ GET / 200 in 89ms
+ POST / 200 in 13ms
+ POST / 200 in 20ms
+ ✓ Compiled in 530ms (1139 modules)
+ ✓ Compiled in 293ms (1139 modules)
+ ✓ Compiled in 762ms (1139 modules)
+ ✓ Compiled in 276ms (1139 modules)
+ ✓ Compiled in 432ms (1139 modules)
+ ✓ Compiled in 451ms (1139 modules)
+ ✓ Compiled in 456ms (1139 modules)
+ ✓ Compiled in 507ms (1139 modules)
+ ✓ Compiled in 385ms (1139 modules)
+ ✓ Compiled in 272ms (1139 modules)
+ ✓ Compiled in 269ms (1139 modules)
+ ✓ Compiled in 255ms (1139 modules)
+ ✓ Compiled in 290ms (1139 modules)
+ GET /map 200 in 121ms
+ POST /map 200 in 15ms
+ POST /map 200 in 14ms
+ GET /map 200 in 67ms
+ POST /map 200 in 12ms
+ POST /map 200 in 12ms
+ ✓ Compiled in 471ms (1139 modules)
+ ✓ Compiled in 1ms (649 modules)
+ ✓ Compiled in 0ms (649 modules)
+ ✓ Compiled in 0ms (649 modules)
+ GET /map 200 in 633ms
+ POST /map 200 in 16ms
+ POST /map 200 in 14ms
+ GET /map?project=second-avenue-subway-phase-ii 200 in 106ms
+ POST /map?project=second-avenue-subway-phase-ii 200 in 14ms
+ POST /map?project=second-avenue-subway-phase-ii 200 in 13ms
+ GET /map 200 in 51ms
+ POST /map 200 in 15ms
+ POST /map 200 in 12ms
+ GET /map 200 in 43ms
+ POST /map 200 in 11ms
+ POST /map 200 in 10ms
+ GET /map 200 in 42ms
+ POST /map 200 in 10ms
+ POST /map 200 in 14ms
+ GET / 200 in 57ms
+ POST / 200 in 21ms
+ POST / 200 in 9ms
+ GET /map 200 in 50ms
+ POST /map 200 in 10ms
+ POST /map 200 in 14ms

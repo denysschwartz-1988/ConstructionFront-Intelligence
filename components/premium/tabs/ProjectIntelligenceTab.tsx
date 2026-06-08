@@ -1,12 +1,13 @@
 "use client";
 
-import React, { useMemo } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import type {
+  ProjectMilestoneRecord,
   ProjectRecord,
   ProjectPartyRecord,
   ProjectSourceRecord
 } from "@/types/database";
-import { cleanCityArea, formatMonthYear } from "@/lib/utils";
+import { cleanCityArea, formatMonthYear, formatProjectValue } from "@/lib/utils";
 import {
   bodyTextStyle,
   cardStyle,
@@ -17,10 +18,12 @@ import {
   sectionLabelStyle,
   tabRootStyle
 } from "@/lib/styles";
+import { supabase } from "@/lib/supabase/client";
 
 type Props = {
   project: ProjectRecord;
   parties: ProjectPartyRecord[];
+  milestones: ProjectMilestoneRecord[];
   sources: ProjectSourceRecord[];
   isAuthenticated: boolean;
 };
@@ -29,6 +32,7 @@ type PartyGroup = {
   label: string;
   roles: string[];
   jvOnly?: boolean;
+  showWhen?: boolean;
 };
 
 const partyGroupStyle: React.CSSProperties = {
@@ -54,48 +58,28 @@ const jvEntityCardStyle: React.CSSProperties = {
   marginBottom: 6
 };
 
-const partyGroups: PartyGroup[] = [
-  { label: "OWNER / DEVELOPER", roles: ["Developer / Owner", "Owner / Developer"] },
-  { label: "PUBLIC AUTHORITY", roles: ["Public Authority", "Client / Public Authority"] },
-  { label: "GOVERNMENT", roles: ["Government"] },
-  { label: "DELIVERY CONSORTIUM", roles: ["Joint Venture / Consortium"], jvOnly: true },
-  { label: "SHORTLISTED CONSORTIA", roles: ["Shortlisted Consortium"], jvOnly: true },
-  {
-    label: "MAIN CONTRACTOR",
-    roles: ["EPC Contractor", "EPCC Contractor", "Main Contractor"]
-  },
-  {
-    label: "PROJECT MANAGEMENT CONSULTANT",
-    roles: ["Project Management Consultant"],
-    jvOnly: true
-  },
-  { label: "LENDER", roles: ["Financier", "Lender", "Financier / Lender"] },
-  { label: "EQUITY INVESTOR", roles: ["Equity Investor"] },
-  {
-    label: "OFFTAKER",
-    roles: ["Offtaker", "Commercial Counterparty", "Offtaker / Commercial Counterparty"]
-  },
-  { label: "OWNER'S ENGINEER", roles: ["Owner's Engineer"] },
-  { label: "LEGAL ADVISOR", roles: ["Legal Advisor"] },
-  {
-    label: "TECHNOLOGY / EQUIPMENT",
-    roles: ["Technology Supplier", "Equipment Supplier", "Battery Technology Supplier"]
-  },
-  { label: "ENVIRONMENTAL CONSULTANT", roles: ["Environmental Consultant"] },
-  { label: "GRID OPERATOR", roles: ["Grid Operator"] }
-];
-
 const normalizeRole = (value?: string | null) => value?.trim().toLowerCase() ?? "";
 
 const isJvEntity = (party: ProjectPartyRecord) => {
   return party.isJVEntity === true || party.isJVEntity === "true";
 };
 
+const getPartyField = (party: ProjectPartyRecord, key: string) => {
+  const value = (party as unknown as Record<string, unknown>)[key];
+  return typeof value === "string" ? value.trim() : "";
+};
+
+const isJvMember = (party: ProjectPartyRecord) => {
+  const value = (party as unknown as Record<string, unknown>).isJVMember;
+  return value === true || value === "true";
+};
+
+const parentJvName = (party: ProjectPartyRecord) => getPartyField(party, "parentJVName");
+
 const matchesGroup = (party: ProjectPartyRecord, group: PartyGroup) => {
   const roleValues = [
     normalizeRole(party.roleCategory),
-    normalizeRole(party.partyRole),
-    normalizeRole(party.roleDetail)
+    normalizeRole(party.partyRole)
   ];
 
   return group.roles.some((role) => {
@@ -105,6 +89,9 @@ const matchesGroup = (party: ProjectPartyRecord, group: PartyGroup) => {
     );
   });
 };
+
+const hasRole = (party: ProjectPartyRecord, roles: string[]) =>
+  matchesGroup(party, { label: "", roles });
 
 const getMemberLabel = (party: ProjectPartyRecord) => {
   const roleDetail = party.roleDetail?.trim();
@@ -120,9 +107,10 @@ const isMemberMatchedToJv = (
   jv: ProjectPartyRecord
 ) => {
   const jvName = jv.partyName?.trim().toLowerCase();
+  const parentName = parentJvName(member).toLowerCase();
   const roleDetail = member.roleDetail?.trim().toLowerCase();
 
-  return Boolean(jvName && roleDetail?.includes(jvName));
+  return Boolean(jvName && (parentName === jvName || roleDetail?.includes(jvName)));
 };
 
 const hiddenValueLabels = new Set([
@@ -182,39 +170,14 @@ const formatCapacity = (project: ProjectRecord) => {
   return primary;
 };
 
-const formatProjectValue = (project: ProjectRecord) => {
-  const currency = project.projectValueCurrency?.trim();
-  const scale = project.projectValueScale?.trim();
-
-  if (
-    project.projectValueAmount == null ||
-    !isMeaningfulValue(currency) ||
-    !isMeaningfulValue(scale)
-  ) {
-    return "";
-  }
-
-  return [
-    currency,
-    project.projectValueAmount,
-    scale
-  ].join(" ");
-};
-
-const formatTargetDate = (
-  year: number | null,
-  quarter: string | null,
-  precision: string | null
-) => {
-  if (year == null) {
-    return "";
-  }
-
-  const base = quarter != null && String(quarter).trim() ? `${String(quarter).trim()} ${year}` : String(year);
-  return precision != null && String(precision).trim().toLowerCase() === "indicative"
-    ? `${base} (indicative)`
-    : base;
-};
+function formatProjectDate(
+  year: number | null | undefined,
+  precision: string | null | undefined
+): string {
+  if (!year) return "";
+  const indicative = String(precision ?? "").trim().toLowerCase() === "indicative" ? " (indicative)" : "";
+  return `${year}${indicative}`;
+}
 
 const isContractorStage = (stage?: string | null) =>
   [
@@ -260,6 +223,126 @@ const FeatureRow = ({
         {value}
       </span>
     </div>
+  );
+};
+
+const memberChipStyle: React.CSSProperties = {
+  backgroundColor: "#0a1628",
+  border: "1px solid #1e3a5f",
+  borderRadius: 999,
+  color: "#e6edf3",
+  fontSize: 11,
+  fontWeight: 500,
+  padding: "3px 8px"
+};
+
+const chipLabel = (party: ProjectPartyRecord, fallbackToRoleCategory = false) =>
+  party.roleDetail ?? (fallbackToRoleCategory ? party.roleCategory : party.partyRole) ?? "";
+
+const FlatPartyChip = ({
+  party,
+  fallbackToRoleCategory
+}: {
+  party: ProjectPartyRecord;
+  fallbackToRoleCategory?: boolean;
+}) => (
+  <div style={partyChipStyle}>
+    <div style={{ color: "#e6edf3", fontSize: 13, fontWeight: 500 }}>
+      {party.partyName}
+    </div>
+    <div style={{ color: "#8b949e", fontSize: 11 }}>
+      {chipLabel(party, fallbackToRoleCategory)}
+    </div>
+  </div>
+);
+
+const JvEntityCard = ({
+  entity,
+  members
+}: {
+  entity: ProjectPartyRecord;
+  members: ProjectPartyRecord[];
+}) => (
+  <div style={jvEntityCardStyle}>
+    <div style={{ color: "#f0a500", fontSize: 13, fontWeight: 600, marginBottom: 4 }}>
+      {entity.partyName}
+    </div>
+    <div style={{ color: "#8b949e", fontSize: 11, marginBottom: members.length > 0 ? 8 : 0 }}>
+      {entity.roleCategory}
+    </div>
+    {members.length > 0 ? (
+      <div style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
+        {members.map((member) => (
+          <span
+            key={member.partyId}
+            title={getMemberLabel(member)}
+            style={memberChipStyle}
+          >
+            {member.partyName}
+          </span>
+        ))}
+      </div>
+    ) : null}
+  </div>
+);
+
+const PartyGroupBox = ({
+  label,
+  children
+}: {
+  label: string;
+  children: React.ReactNode;
+}) => (
+  <div style={partyGroupStyle}>
+    <div
+      style={{
+        color: "#f0a500",
+        fontSize: 11,
+        fontWeight: 600,
+        letterSpacing: "0.08em",
+        textTransform: "uppercase",
+        marginBottom: 8
+      }}
+    >
+      {label}
+    </div>
+    {children}
+  </div>
+);
+
+const renderPartyGroup = (
+  label: string,
+  flatParties: ProjectPartyRecord[],
+  jvEntities: ProjectPartyRecord[],
+  allParties: ProjectPartyRecord[],
+  fallbackToRoleCategory = false
+) => {
+  const hasContent = flatParties.length > 0 || jvEntities.length > 0;
+  if (!hasContent) return null;
+
+  return (
+    <PartyGroupBox key={label} label={label}>
+      <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+        {jvEntities.map((entity) => (
+          <JvEntityCard
+            key={entity.partyId}
+            entity={entity}
+            members={allParties.filter((party) => isJvMember(party) && isMemberMatchedToJv(party, entity))}
+          />
+        ))}
+        {flatParties.length > 0 ? (
+          <div style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
+            {flatParties.map((party) => (
+              <FlatPartyChip
+                key={party.partyId}
+                party={party}
+                fallbackToRoleCategory={fallbackToRoleCategory}
+              />
+            ))}
+          </div>
+        ) : null}
+      </div>
+    </PartyGroupBox>
   );
 };
 
@@ -353,9 +436,11 @@ const PremiumBlur = ({
 export default function ProjectIntelligenceTab({
   project,
   parties,
+  milestones = [],
   sources,
   isAuthenticated
 }: Props) {
+  const [parentProjectName, setParentProjectName] = useState<string | null>(null);
   const fullDescription =
     project.projectDescriptionFull || project.projectDescription || "No project description available.";
   const otherKeyInfo = project.otherKeyInfo ?? project.sourceNotes;
@@ -374,7 +459,6 @@ export default function ProjectIntelligenceTab({
     )
     .map((party) => party.partyName)
     .join(" | ");
-  const parentProjectName = getOptionalString(project, "parentProjectName");
   const parentProjectSlug = project.parentProjectSlug?.trim() ?? "";
   const projectValueLabel =
     project.projectValueBasis && isMeaningfulValue(project.projectValueBasis)
@@ -385,7 +469,7 @@ export default function ProjectIntelligenceTab({
       href={`/map?project=${encodeURIComponent(parentProjectSlug)}`}
       style={{ color: "#e6edf3", textDecoration: "none" }}
     >
-      {parentProjectName || parentProjectSlug}
+      {parentProjectName ?? parentProjectSlug}
     </a>
   ) : null;
   const isProgramme = project.recordType === "Programme";
@@ -395,19 +479,150 @@ export default function ProjectIntelligenceTab({
       ? `${deliveryModel} (indicative)`
       : deliveryModel;
 
-  const groupedParties = useMemo(
-    () =>
-      partyGroups
-        .map((group) => ({
-          ...group,
-          parties: parties.filter((party) => matchesGroup(party, group))
-        }))
-        .filter((group) => group.parties.length > 0),
-    [parties]
+  const postShortlistStage = milestones.some(
+    (milestone) =>
+      milestone.milestoneType === "Preferred Bidder" ||
+      milestone.milestoneType === "Contract Award"
   );
+
+  const keyPartySections = useMemo(() => {
+    const usedPartyIds = new Set<string>();
+    const markUsed = (items: ProjectPartyRecord[]) => {
+      items.forEach((party) => usedPartyIds.add(party.partyId));
+    };
+    const markJvWithMembers = (entities: ProjectPartyRecord[]) => {
+      markUsed(entities);
+      entities.forEach((entity) => {
+        markUsed(parties.filter((party) => isJvMember(party) && isMemberMatchedToJv(party, entity)));
+      });
+    };
+    const available = (party: ProjectPartyRecord) => !usedPartyIds.has(party.partyId);
+
+    const primaryGroups: PartyGroup[] = [
+      {
+        label: "OWNER / DEVELOPER",
+        roles: ["Developer / Owner", "Owner / Developer"],
+        jvOnly: false
+      },
+      {
+        label: "PUBLIC AUTHORITY / GOVERNMENT",
+        roles: ["Public Authority", "Client / Public Authority", "Government"],
+        jvOnly: false
+      },
+      {
+        label: "MAIN CONTRACTOR",
+        roles: ["Joint Venture / Consortium", "EPC Contractor", "EPCC Contractor", "Main Contractor"],
+        jvOnly: false,
+        showWhen: postShortlistStage
+      },
+      {
+        label: "SHORTLISTED CONSORTIA",
+        roles: ["Shortlisted Consortium"],
+        jvOnly: true,
+        showWhen: !postShortlistStage
+      },
+      {
+        label: "TECHNOLOGY / EQUIPMENT",
+        roles: ["Technology Supplier", "Equipment Supplier", "Battery Technology Supplier"],
+        jvOnly: false
+      }
+    ];
+
+    const sections: React.ReactNode[] = [];
+
+    primaryGroups.forEach((group) => {
+      if (group.showWhen === false) return;
+
+      let matchingParties = parties.filter((party) => matchesGroup(party, group));
+
+      if (group.label === "MAIN CONTRACTOR") {
+        const leadContractor = project.leadContractor?.trim();
+        matchingParties = leadContractor
+          ? matchingParties.filter((party) => party.partyName?.trim() === leadContractor)
+          : [];
+      }
+
+      const jvEntities = matchingParties.filter((party) => isJvEntity(party) && available(party));
+      const flatParties = matchingParties.filter(
+        (party) => !isJvEntity(party) && !isJvMember(party) && available(party)
+      );
+
+      if (jvEntities.length === 0 && flatParties.length === 0) return;
+
+      markJvWithMembers(jvEntities);
+      markUsed(flatParties);
+      sections.push(renderPartyGroup(group.label, flatParties, jvEntities, parties));
+    });
+
+    const advisorRoles = [
+      "Financier",
+      "Lender",
+      "Financier / Lender",
+      "Equity Investor",
+      "Legal Advisor",
+      "Owner's Engineer",
+      "Financial Advisor",
+      "Environmental Consultant",
+      "Grid Operator",
+      "Project Management Consultant"
+    ];
+    const advisorParties = parties.filter((party) => hasRole(party, advisorRoles));
+    const advisorJvEntities = advisorParties.filter((party) => isJvEntity(party) && available(party));
+    const advisorFlatParties = advisorParties.filter(
+      (party) => !isJvEntity(party) && !isJvMember(party) && available(party)
+    );
+
+    if (advisorJvEntities.length > 0 || advisorFlatParties.length > 0) {
+      markJvWithMembers(advisorJvEntities);
+      markUsed(advisorFlatParties);
+      sections.push(
+        renderPartyGroup(
+          "ADVISORS & FINANCIERS",
+          advisorFlatParties,
+          advisorJvEntities,
+          parties,
+          true
+        )
+      );
+    }
+
+    const otherJvEntities = parties.filter((party) => isJvEntity(party) && available(party));
+    const otherFlatParties = parties.filter(
+      (party) => !isJvEntity(party) && !isJvMember(party) && available(party)
+    );
+
+    if (otherJvEntities.length > 0 || otherFlatParties.length > 0) {
+      sections.push(
+        renderPartyGroup(
+          "OTHER NAMED PARTIES",
+          otherFlatParties,
+          otherJvEntities,
+          parties,
+          true
+        )
+      );
+    }
+
+    return sections.filter(Boolean);
+  }, [milestones, parties, postShortlistStage, project.leadContractor]);
 
   const latestCfArticle = sources.filter((source) => source.sourceType === "CF Article")[0];
   const latestCfArticleUrl = project.latestCfArticleUrl || latestCfArticle?.sourceUrl;
+
+  useEffect(() => {
+    if (project.parentProjectSlug) {
+      supabase
+        .from("projects_master")
+        .select("projectName")
+        .eq("projectSlug", project.parentProjectSlug)
+        .single()
+        .then(({ data }) => {
+          if (data?.projectName) {
+            setParentProjectName(data.projectName);
+          }
+        });
+    }
+  }, [project.parentProjectSlug]);
 
   return (
     <div style={tabRootStyle}>
@@ -447,112 +662,11 @@ export default function ProjectIntelligenceTab({
         <PremiumBlur isAuthenticated={isAuthenticated}>
           <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
             <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
-              {groupedParties.length > 0 ? (
+              {keyPartySections.length > 0 ? (
                 <div style={cardStyle}>
                   <div style={sectionLabelStyle}>KEY PARTIES</div>
                   <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
-                    {groupedParties.map((group) => {
-                      const jvEntities = group.parties.filter((party) => isJvEntity(party));
-                      const members = group.parties.filter((party) => !isJvEntity(party));
-
-                      return (
-                        <div key={group.label} style={partyGroupStyle}>
-                          <div
-                            style={{
-                              color: "#f0a500",
-                              fontSize: 11,
-                              fontWeight: 600,
-                              letterSpacing: "0.08em",
-                              textTransform: "uppercase",
-                              marginBottom: 8
-                            }}
-                          >
-                            {group.label}
-                          </div>
-                          {group.jvOnly ? (
-                            jvEntities.length > 0 ? (
-                              <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
-                                {jvEntities.map((jv) => {
-                                  const matchedMembers = members.filter((member) =>
-                                    isMemberMatchedToJv(member, jv)
-                                  );
-
-                                  return (
-                                    <div key={jv.partyId} style={jvEntityCardStyle}>
-                                      <div style={{ color: "#e6edf3", fontSize: 13, fontWeight: 600, marginBottom: 4 }}>
-                                        {jv.partyName}
-                                      </div>
-                                      <div style={{ color: "#8b949e", fontSize: 11, marginBottom: 8 }}>
-                                        {jv.roleCategory}
-                                      </div>
-                                      {matchedMembers.length > 0 ? (
-                                        <div style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
-                                          {matchedMembers.map((member) => (
-                                            <div key={member.partyId} style={partyChipStyle}>
-                                              <div style={{ color: "#e6edf3", fontSize: 13, fontWeight: 500 }}>
-                                                {member.partyName}
-                                              </div>
-                                            </div>
-                                          ))}
-                                        </div>
-                                      ) : null}
-                                    </div>
-                                  );
-                                })}
-                                {members.filter(
-                                  (member) =>
-                                    !jvEntities.some((jv) => isMemberMatchedToJv(member, jv))
-                                ).length > 0 ? (
-                                  <div style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
-                                    {members
-                                      .filter(
-                                        (member) =>
-                                          !jvEntities.some((jv) => isMemberMatchedToJv(member, jv))
-                                      )
-                                      .map((member) => (
-                                        <div key={member.partyId} style={partyChipStyle}>
-                                          <div style={{ color: "#e6edf3", fontSize: 13, fontWeight: 500 }}>
-                                            {member.partyName}
-                                          </div>
-                                          <div style={{ color: "#8b949e", fontSize: 11 }}>
-                                            {member.roleDetail}
-                                          </div>
-                                        </div>
-                                      ))}
-                                  </div>
-                                ) : null}
-                              </div>
-                            ) : (
-                              <div style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
-                                {members.map((party) => (
-                                  <div key={party.partyId} style={partyChipStyle}>
-                                    <div style={{ color: "#e6edf3", fontSize: 13, fontWeight: 500 }}>
-                                      {party.partyName}
-                                    </div>
-                                    <div style={{ color: "#8b949e", fontSize: 11 }}>
-                                      {getMemberLabel(party)}
-                                    </div>
-                                  </div>
-                                ))}
-                              </div>
-                            )
-                          ) : (
-                            <div style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
-                              {group.parties.map((party) => (
-                                <div key={party.partyId} style={partyChipStyle}>
-                                  <div style={{ color: "#e6edf3", fontSize: 13, fontWeight: 500 }}>
-                                    {party.partyName}
-                                  </div>
-                                  <div style={{ color: "#8b949e", fontSize: 11 }}>
-                                    {party.roleDetail ?? party.partyRole}
-                                  </div>
-                                </div>
-                              ))}
-                            </div>
-                          )}
-                        </div>
-                      );
-                    })}
+                    {keyPartySections}
                   </div>
                 </div>
               ) : null}
@@ -573,43 +687,46 @@ export default function ProjectIntelligenceTab({
                 <FeatureRow label="SCALE / SIZE" value={formatCapacity(project)} amber />
                 <FeatureRow
                   label={projectValueLabel}
-                  value={formatProjectValue(project)}
+                  value={formatProjectValue(
+                    project.projectValueAmount,
+                    project.projectValueCurrency,
+                    project.projectValueScale
+                  )}
                   amber
                 />
                 <FeatureRow label="LOCATION" value={location} />
                 <FeatureRow label="DELIVERY MODEL" value={!isProgramme ? deliveryModelValue : ""} />
                 <FeatureRow
                   label="CONSTRUCTION START"
-                  value={formatTargetDate(
+                  value={formatProjectDate(
                     project.constructionStartYear,
-                    project.constructionStartQuarter,
                     project.constructionStartPrecision
                   )}
                 />
                 <FeatureRow
-                  label="COMPLETION TARGET"
-                  value={formatTargetDate(
+                  label="COMPLETION"
+                  value={formatProjectDate(
                     project.constructionCompletionYear,
-                    project.constructionCompletionQuarter,
                     project.constructionCompletionPrecision
                   )}
                 />
                 <FeatureRow
-                  label="OPERATIONS TARGET"
-                  value={formatTargetDate(
+                  label="OPERATIONS"
+                  value={formatProjectDate(
                     project.operationsStartYear,
-                    project.operationsStartQuarter,
                     project.operationsStartPrecision
                   )}
                 />
               </div>
             </div>
 
-            <div style={cardStyle}>
+              <div style={cardStyle}>
               <div style={sectionLabelStyle}>LATEST INTELLIGENCE</div>
-              <div style={{ ...mutedTextStyle, marginBottom: 8 }}>
-                Updated: {formatMonthYear(project.lastUpdated)}
-              </div>
+              {latestCfArticle?.publicationDate ? (
+                <div style={{ ...mutedTextStyle, marginBottom: 8 }}>
+                  Latest Coverage: {new Date(latestCfArticle.publicationDate).toLocaleDateString("en-GB", { month: "short", year: "numeric" })}
+                </div>
+              ) : null}
               <p style={bodyTextStyle}>
                 {project.latestUpdateSummary || "No intelligence update available."}
               </p>

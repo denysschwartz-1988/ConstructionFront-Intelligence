@@ -147,6 +147,7 @@ export default function PremiumTabsShell({
             project={project}
             parties={parties}
             sources={sources}
+            milestones={milestones}
             isAuthenticated={isAuthenticated}
           />
         ) : null}

@@ -35,6 +35,33 @@ export function formatDate(dateStr: string | null | undefined): string {
   return formatMonthYear(dateStr);
 }
 
+export function formatProjectValue(
+  amount: number | null | undefined,
+  currency: string | null | undefined,
+  scale: string | null | undefined
+): string {
+  if (amount == null) return "";
+
+  let value = Number(amount);
+  const curr = currency?.trim() ?? "";
+  const scaleLower = scale?.trim().toLowerCase() ?? "";
+  let displayScale = scale?.trim() ?? "";
+
+  if (scaleLower === "million" || scaleLower === "m") {
+    if (value >= 1000) {
+      value = value / 1000;
+      displayScale = "Billion";
+    } else {
+      displayScale = "Million";
+    }
+  } else if (scaleLower === "billion" || scaleLower === "b") {
+    displayScale = "Billion";
+  }
+
+  const formatted = parseFloat(value.toFixed(2)).toLocaleString();
+  return [curr, formatted, displayScale].filter(Boolean).join(" ");
+}
+
 export function getStageBadgeStyle(stage: string | null | undefined): CSSProperties {
   if (!stage) {
     return { backgroundColor: "#8b949e", color: "#ffffff" };
