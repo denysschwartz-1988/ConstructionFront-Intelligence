@@ -801,34 +801,30 @@ export default function ProjectIntelligenceTab({
 
               <div style={cardStyle}>
               <div style={sectionLabelStyle}>LATEST INTELLIGENCE</div>
-              {latestCfArticle?.publicationDate ? (
+              {project.lastUpdated && (
                 <div style={{ ...mutedTextStyle, marginBottom: 8 }}>
-                  Latest Coverage: {new Date(latestCfArticle.publicationDate).toLocaleDateString("en-GB", { month: "short", year: "numeric" })}
+                  Last updated: {new Date(project.lastUpdated).toLocaleDateString("en-GB", { month: "short", year: "numeric" })}
                 </div>
-              ) : null}
+              )}
               <p style={bodyTextStyle}>
                 {project.latestUpdateSummary || "No intelligence update available."}
               </p>
-              {latestCfArticleUrl ? (
+              {project.latestCfArticleUrl && (
                 <a
-                  href={latestCfArticleUrl}
+                  href={project.latestCfArticleUrl}
                   target="_blank"
                   rel="noreferrer"
                   style={{
-                    display: "inline-block",
-                    marginTop: 12,
                     color: "#f0a500",
                     fontSize: 12,
-                    fontWeight: 600,
                     textDecoration: "none",
-                    border: "1px solid #f0a500",
-                    borderRadius: 6,
-                    padding: "6px 12px"
+                    display: "inline-block",
+                    marginTop: 6
                   }}
                 >
-                  Read on ConstructionFront.com {"\u2192"}
+                  Read more {"\u2192"}
                 </a>
-              ) : null}
+              )}
             </div>
           </div>
         </PremiumBlur>
