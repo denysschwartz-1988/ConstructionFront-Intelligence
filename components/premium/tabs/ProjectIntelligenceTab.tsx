@@ -324,36 +324,49 @@ const FlatPartyChip = ({
   </div>
 );
 
-const JvEntityCard = ({
-  entity,
-  members
-}: {
-  entity: ProjectPartyRecord;
-  members: ProjectPartyRecord[];
-}) => (
-  <div style={jvEntityCardStyle}>
-    <div style={{ color: "#f0a500", fontSize: 13, fontWeight: 600, marginBottom: 4 }}>
-      {entity.partyName}
-    </div>
-    <div style={{ color: "#8b949e", fontSize: 11, marginBottom: members.length > 0 ? 8 : 0 }}>
-      {entity.roleCategory}
-    </div>
-    {members.length > 0 ? (
-      <div style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
-        {members.map((member) => (
-          <span
-            key={member.partyId}
-            title={getMemberLabel(member)}
-            style={memberChipStyle}
-          >
-            {member.partyName}
-          </span>
-        ))}
-      </div>
-    ) : null}
-  </div>
-);
+function renderJVCard(
+  jv: ProjectPartyRecord,
+  allParties: ProjectPartyRecord[],
+  getShortRoleLabel: (role: string | null) => string
+): React.ReactNode {
+  const members = allParties.filter(
+    (party) => parentJvName(party) === jv.partyName && !isJvEntity(party)
+  );
 
+  return (
+    <div
+      key={jv.partyId}
+      style={{
+        backgroundColor: "#132845",
+        border: "1px solid #1e3a5f",
+        borderRadius: 6,
+        padding: "10px 12px",
+        marginBottom: 6
+      }}
+    >
+      <div style={{ color: "#e6edf3", fontSize: 13, fontWeight: 600, marginBottom: 4 }}>
+        {jv.partyName}
+      </div>
+      <div style={{ color: "#8b949e", fontSize: 11, marginBottom: members.length > 0 ? 8 : 0 }}>
+        {getShortRoleLabel(jv.roleCategory)}
+      </div>
+      {members.length > 0 ? (
+        <div style={{ display: "flex", flexWrap: "wrap", gap: 6 }}>
+          {members.map((member) => (
+            <div key={member.partyId} style={partyChipStyle}>
+              <div style={{ color: "#e6edf3", fontSize: 12, fontWeight: 500 }}>
+                {member.partyName}
+              </div>
+              <div style={{ color: "#8b949e", fontSize: 11 }}>
+                {getShortRoleLabel(member.roleCategory)}
+              </div>
+            </div>
+          ))}
+        </div>
+      ) : null}
+    </div>
+  );
+}
 const PartyGroupBox = ({
   label,
   children
@@ -391,13 +404,7 @@ const renderPartyGroup = (
   return (
     <PartyGroupBox key={label} label={label}>
       <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
-        {jvEntities.map((entity) => (
-          <JvEntityCard
-            key={entity.partyId}
-            entity={entity}
-            members={allParties.filter((party) => isJvMember(party) && isMemberMatchedToJv(party, entity))}
-          />
-        ))}
+        {jvEntities.map((entity) => renderJVCard(entity, allParties, getShortRoleLabel))}
         {flatParties.length > 0 ? (
           <div style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
             {flatParties.map((party) => (
@@ -599,15 +606,13 @@ export default function ProjectIntelligenceTab({
 
       const matchingParties = parties.filter((party) => hasRoleCategory(party, group.roles));
 
-      const useJvCards = group.label === "MAIN CONTRACTOR" || group.label === "SHORTLISTED CONSORTIA";
-      const jvEntities = useJvCards
-        ? matchingParties.filter((party) => isJvEntity(party) && available(party))
-        : [];
+      const jvEntities = matchingParties.filter((party) => isJvEntity(party) && available(party));
       const flatParties = matchingParties.filter(
         (party) =>
+          !isJvEntity(party) &&
           !isJvMember(party) &&
           available(party) &&
-          (useJvCards ? !isJvEntity(party) && !group.jvOnly : true)
+          !group.jvOnly
       );
 
       if (jvEntities.length === 0 && flatParties.length === 0) return;
@@ -620,18 +625,17 @@ export default function ProjectIntelligenceTab({
     const financierParties = parties.filter(
       (party) => hasRoleCategory(party, financierRoles) && !isJvMember(party) && available(party)
     );
+    const financierJvEntities = financierParties.filter((party) => isJvEntity(party) && available(party));
+    const financierFlatParties = financierParties.filter((party) => !isJvEntity(party) && available(party));
 
-    if (financierParties.length > 0) {
-      markUsed(financierParties);
-      sections.push(renderPartyGroup("FINANCIERS", financierParties, [], parties, true));
+    if (financierJvEntities.length > 0 || financierFlatParties.length > 0) {
+      markJvWithMembers(financierJvEntities);
+      markUsed(financierFlatParties);
+      sections.push(renderPartyGroup("FINANCIERS", financierFlatParties, financierJvEntities, parties, true));
     }
-
     const advisorParties = parties.filter((party) => hasRoleCategory(party, advisorRoles));
     const advisorJvEntities = advisorParties.filter(
-      (party) =>
-        party.roleCategory === "Project Management Consultant" &&
-        isJvEntity(party) &&
-        available(party)
+      (party) => isJvEntity(party) && available(party)
     );
     const advisorFlatParties = advisorParties.filter(
       (party) => !isJvEntity(party) && !isJvMember(party) && available(party)
@@ -658,7 +662,7 @@ export default function ProjectIntelligenceTab({
       ...otherNamedRoles,
       "Shortlisted Consortium"
     ];
-    const otherFlatParties = parties.filter(
+    const otherParties = parties.filter(
       (party) =>
         !isJvMember(party) &&
         available(party) &&
@@ -668,14 +672,17 @@ export default function ProjectIntelligenceTab({
           !hasRoleCategory(party, groupedRoles)
         )
     );
+    const otherJvEntities = otherParties.filter((party) => isJvEntity(party) && available(party));
+    const otherFlatParties = otherParties.filter((party) => !isJvEntity(party) && available(party));
 
-    if (otherFlatParties.length > 0) {
+    if (otherJvEntities.length > 0 || otherFlatParties.length > 0) {
+      markJvWithMembers(otherJvEntities);
       markUsed(otherFlatParties);
       sections.push(
         renderPartyGroup(
           "OTHER NAMED PARTIES",
           otherFlatParties,
-          [],
+          otherJvEntities,
           parties,
           true
         )
@@ -809,22 +816,6 @@ export default function ProjectIntelligenceTab({
               <p style={bodyTextStyle}>
                 {project.latestUpdateSummary || "No intelligence update available."}
               </p>
-              {project.latestCfArticleUrl && (
-                <a
-                  href={project.latestCfArticleUrl}
-                  target="_blank"
-                  rel="noreferrer"
-                  style={{
-                    color: "#f0a500",
-                    fontSize: 12,
-                    textDecoration: "none",
-                    display: "inline-block",
-                    marginTop: 6
-                  }}
-                >
-                  Read more {"\u2192"}
-                </a>
-              )}
             </div>
           </div>
         </PremiumBlur>

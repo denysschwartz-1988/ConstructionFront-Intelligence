@@ -386,12 +386,8 @@ export default function Home() {
 
     if (project?.latitude != null && project.longitude != null) {
       projectMapRef.current?.flyToProject(project);
-
-      if (view === "list") {
-        setView("map");
-      }
     }
-  }, [view]);
+  }, []);
 
   const handleViewChange = (newView: "map" | "list") => {
     setView(newView);
@@ -438,6 +434,8 @@ export default function Home() {
           onSectorsChange={setSelectedSectors}
           onSubsectorsChange={setSelectedSubsectors}
           onStagesChange={setSelectedStages}
+          viewMode={view}
+          setViewMode={handleViewChange}
         />
       </div>
 
@@ -461,7 +459,7 @@ export default function Home() {
         style={{
           flex: 1,
           display: "grid",
-          gridTemplateColumns: `${leftWidth}% 4px ${100 - leftWidth}%`,
+          gridTemplateColumns: view === "list" ? "100%" : `${leftWidth}% 4px ${100 - leftWidth}%`,
           gridTemplateRows: `${topHeight}% 4px ${100 - topHeight}%`,
           overflow: "hidden",
           minHeight: 0
@@ -469,7 +467,7 @@ export default function Home() {
       >
         <div
           style={{
-            gridColumn: 1,
+            gridColumn: view === "list" ? "1 / -1" : 1,
             gridRow: 1,
             overflow: "hidden",
             borderRight: "none",
@@ -478,58 +476,6 @@ export default function Home() {
             minHeight: 0
           }}
         >
-          <div
-            style={{
-              position: "absolute",
-              top: 12,
-              right: 12,
-              zIndex: 1000,
-              display: "flex",
-              backgroundColor: "rgba(10,22,40,0.9)",
-              border: "1px solid #1e3a5f",
-              borderRadius: 6,
-              overflow: "hidden",
-              backdropFilter: "blur(4px)"
-            }}
-          >
-            <button
-              type="button"
-              onClick={() => handleViewChange("map")}
-              style={{
-                padding: "6px 14px",
-                fontSize: 12,
-                fontWeight: 600,
-                backgroundColor: view === "map" ? "#f0a500" : "transparent",
-                color: view === "map" ? "#0a1628" : "#8b949e",
-                border: "none",
-                cursor: "pointer",
-                borderRight: "1px solid #1e3a5f",
-                display: "flex",
-                alignItems: "center",
-                gap: 4
-              }}
-            >
-              {"\u{1f5fa}"} Map
-            </button>
-            <button
-              type="button"
-              onClick={() => handleViewChange("list")}
-              style={{
-                padding: "6px 14px",
-                fontSize: 12,
-                fontWeight: 600,
-                backgroundColor: view === "list" ? "#f0a500" : "transparent",
-                color: view === "list" ? "#0a1628" : "#8b949e",
-                border: "none",
-                cursor: "pointer",
-                display: "flex",
-                alignItems: "center",
-                gap: 4
-              }}
-            >
-              {"\u2261"} List
-            </button>
-          </div>
           {view === "map" ? (
             <ProjectMap
               ref={projectMapRef}
@@ -547,6 +493,8 @@ export default function Home() {
           )}
         </div>
 
+        {view === "map" ? (
+          <>
         <div
           style={{
             gridColumn: 2,
@@ -606,10 +554,12 @@ export default function Home() {
             <EmptyPanel />
           )}
         </div>
+          </>
+        ) : null}
 
         <div
           style={{
-            gridColumn: 1,
+            gridColumn: view === "list" ? "1 / -1" : 1,
             gridRow: 2,
             height: 4,
             backgroundColor: "#0f2240",
@@ -639,7 +589,7 @@ export default function Home() {
 
         <div
           style={{
-            gridColumn: 1,
+            gridColumn: view === "list" ? "1 / -1" : 1,
             gridRow: 3,
             display: "flex",
             flexDirection: "column",
@@ -657,9 +607,9 @@ export default function Home() {
               allProjects={projects}
               onProjectSelect={handleProjectSelect}
             />
-          ) : (
+          ) : view === "map" ? (
             <EmptyTabsPlaceholder />
-          )}
+          ) : null}
         </div>
 
       </div>

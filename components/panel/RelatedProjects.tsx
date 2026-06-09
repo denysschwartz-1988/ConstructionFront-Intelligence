@@ -10,11 +10,22 @@ type RelatedProjectsProps = {
   onProjectSelect: (project: ProjectRecord) => void;
 };
 
-const getTimestamp = (project: ProjectRecord) => {
-  const value = project.lastUpdated ?? project.latestUpdateDate;
-  const millis = value ? new Date(value).getTime() : 0;
-  return Number.isFinite(millis) ? millis : 0;
-};
+function scoreRelatedProject(candidate: ProjectRecord, current: ProjectRecord): number {
+  let score = 0;
+  const sameCountry = candidate.country === current.country;
+  const sameRegion = candidate.region === current.region;
+  const sameSector = candidate.sector === current.sector;
+  const sameSubsector = candidate.subsector === current.subsector;
+
+  if (sameCountry && sameSubsector) score += 60;
+  if (sameRegion && sameSubsector) score += 45;
+  if (!sameRegion && sameSubsector) score += 30;
+  if (sameCountry && sameSector && !sameSubsector) score += 20;
+  if (sameRegion && sameSector && !sameSubsector) score += 10;
+  if (!sameRegion && sameSector && !sameSubsector) score += 5;
+
+  return score;
+}
 
 const isDisplayProject = (project: ProjectRecord) => {
   const hierarchy = (project as unknown as { projectHierarchy?: string | null }).projectHierarchy;
@@ -31,29 +42,29 @@ export default function RelatedProjects({
       return [];
     }
 
-    const others = allProjects.filter(
-      (project) =>
-        isDisplayProject(project) &&
-        project.projectSlug !== currentProject.projectSlug &&
-        project.projectDescription
-    );
+    const relatedProjectsWithScores = allProjects
+      .filter((project) => {
+        const sameParentProjectSlug =
+          project.parentProjectSlug &&
+          currentProject.parentProjectSlug &&
+          project.parentProjectSlug === currentProject.parentProjectSlug;
 
-    const sameCountryAndSector = others.filter(
-      (project) =>
-        project.sector === currentProject.sector &&
-        project.country === currentProject.country
-    );
+        return (
+          isDisplayProject(project) &&
+          project.projectSlug !== currentProject.projectSlug &&
+          !sameParentProjectSlug
+        );
+      })
+      .map((project) => ({
+        project,
+        score: scoreRelatedProject(project, currentProject)
+      }))
+      .filter(({ score }) => score > 0);
 
-    const sameSectorOnly = others.filter(
-      (project) =>
-        project.sector === currentProject.sector &&
-        project.country !== currentProject.country &&
-        !sameCountryAndSector.includes(project)
-    );
-
-    return [...sameCountryAndSector, ...sameSectorOnly]
-      .sort((a, b) => getTimestamp(b) - getTimestamp(a))
-      .slice(0, 4);
+    return relatedProjectsWithScores
+      .sort((a, b) => b.score - a.score)
+      .slice(0, 4)
+      .map(({ project }) => project);
   }, [currentProject, currentProject.projectSlug, allProjects]);
 
   return (

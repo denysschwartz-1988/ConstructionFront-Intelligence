@@ -152,59 +152,94 @@ export default function MarketSignalsTab({
 
   return (
     <div style={tabRootStyle}>
-      <div style={cardStyle}>
-        <div style={sectionLabel}>STAKEHOLDER LENS</div>
-        <select
-          value={lens}
-          onChange={(event) => setLens(event.target.value)}
-          style={{
-            backgroundColor: "#0f2240",
-            border: "1px solid #1e3a5f",
-            color: "#e6edf3",
-            fontSize: 13,
-            borderRadius: 6,
-            padding: "6px 10px",
-            width: 220
-          }}
-        >
-          <option value="contractor">Contractor</option>
-          <option value="supplier">Supplier</option>
-          <option value="consultant">Consultant</option>
-          <option value="omProvider">O&amp;M Provider</option>
-          <option value="lender">Lender</option>
-          <option value="insurer">Insurer</option>
-          <option value="vendor">Vendor</option>
-          <option value="legal">Legal</option>
-          <option value="developer">Developer</option>
-        </select>
-        <div style={{ borderTop: "1px solid #1e3a5f", paddingTop: 16, marginTop: 16 }}>
-          <div style={subsectionLabel}>SIGNAL STATUS</div>
-          {timingStatus ? (
-            <span
+      <div style={{ display: "grid", gridTemplateColumns: "35% 65%", gap: 12 }}>
+        <div style={cardStyle}>
+          <div style={sectionLabel}>STAKEHOLDER LENS</div>
+          <div style={{ marginBottom: 16 }}>
+            <select
+              value={lens}
+              onChange={(event) => setLens(event.target.value)}
               style={{
-                display: "inline-flex",
-                backgroundColor: `${timingColor}22`,
-                border: `1px solid ${timingColor}`,
-                color: timingColor,
-                borderRadius: 4,
-                padding: "2px 7px",
-                fontSize: 11,
-                fontWeight: 600
+                backgroundColor: "#0f2240",
+                border: "1px solid #1e3a5f",
+                color: "#e6edf3",
+                fontSize: 13,
+                borderRadius: 6,
+                padding: "6px 10px",
+                width: 220
               }}
             >
-              {timingStatus}
-            </span>
-          ) : (
-            <p style={{ color: "#8b949e", margin: 0 }}>No signal status recorded.</p>
-          )}
-        </div>
-      </div>
+              <option value="contractor">Contractor</option>
+              <option value="supplier">Supplier</option>
+              <option value="consultant">Consultant</option>
+              <option value="omProvider">O&amp;M Provider</option>
+              <option value="lender">Lender</option>
+              <option value="insurer">Insurer</option>
+              <option value="vendor">Vendor</option>
+              <option value="legal">Legal</option>
+              <option value="developer">Developer</option>
+            </select>
+          </div>
 
-      <PremiumBlur isAuthenticated={isAuthenticated}>
-        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
+          <div style={{ marginBottom: 16 }}>
+            <div
+              style={{
+                color: "#8b949e",
+                fontSize: 11,
+                fontWeight: 600,
+                letterSpacing: "0.08em",
+                textTransform: "uppercase",
+                marginBottom: 6
+              }}
+            >
+              Signal Status
+            </div>
+            {timingStatus ? (
+              <span
+                style={{
+                  display: "inline-flex",
+                  backgroundColor: `${timingColor}22`,
+                  border: `1px solid ${timingColor}`,
+                  color: timingColor,
+                  borderRadius: 4,
+                  padding: "2px 7px",
+                  fontSize: 11,
+                  fontWeight: 600
+                }}
+              >
+                {timingStatus}
+              </span>
+            ) : (
+              <p style={{ color: "#8b949e", margin: 0 }}>No signal status recorded.</p>
+            )}
+          </div>
+
+          <div>
+            <div
+              style={{
+                color: "#8b949e",
+                fontSize: 11,
+                fontWeight: 600,
+                letterSpacing: "0.08em",
+                textTransform: "uppercase",
+                marginBottom: 6
+              }}
+            >
+              Signal Timing
+            </div>
+            <div style={{ color: "#f0a500", fontSize: 12, fontWeight: 600, marginBottom: 4 }}>
+              {project.signalTimingStatus}
+            </div>
+            <div style={{ color: "#e6edf3", fontSize: 13, lineHeight: 1.6 }}>
+              {project.signalTiming}
+            </div>
+          </div>
+        </div>
+
+        <PremiumBlur isAuthenticated={isAuthenticated}>
           <div style={cardStyle}>
-            <div style={sectionLabel}>COMMERCIAL SIGNALS</div>
-            <div style={{ display: "flex", flexWrap: "wrap", gap: 8, marginBottom: 16 }}>
+            <div style={sectionLabel}>COMMERCIAL SIGNALS &amp; INTELLIGENCE</div>
+            <div style={{ display: "flex", flexWrap: "wrap", gap: 6, marginBottom: 12 }}>
               {signalCategories.map((category) => (
                 <span
                   key={category}
@@ -222,52 +257,20 @@ export default function MarketSignalsTab({
               ))}
             </div>
 
-            <div style={{ borderTop: "1px solid #1e3a5f", paddingTop: 16 }}>
-              <div style={subsectionLabel}>SIGNAL TIMING</div>
-              {timingStatus ? (
-                <span
-                  style={{
-                    display: "inline-flex",
-                    backgroundColor: `${timingColor}22`,
-                    border: `1px solid ${timingColor}`,
-                    color: timingColor,
-                    borderRadius: 4,
-                    padding: "2px 7px",
-                    fontSize: 11,
-                    fontWeight: 600,
-                    marginBottom: 8
-                  }}
-                >
-                  {timingStatus}
+            <div style={{ borderTop: "1px solid #1e3a5f", marginBottom: 12 }} />
+
+            <div style={{ color: "#e6edf3", fontSize: 13, lineHeight: 1.7 }}>
+              {narrative ? (
+                narrative
+              ) : (
+                <span style={{ color: "#8b949e" }}>
+                  No intelligence available for this stakeholder lens.
                 </span>
-              ) : null}
-              <p style={{ color: "#e6edf3", fontSize: 13, lineHeight: 1.6, margin: 0 }}>
-                {project.signalTiming || "No signal timing recorded."}
-              </p>
-            </div>
-
-            <div style={{ borderTop: "1px solid #1e3a5f", paddingTop: 16, marginTop: 16 }}>
-              <div style={subsectionLabel}>COMMERCIAL INTERFACE</div>
-              <p style={{ color: "#e6edf3", fontSize: 13, margin: 0 }}>
-                {project.commercialInterface || "No commercial interface recorded."}
-              </p>
+              )}
             </div>
           </div>
-
-          <div style={cardStyle}>
-            <div style={sectionLabel}>COMMERCIAL INTELLIGENCE</div>
-            {narrative ? (
-              <p style={{ color: "#e6edf3", fontSize: 13, lineHeight: 1.6, margin: 0 }}>
-                {narrative}
-              </p>
-            ) : (
-              <p style={{ color: "#8b949e", margin: 0 }}>
-                No intelligence available for this stakeholder lens.
-              </p>
-            )}
-          </div>
-        </div>
-      </PremiumBlur>
+        </PremiumBlur>
+      </div>
     </div>
   );
 }

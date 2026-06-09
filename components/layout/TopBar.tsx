@@ -24,6 +24,8 @@ type TopBarProps = {
   onSectorsChange: (value: string[]) => void;
   onSubsectorsChange: (value: string[]) => void;
   onStagesChange: (value: string[]) => void;
+  viewMode: "map" | "list";
+  setViewMode: (mode: "map" | "list") => void;
 };
 
 export default function TopBar({
@@ -46,7 +48,9 @@ export default function TopBar({
   onCountriesChange,
   onSectorsChange,
   onSubsectorsChange,
-  onStagesChange
+  onStagesChange,
+  viewMode,
+  setViewMode
 }: TopBarProps) {
   return (
     <div
@@ -158,6 +162,38 @@ export default function TopBar({
         </div>
       </div>
 
+      <div style={{ display: "flex", border: "1px solid #1e3a5f", borderRadius: 6, overflow: "hidden" }}>
+        <button
+          type="button"
+          onClick={() => setViewMode("map")}
+          style={{
+            padding: "6px 12px",
+            fontSize: 12,
+            fontWeight: 600,
+            backgroundColor: viewMode === "map" ? "#f0a500" : "transparent",
+            color: viewMode === "map" ? "#0a1628" : "#8b949e",
+            border: "none",
+            cursor: "pointer"
+          }}
+        >
+          {"\u{1f5fa}"} Map
+        </button>
+        <button
+          type="button"
+          onClick={() => setViewMode("list")}
+          style={{
+            padding: "6px 12px",
+            fontSize: 12,
+            fontWeight: 600,
+            backgroundColor: viewMode === "list" ? "#f0a500" : "transparent",
+            color: viewMode === "list" ? "#0a1628" : "#8b949e",
+            border: "none",
+            cursor: "pointer"
+          }}
+        >
+          {"\u2630"} List
+        </button>
+      </div>
       <div
         style={{
           flex: "0 1 auto",
